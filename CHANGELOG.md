@@ -2,6 +2,12 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.1.1
+
+2026-08-19
+
+* Removed the device and cable run totals from the top of the riser diagram page in the PDF.
+
 ## v1.1.0
 
 2026-08-19

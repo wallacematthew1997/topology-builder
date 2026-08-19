@@ -3125,8 +3125,7 @@ function buildPrint(){
 
   document.getElementById('printRoot').innerHTML = cover + mapPage + `
     <section class="psheet"><div class="pframe">
-      <div class="phead"><div class="ptitle">${esc(m.sheet||'Riser diagram')}</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${totalDevices()} devices &nbsp; ${totalCables()} cable runs</div></div>
+      <div class="phead"><div class="ptitle">${esc(m.sheet||'Riser diagram')}</div></div>
       ${legend}
       <div class="pdraw">${drawSvg}</div>
       ${tb}
@@ -3208,7 +3207,7 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Version, changelog, and updates
    ========================================================= */
-const APP_VERSION='1.1.0';
+const APP_VERSION='1.1.1';
 
 /* Where released builds live. Change this if the repo ever moves. */
 const HOME='https://wallacematthew1997.github.io/topology-builder/';
@@ -3216,6 +3215,9 @@ const REPO='https://github.com/wallacematthew1997/topology-builder';
 
 /* Newest first. Keep this in step with CHANGELOG.md and version.json. */
 const CHANGELOG=[
+  {v:'1.1.1', d:'2026-08-19', notes:[
+    "Removed the device and cable run totals from the top of the riser diagram page in the PDF."
+  ]},
   {v:'1.1.0', d:'2026-08-19', notes:[
     'Installs as a real app with its own window, taskbar icon, and offline use.',
     'Version button in the toolbar with a one click update check.',
