@@ -95,6 +95,20 @@ button,input,select,textarea{font:inherit;color:inherit}
   font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-left:auto;
   letter-spacing:.04em;
 }
+.warnpill{
+  margin-left:8px;padding:2px 7px;border-radius:9px;border:1px solid #E8CE86;background:#FFF6E0;
+  color:#7A5B00;font:inherit;font-size:10.5px;cursor:pointer;
+}
+.warnpill:hover{border-color:#B8912F}
+.bkbar{
+  padding:10px 14px;border-bottom:1px solid var(--rule);font-size:12px;line-height:1.5;
+  display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;
+}
+.bkbar.warn{background:#FFF6E0;border-bottom-color:#E8CE86}
+.bkbar.ok{background:#F1F6F0}
+.bkbar>div:first-child{flex:1;min-width:240px}
+.bkbar .btns{display:flex;gap:6px;flex-wrap:wrap}
+.bkbar b{font-weight:600}
 .pal-head{
   display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--panel);
   border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:3;
@@ -529,6 +543,7 @@ button,input,select,textarea{font:inherit;color:inherit}
       <input id="msearch" placeholder="Search name or client" aria-label="Search projects">
       <button class="xbtn" id="mclose" aria-label="Close">&times;</button>
     </div>
+    <div class="bkbar" id="bkbar"></div>
     <div class="mlist" id="mlist"></div>
     <div class="mfoot">
       <span id="mcount"></span>
@@ -2994,6 +3009,7 @@ async function saveProject(quiet){
     if(i>=0) idx[i]=rec; else idx.unshift(rec);
     await store.set(IDX, JSON.stringify(idx));
     dirty=false; savedOnce=true; lastSaved=Date.now(); showSaveState();
+    bkWrite(true);                       /* keep the copy on disk in step */
     if(!quiet) toast('Saved '+rec.name);
     return true;
   }catch(err){
@@ -3007,6 +3023,157 @@ async function saveAsCopy(){
   S.id=uid(); S.meta.project=name.trim()||S.meta.project;
   document.getElementById('projName').value=S.meta.project;
   await saveProject(); renderStamp(); openLibrary();
+}
+
+/* =========================================================
+   Keeping a copy on the machine itself.
+
+   Projects live in browser storage, which is fine until someone clears
+   browsing data.  Point the app at a real folder once and every save drops a
+   plain .json next to it, so the working copy and the record copy stay in step
+   without anyone having to remember to export.
+   ========================================================= */
+const BKKEY='topo:backupdir';
+let bkDir=null;          /* FileSystemDirectoryHandle */
+let bkState='off';       /* off | ready | needs-permission | unsupported */
+let bkLast=0, persisted=null;
+
+const fsOK = () => typeof window.showDirectoryPicker==='function';
+
+/* Ask the browser not to evict us.  Silent either way, it only ever helps. */
+async function askPersist(){
+  try{
+    if(!navigator.storage || !navigator.storage.persist) return;
+    persisted = await navigator.storage.persisted();
+    if(!persisted) persisted = await navigator.storage.persist();
+  }catch{ persisted=null }
+  renderBackupBar();
+}
+
+/* Folder handles are structured clone only, so they go straight into idb
+   rather than through the json store. */
+async function bkLoad(){
+  if(!fsOK()){ bkState='unsupported'; renderBackupBar(); return }
+  try{
+    const h=await idb.get(BKKEY);
+    if(!h){ bkState='off'; renderBackupBar(); return }
+    bkDir=h;
+    const perm=await h.queryPermission({mode:'readwrite'});
+    bkState = perm==='granted' ? 'ready' : 'needs-permission';
+  }catch{ bkDir=null; bkState='off' }
+  renderBackupBar();
+  if(bkState==='ready') bkWrite(true);
+}
+
+async function bkPick(){
+  if(!fsOK()){ toast('This browser cannot write to a folder. Use Export file instead.'); return }
+  try{
+    const h=await window.showDirectoryPicker({id:'topo-backup', mode:'readwrite', startIn:'documents'});
+    if((await h.requestPermission({mode:'readwrite'}))!=='granted'){ toast('That folder was not allowed.'); return }
+    bkDir=h; bkState='ready';
+    try{ await idb.set(BKKEY,h) }catch{}
+    renderBackupBar();
+    await bkAll();
+  }catch(e){
+    if(e && e.name==='AbortError') return;
+    toast('Could not use that folder.');
+  }
+}
+
+async function bkReconnect(){
+  if(!bkDir) return;
+  try{
+    const perm=await bkDir.requestPermission({mode:'readwrite'});
+    bkState = perm==='granted' ? 'ready' : 'needs-permission';
+    renderBackupBar();
+    if(bkState==='ready'){ await bkWrite(false) }
+    else toast('Still waiting on permission for that folder.');
+  }catch{ toast('Could not reconnect that folder.') }
+}
+
+async function bkForget(){
+  bkDir=null; bkState='off'; bkLast=0;
+  try{ await idb.del(BKKEY) }catch{}
+  renderBackupBar();
+  toast('Backup folder unlinked. Saves stay in this browser only.');
+}
+
+const bkName = st => slug(st.meta && st.meta.project) + '.topology.json';
+
+async function bkWriteState(st){
+  const fh=await bkDir.getFileHandle(bkName(st), {create:true});
+  const w=await fh.createWritable();
+  await w.write(JSON.stringify(st,null,2));
+  await w.close();
+}
+
+/* The open project, on every save. */
+async function bkWrite(quiet){
+  if(bkState!=='ready' || !bkDir) return false;
+  try{
+    S.view=view;
+    await bkWriteState(S);
+    bkLast=Date.now(); renderBackupBar();
+    if(!quiet) toast('Copy written to '+bkDir.name+'.');
+    return true;
+  }catch(e){
+    if(e && (e.name==='NotAllowedError' || e.name==='SecurityError')) bkState='needs-permission';
+    renderBackupBar();
+    if(!quiet) toast('Could not write the backup copy.');
+    return false;
+  }
+}
+
+/* Everything in the library, for when the folder is first linked. */
+async function bkAll(){
+  if(bkState!=='ready' || !bkDir) return 0;
+  let n=0, bad=0;
+  try{ S.view=view; await bkWriteState(S); n++ }catch{ bad++ }
+  const idx=await readIndex();
+  for(const r of idx){
+    if(r.id===S.id) continue;
+    try{
+      const st=JSON.parse((await store.get('topo:proj:'+r.id)).value);
+      await bkWriteState(st); n++;
+    }catch{ bad++ }
+  }
+  bkLast=Date.now(); renderBackupBar();
+  toast(n+' project'+(n===1?'':'s')+' written to '+bkDir.name+(bad?', '+bad+' could not be read':'')+'.');
+  return n;
+}
+
+function renderBackupBar(){
+  const el=document.getElementById('bkbar'); if(!el) return;
+  const room = persisted===true
+    ? 'The browser has marked this storage permanent.'
+    : persisted===false
+      ? 'The browser keeps this storage on a best effort basis and may clear it if the disk runs tight.'
+      : '';
+  let line='', btns='';
+  if(bkState==='unsupported'){
+    line='<b>No automatic copy on this computer.</b> This browser cannot write to a folder on its own, so use <b>Export file</b> when you finish a drawing. Chrome and Edge can do it automatically.';
+  }else if(bkState==='off'){
+    line='<b>Your projects live in this browser only.</b> Clearing browsing data would take them with it. Point the app at a folder and every save also writes a plain .json copy there.';
+    btns='<button class="mini" id="bkpick">Choose a backup folder</button>';
+  }else if(bkState==='needs-permission'){
+    line='<b>Backup folder needs permission again.</b> Browsers drop folder access between sessions, so nothing has been written to '
+      + esc(bkDir?bkDir.name:'the folder') + ' yet this time.';
+    btns='<button class="mini" id="bkfix">Reconnect folder</button><button class="mini" id="bkoff">Unlink</button>';
+  }else{
+    line='Every save also writes a copy into <b>'+esc(bkDir.name)+'</b>'
+      + (bkLast? ', last written '+ago(bkLast) : '') + '.';
+    btns='<button class="mini" id="bknow">Back up all projects now</button>'
+      + '<button class="mini" id="bkpick">Change folder</button>'
+      + '<button class="mini" id="bkoff">Unlink</button>';
+  }
+  showSaveState();
+  el.className='bkbar '+(bkState==='ready'?'ok':'warn');
+  el.innerHTML='<div>'+line+(room?' '+room:'')+'</div><div class="btns">'+btns+'</div>';
+  const on=(id,fn)=>{ const b=el.querySelector('#'+id); if(b) b.onclick=fn };
+  on('bkpick', bkPick);
+  on('bkfix',  bkReconnect);
+  on('bkoff',  bkForget);
+  on('bknow',  bkAll);
 }
 
 /* ---- project library ---- */
@@ -3025,12 +3192,21 @@ function ago(t){
 function showSaveState(){
   const el=document.getElementById('saveState');
   if(!el) return;
-  el.textContent = !savedOnce ? 'not saved yet' : dirty ? 'unsaved changes' : 'saved '+ago(lastSaved);
+  const where = !savedOnce ? 'not saved yet' : dirty ? 'unsaved changes' : 'saved '+ago(lastSaved);
+  /* Say plainly when nothing is landing on the machine, since the bar that
+     explains it lives inside Projects and is easy never to open. */
+  const risk = (bkState==='off' || bkState==='unsupported') ? 'no copy on this computer'
+             : bkState==='needs-permission' ? 'backup folder needs permission'
+             : '';
+  el.innerHTML = esc(where) + (risk? ' <button class="warnpill" id="bkjump">'+esc(risk)+'</button>' : '');
+  const j=document.getElementById('bkjump');
+  if(j) j.onclick=()=>{ openLibrary() };
 }
 async function openLibrary(){
+  renderBackupBar();
+  ovl.classList.add('on');            /* open at once, fill in behind it */
   libIndex=await readIndex();
   libIndex.sort((a,b)=>(b.updated||0)-(a.updated||0));
-  ovl.classList.add('on');
   renderLibrary();
   const sb=document.getElementById('msearch'); sb.value=libFilter; sb.focus();
 }
@@ -3125,7 +3301,9 @@ document.getElementById('mnew').onclick=()=>{
 };
 
 /* quietly save in the background once a project has a home */
-setInterval(()=>{ if(savedOnce && dirty) saveProject(true) }, 45000);
+/* Autosave once there is anything worth keeping, not only after a manual save,
+   so a first session cannot be lost by closing the tab. */
+setInterval(()=>{ if(dirty && (savedOnce || S.nodes.length || S.groups.length)) saveProject(true) }, 45000);
 setInterval(showSaveState, 30000);
 function loadState(obj){
   S=Object.assign(blank(), obj);
@@ -3629,6 +3807,7 @@ if(navigator.onLine!==false) setTimeout(()=>checkUpdate(false), 1500);
 
 (function boot(){
   applyView(); render(); loadBrand(); loadPalOrder(); showSaveState(); loadRevs();
+  askPersist(); bkLoad();
   window.addEventListener('resize', applyView);
 })();
 </script>
