@@ -1,0 +1,8 @@
+{
+  "version": "1.1.1",
+  "date": "2026-08-19",
+  "file": "index.html",
+  "notes": [
+    "Removed the device and cable run totals from the top of the riser diagram page in the PDF."
+  ]
+}
