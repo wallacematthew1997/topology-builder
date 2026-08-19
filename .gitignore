@@ -1,0 +1,19 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Local exports and scratch work
+exports/
+*.local.html
+*.pdf
+*.csv
+!docs/*.csv
+
+# Node, only if tooling gets added later
+node_modules/
