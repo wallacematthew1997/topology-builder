@@ -52,9 +52,9 @@ A rack view for laying out MDF and IDF gear by RU, with rack unit presets and fi
 
 Device schedule and cable schedule generate off the drawing, so the counts on the list always match the picture. CSV export for both when the estimator wants numbers instead of a drawing.
 
-**Sheet and title block**
+**Sheet, cover, and title block**
 
-Project title, company branding with a logo upload, revision letter, and a proper title block for a deliverable that looks like a submittal instead of a sketch.
+Project title, company branding with a logo upload, revision letter, and a proper title block, so the deliverable looks like a submittal instead of a sketch. A cover tab builds a title page to go in front of the drawing set.
 
 **Projects and revisions**
 
@@ -63,6 +63,18 @@ Multiple saved projects with an index, plus labeled revisions per project. Save 
 **Import and export**
 
 JSON export and import for the full project, so a drawing travels between machines or gets checked into a job folder.
+
+## Keyboard shortcuts
+
+| Keys | Action |
+| --- | --- |
+| Ctrl+C / Ctrl+V | Copy and paste devices, including into another project |
+| Ctrl+Z | Undo |
+| Ctrl+F | Find by tag |
+| Delete / Backspace | Remove the selection |
+| Arrow keys | Nudge, hold Shift for one pixel |
+| Mouse wheel | Zoom |
+| Drag empty space | Pan |
 
 ## Where the data lives
 
