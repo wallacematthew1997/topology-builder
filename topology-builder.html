@@ -1,0 +1,3117 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riser Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12222C;
+  --ink-soft:#5A6A73;
+  --paper:#F4F5F1;
+  --panel:#FFFFFF;
+  --rule:#C9D2CD;
+  --rule-soft:#E3E8E4;
+  --blue:#1B4F72;
+  --teal:#0F766E;
+  --bronze:#8A5A00;
+  --red:#A32B2B;
+  --slate:#55606B;
+  --mark:#FFD84D;
+  --sans:"Archivo Narrow",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:13px;overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:flex;flex-direction:column;height:100vh}
+
+/* ---------- toolbar ---------- */
+.bar{
+  display:flex;align-items:center;gap:14px;padding:0 12px;height:46px;
+  background:var(--ink);color:#EDF0EC;flex:0 0 auto;
+}
+.brand{font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12px}
+.brand span{color:var(--mark)}
+.brand i{font-style:normal;font-size:9px;letter-spacing:.08em;color:rgba(237,240,236,.45);margin-left:6px}
+.bar .grow{flex:1}
+.bar-title{
+  background:transparent;border:0;border-bottom:1px dotted rgba(237,240,236,.45);
+  color:#EDF0EC;font-family:var(--mono);font-size:12px;padding:3px 4px;min-width:210px;
+}
+.bar-title:focus{outline:none;border-bottom-color:var(--mark)}
+.btn{
+  background:transparent;border:1px solid rgba(237,240,236,.32);color:#EDF0EC;
+  padding:5px 10px;border-radius:2px;cursor:pointer;font-size:12px;
+  letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+}
+.btn:hover{border-color:var(--mark);color:var(--mark)}
+.btn:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.btn.solid{background:var(--mark);border-color:var(--mark);color:var(--ink);font-weight:600}
+.btn.solid:hover{background:#FFE07A;color:var(--ink)}
+.bar-find{background:transparent;border:1px solid rgba(237,240,236,.32);color:#EDF0EC;border-radius:2px;
+  padding:4px 8px;font-family:var(--mono);font-size:11px;width:110px}
+.bar-find:focus{outline:none;border-color:var(--mark)}
+.bar-find::placeholder{color:rgba(237,240,236,.45)}
+.zoomctl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px}
+.zoomctl button{
+  width:22px;height:22px;line-height:1;border:1px solid rgba(237,240,236,.32);
+  background:transparent;color:inherit;cursor:pointer;border-radius:2px;
+}
+.zoomctl button:hover{border-color:var(--mark);color:var(--mark)}
+
+/* ---------- main ---------- */
+.main{display:flex;flex:1;min-height:0}
+.pal{
+  width:186px;flex:0 0 186px;background:var(--panel);border-right:1px solid var(--rule);
+  overflow-y:auto;padding-bottom:24px;
+}
+.pal h3,.insp h3{
+  margin:0;padding:10px 12px 6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:600;
+}
+.pal-group{border-bottom:1px solid var(--rule-soft)}
+.dev{
+  display:flex;align-items:center;gap:8px;width:100%;padding:6px 12px;border:0;background:none;
+  cursor:grab;text-align:left;font-size:12.5px;
+}
+.dev:hover{background:#F0F3EF}
+.dev:focus-visible{outline:2px solid var(--mark);outline-offset:-2px}
+.dev .sw{width:4px;height:16px;border-radius:1px;flex:0 0 4px}
+.dev .px{
+  font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-left:auto;
+  letter-spacing:.04em;
+}
+
+/* ---------- canvas ---------- */
+.stage{flex:1;position:relative;min-width:0;background:var(--paper);overflow:hidden}
+#sheet{width:100%;height:100%;display:block;cursor:default;touch-action:none}
+#sheet.panning{cursor:grabbing}
+.corner{position:absolute;width:14px;height:14px;border:0 solid var(--rule);pointer-events:none}
+.c-tl{top:10px;left:10px;border-top-width:1.5px;border-left-width:1.5px}
+.c-tr{top:10px;right:10px;border-top-width:1.5px;border-right-width:1.5px}
+.c-bl{bottom:10px;left:10px;border-bottom-width:1.5px;border-left-width:1.5px}
+.c-br{bottom:10px;right:10px;border-bottom-width:1.5px;border-right-width:1.5px}
+.stamp{
+  position:absolute;right:10px;bottom:10px;background:rgba(255,255,255,.94);
+  border:1px solid var(--ink);padding:7px 10px;pointer-events:auto;cursor:pointer;
+  font-family:var(--mono);font-size:10px;line-height:1.5;max-width:280px;
+}
+.stamp:hover{border-color:var(--blue)}
+.stamp b{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;display:block}
+.stamp em{font-style:normal;color:var(--ink-soft)}
+.empty{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;pointer-events:none;color:var(--ink-soft);text-align:center;padding:20px;
+}
+.empty strong{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.empty code{font-family:var(--mono);font-size:11px;background:#E9EDE8;padding:1px 5px}
+
+/* ---------- inspector ---------- */
+.insp{
+  width:290px;flex:0 0 290px;background:var(--panel);border-left:1px solid var(--rule);
+  display:flex;flex-direction:column;min-height:0;
+}
+.tabs{display:flex;border-bottom:1px solid var(--rule);flex:0 0 auto}
+.tab{
+  flex:1;padding:10px 4px;border:0;background:none;cursor:pointer;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);border-bottom:2px solid transparent;
+}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--mark);font-weight:600}
+.tabbody{overflow-y:auto;padding:12px;flex:1}
+.fld{margin-bottom:10px}
+.fld label{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px}
+.fld input,.fld select,.fld textarea{
+  width:100%;padding:6px 7px;border:1px solid var(--rule);border-radius:2px;background:#FCFDFB;
+  font-family:var(--mono);font-size:12px;
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--blue);background:#fff}
+.fld textarea{resize:vertical;min-height:52px;line-height:1.45}
+.row2{display:flex;gap:8px}
+.row2>*{flex:1;min-width:0}
+.mini{
+  background:#F3F5F1;border:1px solid var(--rule);padding:5px 8px;border-radius:2px;cursor:pointer;
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+}
+.mini:hover{border-color:var(--ink)}
+.mini.danger:hover{border-color:var(--red);color:var(--red)}
+.hint{font-size:11.5px;color:var(--ink-soft);line-height:1.5}
+.unit{border:1px solid var(--rule);border-left:3px solid var(--blue);border-radius:2px;padding:6px 7px;margin-bottom:6px;background:#FBFCFA}
+.unit-h{font-family:var(--mono);font-size:11px;font-weight:600;margin-bottom:5px;letter-spacing:.04em}
+.imgprev{width:100%;border:1px solid var(--rule);border-radius:2px;margin-bottom:8px;display:block;max-height:150px;object-fit:cover}
+.numrow{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--rule-soft)}
+.numrow span{flex:1;font-size:11.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.numrow select{width:150px;padding:4px 6px;border:1px solid var(--rule);border-radius:2px;font-size:11px;background:#FCFDFB}
+.revrow{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--rule-soft)}
+.revrow span{flex:1;min-width:0}
+.revrow b{display:block;font-size:11.5px}
+.revrow em{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--ink-soft)}
+.revrow .mini{padding:3px 7px;font-size:10px}
+.phrow{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--rule-soft);cursor:pointer}
+.phrow input{margin-top:2px;flex:0 0 auto}
+.phrow span{min-width:0}
+.phrow b{display:block;font-size:11.5px;font-weight:600}
+.phrow em{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.alignpad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
+.alignpad .mini{padding:6px 3px;font-size:10px}
+.doorkit{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:4px}
+.doorkit .mini{padding:5px 4px;font-size:10px}
+.unit-h .xbtn{float:right;border:0;background:none;color:var(--ink-soft);cursor:pointer;font-size:14px;line-height:1;padding:0 2px}
+.unit-h .xbtn:hover{color:var(--red)}
+.unit-l{display:block;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px}
+.unit input{width:100%;padding:4px 6px;margin-bottom:4px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:11px;background:#fff}
+.unit input:last-child{margin-bottom:0}
+.unit input:focus{outline:none;border-color:var(--blue)}
+.tagchip{
+  display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;
+  border:1px solid currentColor;border-radius:999px;padding:2px 11px;margin-bottom:10px;
+}
+.lgd{display:flex;align-items:center;gap:8px;font-size:11.5px;padding:3px 0}
+.lgd i{display:block;width:26px;height:0;border-top-width:2px;border-top-style:solid;flex:0 0 26px}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}
+.tbl th{
+  text-align:left;font-family:var(--sans);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);border-bottom:1px solid var(--ink);padding:4px 5px;font-weight:600;
+}
+.tbl td{padding:4px 5px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tbl tr:hover td{background:#F4F6F2;cursor:pointer}
+.tbl tr.accrow td{color:var(--ink-soft);font-size:10px}
+.tbl tr.accrow td:first-child{text-align:right;padding-right:6px}
+.sec{margin:16px 0 6px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid var(--rule);padding-bottom:4px}
+.ovl{position:fixed;inset:0;background:rgba(18,34,44,.55);display:none;align-items:center;justify-content:center;z-index:60;padding:24px}
+.ovl.on{display:flex}
+.mcard{background:var(--panel);width:640px;max-width:100%;max-height:80vh;display:flex;flex-direction:column;border-radius:3px;box-shadow:0 18px 50px rgba(18,34,44,.35)}
+.mhead{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--rule)}
+.mhead b{font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+.mhead input{flex:1;padding:6px 9px;border:1px solid var(--rule);border-radius:2px;font-family:var(--mono);font-size:12px;background:#FCFDFB}
+.mhead input:focus{outline:none;border-color:var(--blue)}
+.xbtn{border:0;background:none;color:var(--ink-soft);cursor:pointer;font-size:20px;line-height:1;padding:0 2px}
+.xbtn:hover{color:var(--red)}
+.mlist{overflow-y:auto;flex:1;min-height:120px}
+.prow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--rule-soft)}
+.prow:hover{background:#F4F6F2}
+.prow.cur{background:#FFFBEC;border-left:3px solid var(--mark);padding-left:11px}
+.pname{flex:1;min-width:0;cursor:pointer}
+.pname b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pname span{font-family:var(--mono);font-size:10px;color:var(--ink-soft)}
+.pacts{display:flex;gap:4px;flex-shrink:0}
+.pacts button{border:1px solid var(--rule);background:#fff;border-radius:2px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;cursor:pointer}
+.pacts button:hover{border-color:var(--ink)}
+.pacts button.danger:hover{border-color:var(--red);color:var(--red)}
+.mfoot{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--rule);font-size:11px;color:var(--ink-soft)}
+.insp.wide{width:560px;flex:0 0 560px}
+.rkwrap{display:flex;gap:16px;align-items:flex-start}
+.rkcol{flex:0 0 268px}
+.rkside{flex:1;min-width:0}
+.rk{position:relative;margin-left:22px;border:1.5px solid var(--ink);background:#FBFCFA;border-radius:2px;touch-action:none}
+.rk-u{position:absolute;left:0;right:0;border-top:1px solid var(--rule-soft);pointer-events:none}
+.rk-u i{position:absolute;left:-22px;top:1px;font-family:var(--mono);font-size:8px;font-style:normal;color:#9AA3A0;width:18px;text-align:right}
+.rk-item{position:absolute;left:2px;right:2px;display:flex;align-items:center;gap:6px;padding:0 5px 0 0;
+  border:1px solid;border-radius:2px;cursor:grab;font-family:var(--mono);font-size:10px;overflow:hidden;user-select:none}
+.rk-item b{width:4px;align-self:stretch;flex:0 0 4px}
+.rk-item span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:4px}
+.rk-item em{font-style:normal;font-size:8.5px;color:var(--ink-soft)}
+.rk-item.sel{outline:2px solid var(--mark);outline-offset:-1px;z-index:2}
+.rk-item.drag{cursor:grabbing;opacity:.9;z-index:3}
+.rkparts{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.rkpart{display:flex;align-items:center;gap:6px;padding:5px 7px;border:1px solid var(--rule);background:#fff;
+  border-radius:2px;cursor:grab;font-size:11px;text-align:left}
+.rkpart:hover{border-color:var(--ink)}
+.rkpart i{width:4px;height:13px;border-radius:1px;flex:0 0 4px}
+.rkpart em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:9px;color:var(--ink-soft)}
+.pgridwrap{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px;padding:10px 14px}
+.prow2{display:flex;align-items:center;gap:6px}
+.prow2>span{font-family:var(--mono);font-size:10px;color:var(--ink-soft);width:26px;flex:0 0 26px;text-align:right}
+.prow2 input{flex:1;min-width:0;padding:3px 6px;border:1px solid var(--rule-soft);border-radius:2px;font-family:var(--mono);font-size:11px;background:#FCFDFB}
+.prow2 input:focus{outline:none;border-color:var(--blue);background:#fff}
+.prow2.sfp>span{color:var(--bronze)}
+.pwarn{display:block;color:var(--red);font-size:11px;margin-top:2px}
+.mempty{padding:26px 14px;text-align:center;color:var(--ink-soft);font-size:12px}
+.savestate{font-family:var(--mono);font-size:10px;color:rgba(237,240,236,.7);white-space:nowrap}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;
+  padding:8px 16px;border-radius:2px;font-size:12px;letter-spacing:.06em;opacity:0;pointer-events:none;
+  transition:opacity .2s;z-index:50;
+}
+.toast.on{opacity:1}
+
+/* ---------- svg bits ---------- */
+.node{cursor:move}
+.node text{user-select:none}
+.node.dim{opacity:.18}
+.anchor{fill:#fff;stroke:var(--blue);stroke-width:1.4;opacity:0;cursor:crosshair;pointer-events:none}
+.node:hover .anchor,.node.sel .anchor{opacity:1;pointer-events:all}
+.link{fill:none}
+.link-hit{fill:none;stroke:transparent;stroke-width:14;cursor:move}
+.grp text{user-select:none}
+.grp-bar,.grp-edge{cursor:move}
+.grp-size{cursor:nwse-resize}
+.grp:hover .anchor,.grp.sel .anchor{opacity:1;pointer-events:all}
+
+/* ---------- print ---------- */
+#printRoot{display:none}
+@media print{
+  @page{size:letter landscape;margin:0}
+  html,body{height:auto;overflow:visible;background:#fff}
+  .app,.toast{display:none !important}
+  #printRoot{display:block}
+  .psheet{page-break-after:always;break-after:page;padding:.34in;box-sizing:border-box}
+  .psheet:last-child{page-break-after:auto;break-after:auto}
+}
+.pframe{border:1.5px solid #12222C;padding:10px;display:flex;flex-direction:column;height:7.3in;overflow:hidden}
+.pframe.flow{height:auto;min-height:7.3in;overflow:visible}
+.pcover{padding:0}
+.cimg{width:100%;height:3.5in;object-fit:cover;display:block;border-bottom:1.5px solid #12222C}
+.cimg-blank{background:repeating-linear-gradient(45deg,#EEF1EC,#EEF1EC 12px,#E4E9E3 12px,#E4E9E3 24px)}
+.cbody{padding:20px 26px 16px;display:flex;flex-direction:column;flex:1;min-height:0}
+.ckicker{font-family:var(--sans);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#5A6A73;margin-bottom:10px}
+.ctitle{font-family:var(--sans);font-size:30px;font-weight:700;letter-spacing:.02em;line-height:1.06}
+.csub{font-family:var(--sans);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#5A6A73;margin-top:7px}
+.csum{font-family:var(--sans);font-size:11.5px;line-height:1.55;margin:16px 0 0;max-width:6.6in}
+.cmeta{display:flex;border-top:1.2px solid #12222C;padding-top:8px;font-family:var(--mono);font-size:9.5px;gap:26px}
+.cmeta .k{display:block;font-family:var(--sans);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:#5A6A73}
+.pmap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pmap img{max-width:100%;max-height:100%;object-fit:contain}
+.mapnote{font-family:var(--mono);font-size:10px;color:#5A6A73}
+.plink{margin-top:8px;font-family:var(--mono);font-size:9.5px;word-break:break-all}
+.plink a{color:#1B4F72}
+.rackwrap{display:flex;gap:18px;align-items:flex-start}
+.rackelev{width:2.9in;flex:0 0 2.9in}
+.rackbom{flex:1}
+.portblk{margin-bottom:10px;break-inside:avoid}
+.portname{font-family:var(--sans);font-size:9px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid #12222C;padding-bottom:3px;margin-bottom:4px}
+.portcols{display:flex;gap:16px}
+.ptable.ports{--rowfs:7.6px;--rowpad:1.6px 4px}
+.ptable.ports .pn{color:#5A6A73;width:34px}
+.portsec{margin-top:6px}
+.pfoot{display:flex;align-items:flex-end;gap:16px}
+.pfoot>span{flex:1}
+.pbrand{display:flex;align-items:center;gap:7px;text-align:right}
+.pbrand img{height:24px;width:auto;max-width:1.1in;object-fit:contain}
+.pbtext{font-family:var(--mono);font-size:8px;line-height:1.35;color:#12222C}
+.pbtext b{display:block;font-family:var(--sans);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+.pbtext span{display:block;color:#5A6A73}
+.ptb .tbbrand{padding:3px 8px;display:flex;align-items:center}
+.cmeta .pbrand img{height:34px;max-width:1.5in}
+.ptable thead{display:table-header-group}
+.ptable tr{break-inside:avoid;page-break-inside:avoid}
+.plist{flex:1;min-height:0;overflow:hidden}
+.pfoot{margin-top:8px;font-family:var(--mono);font-size:8.5px;color:#5A6A73;border-top:1px solid #C9D2CD;padding-top:5px}
+.pdraw{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pdraw svg{width:100%;height:100%}
+.ptb{display:flex;border:1.2px solid #12222C;margin-top:8px;font-family:var(--mono);font-size:9px}
+.ptb div{padding:4px 8px;border-right:1px solid #12222C}
+.ptb div:last-child{border-right:0}
+.ptb .k{font-family:var(--sans);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:#5A6A73;display:block}
+.ptb .wide{flex:1}
+.ptitle{font-family:var(--sans);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.plegend{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:8.5px;margin-bottom:6px;align-items:center}
+.plegend span{display:flex;align-items:center;gap:5px}
+.plegend i{display:block;width:22px;border-top-width:2px;border-top-style:solid}
+.ptable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:var(--rowfs,8.5px);table-layout:fixed}
+.ptable td{word-break:break-word}
+.ptable tr.acc td{color:#5A6A73;border-bottom-style:dotted}
+.ptable tr.acc td:first-child{text-align:right;padding-right:8px}
+.ptable tr.acc td:nth-child(3){padding-left:10px}
+.ptable col.c-tag{width:9%} .ptable col.c-lab{width:12%} .ptable col.c-typ{width:11%}
+.ptable col.c-qty{width:4%}  .ptable col.c-mod{width:15%} .ptable col.c-loc{width:11%}
+.ptable col.c-ip{width:9%}   .ptable col.c-frm{width:9%}  .ptable col.c-not{width:20%}
+.ptable th{font-family:var(--sans);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;text-align:left;border-bottom:1.2px solid #12222C;padding:3px 5px}
+.ptable td{padding:var(--rowpad,3px 5px);border-bottom:.5px solid #C9D2CD}
+.phead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;border-bottom:1.5px solid #12222C;padding-bottom:5px}
+</style>
+
+<div class="app">
+  <header class="bar">
+    <div class="brand">Riser <span>/</span> Builder<i id="ver"></i></div>
+    <input id="projName" class="bar-title" placeholder="Untitled project" aria-label="Project name">
+    <button class="btn" id="btnUndo" title="Undo, Ctrl+Z">Undo</button>
+    <button class="btn" id="btnArrange" title="Lay out by tier, then nudge by hand">Auto arrange</button>
+    <button class="btn" id="btnFit">Fit</button>
+    <input id="findBox" class="bar-find" placeholder="Find" aria-label="Find a device">
+    <div class="zoomctl">
+      <button id="zOut" aria-label="Zoom out">&minus;</button>
+      <span id="zVal">100%</span>
+      <button id="zIn" aria-label="Zoom in">+</button>
+    </div>
+    <div class="grow"></div>
+    <span class="savestate" id="saveState"></span>
+    <button class="btn" id="btnOpen">Projects</button>
+    <button class="btn" id="btnSave">Save</button>
+    <button class="btn" id="btnExport">Export file</button>
+    <button class="btn" id="btnImport">Import</button>
+    <button class="btn solid" id="btnPrint">Print to PDF</button>
+  </header>
+
+  <div class="main">
+    <nav class="pal" id="pal" aria-label="Device library"></nav>
+
+    <div class="stage" id="stage">
+      <svg id="sheet"></svg>
+      <div class="corner c-tl"></div><div class="corner c-tr"></div>
+      <div class="corner c-bl"></div><div class="corner c-br"></div>
+      <div class="empty" id="empty">
+        <strong>Empty sheet</strong>
+        <div>Click a device on the left to drop it here.</div>
+        <div>Drag a node to move it. Drag from the blue dot on its edge to another node to run a cable.</div>
+      </div>
+      <div class="stamp" id="stamp" title="Edit sheet details"></div>
+    </div>
+
+    <aside class="insp">
+      <div class="tabs" role="tablist">
+        <button class="tab" id="tabDevice" role="tab" aria-selected="true">Item</button>
+        <button class="tab" id="tabSheet" role="tab" aria-selected="false">Sheet</button>
+        <button class="tab" id="tabRack" role="tab" aria-selected="false">Rack</button>
+        <button class="tab" id="tabCover" role="tab" aria-selected="false">Cover</button>
+        <button class="tab" id="tabSched" role="tab" aria-selected="false">List</button>
+      </div>
+      <div class="tabbody" id="tabbody"></div>
+    </aside>
+  </div>
+</div>
+
+<div class="ovl" id="ovl">
+  <div class="mcard">
+    <div class="mhead">
+      <b>Projects</b>
+      <input id="msearch" placeholder="Search name or client" aria-label="Search projects">
+      <button class="xbtn" id="mclose" aria-label="Close">&times;</button>
+    </div>
+    <div class="mlist" id="mlist"></div>
+    <div class="mfoot">
+      <span id="mcount"></span>
+      <span style="flex:1"></span>
+      <button class="mini" id="mnew">New project</button>
+      <button class="mini" id="mcopy">Save current as copy</button>
+    </div>
+  </div>
+</div>
+<div class="ovl" id="povl">
+  <div class="mcard">
+    <div class="mhead"><b id="ptitle">Ports</b>
+      <span style="flex:1"></span>
+      <button class="mini" id="pauto">Fill from drawing</button>
+      <button class="mini" id="prefresh">Top up</button>
+      <button class="mini" id="pclear">Clear</button>
+      <button class="xbtn" id="pclose" aria-label="Close">&times;</button>
+    </div>
+    <div class="mlist" id="pgrid"></div>
+    <div class="mfoot"><span id="pnote"></span></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div id="printRoot"></div>
+<input type="file" id="fileIn" accept="application/json" style="display:none">
+<input type="file" id="imgIn" accept="image/*" style="display:none">
+
+<script>
+/* =========================================================
+   Device library
+   ========================================================= */
+const FAM = {
+  infra:{label:'Infrastructure', color:'#12222C'},
+  net:  {label:'Network',        color:'#1B4F72'},
+  cam:  {label:'Video and audio', color:'#0F766E'},
+  acs:  {label:'Access control', color:'#8A5A00'},
+  alarm:{label:'Alarm',          color:'#A32B2B'},
+  power:{label:'Power',          color:'#55606B'},
+  av:   {label:'Audio video',    color:'#8E2F63'},
+  other:{label:'Other',          color:'#5B3E7A'}
+};
+
+const DEV = [
+  {k:'mdf',   n:'MDF',              p:'MDF', f:'infra', g:'rack'},
+  {k:'idf',   n:'IDF',              p:'IDF', f:'infra', g:'rack'},
+  {k:'rack',  n:'Rack / cabinet',   p:'RK',  f:'infra', g:'rack'},
+  {k:'pp',    n:'Patch panel',      p:'PP',  f:'infra', g:'panel'},
+  {k:'fe',    n:'Fiber enclosure',  p:'FE',  f:'infra', g:'panel'},
+  {k:'dm',    n:'Demarc / ISP',     p:'DM',  f:'infra', g:'cloud'},
+
+  {k:'fw',    n:'Firewall / router',p:'FW',  f:'net',   g:'shield'},
+  {k:'gw',    n:'Gateway / modem',  p:'GW',  f:'net',   g:'cloud'},
+  {k:'csw',   n:'Core switch',      p:'CSW', f:'net',   g:'switch'},
+  {k:'psw',   n:'PoE switch',       p:'PSW', f:'net',   g:'switch'},
+  {k:'sw',    n:'Switch',           p:'SW',  f:'net',   g:'switch'},
+  {k:'ap',    n:'Wireless AP',      p:'AP',  f:'net',   g:'wifi'},
+  {k:'srv',   n:'Server',           p:'SRV', f:'net',   g:'server'},
+  {k:'wap',   n:'Wireless bridge',  p:'WB',  f:'net',   g:'wifi'},
+  {k:'drop',  n:'Data drop',        p:'D',   f:'net',   g:'panel'},
+
+  {k:'nvr',   n:'NVR / recorder',   p:'NVR', f:'cam',   g:'server'},
+  {k:'cam',   n:'Camera',           p:'C',   f:'cam',   g:'camera'},
+  {k:'ptz',   n:'PTZ camera',       p:'PTZ', f:'cam',   g:'camera'},
+  {k:'mon',   n:'Monitor',          p:'MON', f:'cam',   g:'monitor'},
+  {k:'int',   n:'Intercom',         p:'INT', f:'cam',   g:'speaker'},
+  {k:'spk',   n:'Speaker',          p:'S',   f:'cam',   g:'speaker'},
+  {k:'ispk',  n:'Intercom speaker',  p:'IS',  f:'cam',   g:'speaker'},
+  {k:'amp',   n:'Amplifier',        p:'AMP', f:'cam',   g:'server'},
+
+  {k:'acp',   n:'Access panel',     p:'ACP', f:'acs',   g:'panel'},
+  {k:'rdr',   n:'Card reader',      p:'RD',  f:'acs',   g:'reader'},
+  {k:'door',  n:'Door',             p:'DR',  f:'acs',   g:'door'},
+  {k:'strike',n:'Strike / mag lock', p:'ES',  f:'acs',   g:'door'},
+  {k:'rex',   n:'REX motion',       p:'RX',  f:'acs',   g:'motion'},
+  {k:'push',  n:'Push to exit',     p:'PB',  f:'acs',   g:'reader'},
+
+  {k:'alm',   n:'Alarm panel',      p:'ALM', f:'alarm', g:'panel'},
+  {k:'kp',    n:'Keypad',           p:'KP',  f:'alarm', g:'keypad'},
+  {k:'md',    n:'Motion detector',  p:'MD',  f:'alarm', g:'motion'},
+  {k:'dc',    n:'Door contact',     p:'DC',  f:'alarm', g:'contact'},
+  {k:'gb',    n:'Glass break',      p:'GB',  f:'alarm', g:'contact'},
+  {k:'sir',   n:'Siren / strobe',   p:'SIR', f:'alarm', g:'bell'},
+
+  {k:'ups',   n:'UPS',              p:'UPS', f:'power', g:'battery'},
+  {k:'pdu',   n:'PDU / power strip', p:'PDU', f:'power', g:'battery'},
+  {k:'ps',    n:'Power supply',     p:'PS',  f:'power', g:'battery'},
+
+  {k:'enc',   n:'Encoder',          p:'ENC', f:'av',    g:'server'},
+  {k:'vsw',   n:'Switcher / board',  p:'VSW', f:'av',    g:'mixer'},
+  {k:'ctl',   n:'Control station',   p:'CTL', f:'av',    g:'monitor'},
+  {k:'mix',   n:'Audio mixer',       p:'MIX', f:'av',    g:'mixer'},
+  {k:'mic',   n:'Microphone',        p:'MIC', f:'av',    g:'mic'},
+  {k:'prj',   n:'Projector / TV',    p:'PRJ', f:'av',    g:'projector'},
+  {k:'cvt',   n:'Signal converter',  p:'CVT', f:'av',    g:'panel'},
+
+  {k:'custom',n:'Custom device',    p:'X',   f:'other', g:'box'}
+];
+const DEVBY = Object.fromEntries(DEV.map(d=>[d.k,d]));
+
+const MEDIA = {
+  cat6:   {label:'Cat6',       color:'#1B4F72', dash:'',      w:1.6},
+  cat6a:  {label:'Cat6A',      color:'#1B4F72', dash:'',      w:2.2},
+  cat5e:  {label:'Cat5e',      color:'#5B7C99', dash:'',      w:1.4},
+  smf:    {label:'Fiber SM',   color:'#C08A00', dash:'',      w:2.4},
+  mmf:    {label:'Fiber MM',   color:'#C08A00', dash:'7 4',   w:2.4},
+  coax:   {label:'Coax RG59',  color:'#55606B', dash:'',      w:1.6},
+  s182:   {label:'18/2',       color:'#A32B2B', dash:'5 3',   w:1.5},
+  s224:   {label:'22/4',       color:'#A32B2B', dash:'2 3',   w:1.5},
+  comp:   {label:'Composite',  color:'#7A3E8A', dash:'',      w:2},
+  rf:     {label:'Wireless',   color:'#0F766E', dash:'1 4',   w:1.8},
+  sdi:    {label:'SDI coax',   color:'#8E2F63', dash:'',      w:2},
+  hdmi:   {label:'HDMI',       color:'#8E2F63', dash:'6 3',   w:2},
+  xlr:    {label:'XLR audio',  color:'#5B3E7A', dash:'3 3',   w:1.6},
+  pwr:    {label:'Power',      color:'#12222C', dash:'8 3 2 3', w:1.4}
+};
+
+const W = 178, H = 54, GRID = 10;
+const GW = 300, GH = 190;
+const MONO = "'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace";
+const SANS = "'Archivo Narrow',Inter,-apple-system,'Segoe UI',sans-serif";
+
+/* =========================================================
+   State
+   ========================================================= */
+const blank = () => ({
+  id: uid(),
+  meta:{
+    project:'', client:'', site:'', drawnBy:'Bridge Cable',
+    date: today(), rev:'A', sheet:'Low voltage riser diagram', notes:'',
+    version:'1.0', summary:'', coverImg:'', mapImg:'', mapLink:'', mapCaption:''
+  },
+  nodes:[], links:[], groups:[],
+  settings:{ tagStyle:'plain', snap:true, pad:2, cableSheet:false, deliverable:'full', route:'step' },
+  view:{x:60,y:60,k:1}
+});
+let brand = { name:'Bridge Cable', site:'', phone:'', logo:'' };
+let S = blank();
+let sel = null;
+let multi = [];               // node ids when more than one is picked
+let findQ = '', findIdx = 0;
+function findMatches(){
+  const t=findQ.trim().toLowerCase();
+  if(!t) return [];
+  return S.nodes.filter(n=>[n.tag,n.name,n.model,n.room,n.ip,DEVBY[n.type].n]
+    .some(v=>String(v||'').toLowerCase().includes(t)));
+}
+function findHit(n){
+  const t=findQ.trim().toLowerCase();
+  if(!t) return true;
+  return [n.tag,n.name,n.model,n.room,n.ip,DEVBY[n.type].n]
+    .some(v=>String(v||'').toLowerCase().includes(t));
+}
+function centreOn(n){
+  const r=svg.getBoundingClientRect();
+  view.x = r.width/2 - (n.x+W/2)*view.k;
+  view.y = r.height/2 - (n.y+H/2)*view.k;
+  applyView();
+}              // {kind:'node'|'link', id}
+let view = S.view;
+let dirty = false;
+
+function uid(){ return Math.random().toString(36).slice(2,10) }
+function today(){
+  const d=new Date();
+  return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
+
+/* tag formatting: C01 / C-01 / C(01) */
+function fmtTag(prefix, num){
+  const n = String(num).padStart(S.settings.pad, '0');
+  const st = S.settings.tagStyle;
+  if(st==='dash') return prefix+'-'+n;
+  if(st==='paren') return prefix+'('+n+')';
+  return prefix+n;
+}
+/* Infrastructure reads as MDF, IDF1, RK2. Field devices read as C01 / C-01 / C(01). */
+function tagFor(d, i){
+  if(d.f==='infra'){
+    const single = (d.k==='mdf' || d.k==='dm');
+    return single && i===1 ? d.p : d.p + i;
+  }
+  return fmtTag(d.p, i);
+}
+/* Drops and panels belong to a closet, so they restart there. Devices run site wide. */
+const DEFAULT_NUMBERING = { drop:'restart', pp:'restart', fe:'restart' };
+function numMode(k){
+  const set=(S.settings.numbering||{})[k];
+  return set || DEFAULT_NUMBERING[k] || 'continuous';
+}
+/* Restart tags are derived from the drawing, so they follow when a device is re-homed. */
+function syncAutoTags(){
+  clearLocCache();
+  const byType={};
+  for(const n of S.nodes){
+    if(n.tagLock) continue;
+    if(numMode(n.type)!=='restart') continue;
+    (byType[n.type]=byType[n.type]||[]).push(n);
+  }
+  for(const [k,list] of Object.entries(byType)){
+    const d=DEVBY[k], groups={};
+    for(const n of list){
+      const loc=locCode(n)||'';
+      (groups[loc]=groups[loc]||[]).push(n);
+    }
+    for(const [loc,g] of Object.entries(groups)){
+      g.sort((a,b)=>(a.y-b.y)||(a.x-b.x));
+      let i=1;
+      for(const n of g){
+        n.tag = (loc? loc+'-' : '') + fmtTag(d.p, i);
+        i += qtyOf(n);
+      }
+    }
+  }
+}
+
+function nextTagAfter(d, pending){
+  const used=new Set([...S.nodes, ...pending].map(n=>n.tag));
+  let i=[...S.nodes, ...pending].filter(n=>n.type===d.k).reduce((a,n)=>a+qtyOf(n),0)+1;
+  while(used.has(tagFor(d,i))) i++;
+  return tagFor(d,i);
+}
+function nextTag(d){
+  const used = new Set(S.nodes.map(n=>n.tag));
+  let i = S.nodes.filter(n=>n.type===d.k).reduce((a,n)=>a+qtyOf(n),0) + 1;
+  while(used.has(tagFor(d,i))) i++;
+  return tagFor(d,i);
+}
+function qtyOf(n){ return Math.max(1, parseInt(n && n.qty || 1, 10) || 1) }
+/* Six cameras means six runs. Change the count and the run follows, unless you typed one. */
+function linkQty(l){
+  if(l.qtyLock) return Math.max(1, parseInt(l.qty||1,10)||1);
+  const a=ent(l.from), b=ent(l.to);
+  return Math.max(1, Math.max(a?qtyOf(a):1, b?qtyOf(b):1));
+}
+/* AP01 with a count of 7 covers AP01 through AP07 */
+function tagEnd(n){
+  const q=qtyOf(n); if(q<2) return n.tag;
+  const m=/^(.*?)(\d+)(\D*)$/.exec(n.tag||'');
+  if(!m) return n.tag;
+  return m[1] + String(parseInt(m[2],10)+q-1).padStart(m[2].length,'0') + m[3];
+}
+function tagLabel(n){ return qtyOf(n)>1 ? n.tag+' to '+tagEnd(n) : (n.tag||'') }
+
+/* Each physical device in a counted box gets its own row you can write into. */
+function unitTagAt(n,i){
+  const m=/^(.*?)(\d+)(\D*)$/.exec(n.tag||'');
+  if(!m) return (n.tag||'') + (i? '.'+(i+1) : '');
+  return m[1] + String(parseInt(m[2],10)+i).padStart(m[2].length,'0') + m[3];
+}
+/* M for the MDF, I03 for IDF 3, R02 for a standalone rack. */
+function codeOfNode(o){
+  if(!o || o.w) return '';
+  const num=(/(\d+)/.exec(o.tag||'')||[])[1] || '1';
+  if(o.type==='mdf')  return 'M';
+  if(o.type==='idf')  return 'I'+String(num).padStart(2,'0');
+  if(o.type==='rack') return 'R'+String(num).padStart(2,'0');
+  return '';
+}
+const locCache=new Map();
+function clearLocCache(){ locCache.clear(); adjCache=null; entCache=null }
+/* Follows the cabling upstream, through switches and boxes, to the closet it lands in. */
+function locCode(n){
+  if(locCache.has(n.id)) return locCache.get(n.id);
+  const v=locCodeRaw(n);
+  locCache.set(n.id, v);
+  return v;
+}
+/* Built once per pass. Without it every device rescans every cable. */
+let adjCache=null, entCache=null;
+function adj(){
+  if(adjCache) return adjCache;
+  const m=new Map();
+  const push=(a,b)=>{ if(!m.has(a)) m.set(a,[]); m.get(a).push(b) };
+  for(const l of S.links){ push(l.from,l.to); push(l.to,l.from) }
+  adjCache=m; return m;
+}
+function entFast(id){
+  if(!entCache){
+    entCache=new Map();
+    for(const n of S.nodes) entCache.set(n.id,n);
+    for(const g of S.groups) entCache.set(g.id,g);
+  }
+  return entCache.get(id);
+}
+function locCodeRaw(n){
+  const g=adj(), seen=new Set([n.id]);
+  let frontier=[n.id];
+  for(let depth=0; depth<7 && frontier.length; depth++){
+    const next=[];
+    for(const id of frontier){
+      for(const other of (g.get(id)||[])){
+        if(seen.has(other)) continue;
+        seen.add(other);
+        const o=entFast(other); if(!o) continue;
+        const code=codeOfNode(o);
+        if(code) return code;
+        next.push(other);
+      }
+    }
+    frontier=next;
+  }
+  return '';
+}
+function labelPrefix(n){ return String(n.unitPrefix||'').trim() || locCode(n) }
+function autoLabel(n, unitTag){
+  const p=labelPrefix(n);
+  return p ? p+'-'+unitTag : unitTag;
+}
+function suggestPrefix(n){ return labelPrefix(n) }
+function syncUnits(n){
+  const q=qtyOf(n);
+  n.units = (n.units||[]).slice(0,q);
+  while(n.units.length<q) n.units.push({label:'',model:'',note:''});
+  n.units.forEach((u,i)=>{ u.tag=unitTagAt(n,i) });
+  return n.units;
+}
+function accOf(n){ return (n.acc||[]).filter(a=>a && (a.name||a.model)) }
+function accQty(a){ return Math.max(1, parseInt(a.qty||1,10)||1) }
+
+/* Cameras and APs list one line each. Data drops stay one line with a count. */
+function expandsList(n){ return n.expand===undefined ? n.type!=='drop' : !!n.expand }
+function unitRows(n){
+  const d=DEVBY[n.type];
+  if(qtyOf(n)<2) return [{tag:n.tag, qty:1, label:n.label||autoLabel(n,n.tag), type:d.n,
+                          model:n.model||'', note:n.notes||''}];
+  if(!expandsList(n)) return [{tag:tagLabel(n), qty:qtyOf(n), label:n.label||locCode(n)||'',
+                               type:d.n, model:n.model||'', note:n.notes||''}];
+  return syncUnits(n).map(u=>({
+    tag:u.tag, qty:1, label:u.label||autoLabel(n,u.tag), type:d.n,
+    model:u.model||n.model||'', note:u.note||n.notes||''
+  }));
+}
+
+/* =========================================================
+   Racks: optional elevation and port assignment
+   ========================================================= */
+const RACKABLE = ['mdf','idf','rack'];
+const RU_PRESETS = [
+  {k:'pp48',  name:'Patch panel 48', h:2, ports:48, kind:'patch'},
+  {k:'pp24',  name:'Patch panel 24', h:1, ports:24, kind:'patch'},
+  {k:'fib',   name:'Fiber enclosure',h:1, ports:12, kind:'fiber'},
+  {k:'sw48',  name:'Switch 48 port', h:1, ports:48, sfp:4, kind:'switch'},
+  {k:'sw24',  name:'Switch 24 port', h:1, ports:24, sfp:2, kind:'switch'},
+  {k:'sw8',   name:'Switch 8 port',  h:1, ports:8,  sfp:2, kind:'switch'},
+  {k:'gear',  name:'Equipment',      h:1, ports:0,  kind:'gear'},
+  {k:'ups',   name:'Battery backup', h:2, ports:0,  kind:'ups'},
+  {k:'pdu',   name:'Power strip',    h:1, ports:0,  kind:'pdu'},
+  {k:'shelf', name:'Shelf',          h:1, ports:0,  kind:'shelf'},
+  {k:'blank', name:'Blank panel',    h:1, ports:0,  kind:'blank'},
+  {k:'mgr',   name:'Cable manager',  h:1, ports:0,  kind:'mgr'}
+];
+const RACK_FILL = {
+  patch:'#1B4F72', fiber:'#C08A00', switch:'#0F766E', gear:'#5B3E7A',
+  ups:'#55606B', pdu:'#55606B', shelf:'#8A8F8B', blank:'#B8BEB9', mgr:'#8A8F8B'
+};
+function isRack(n){ return n && RACKABLE.includes(n.type) }
+function rackOf(n){
+  if(!n.rack) n.rack={ ru:42, items:[] };
+  if(!Array.isArray(n.rack.items)) n.rack.items=[];
+  return n.rack;
+}
+function racksInUse(){ return S.nodes.filter(n=>isRack(n) && n.rack && n.rack.items.length) }
+function itemPorts(it){ return Math.max(0, parseInt(it.ports||0,10)||0) }
+/* Highest free U, counting from the top down. */
+function nextFreeU(r, h){
+  const taken=new Set();
+  r.items.forEach(i=>{ for(let u=i.u; u<i.u+(i.h||1); u++) taken.add(u) });
+  for(let top=r.ru; top>=h; top--){
+    let ok=true;
+    for(let u=top-h+1; u<=top; u++) if(taken.has(u)) ok=false;
+    if(ok) return top-h+1;
+  }
+  return 1;
+}
+function addRackItem(n, presetKey){
+  pushUndo();
+  const r=rackOf(n);
+  const pre=RU_PRESETS.find(p=>p.k===presetKey)||RU_PRESETS[0];
+  const it={ id:uid(), name:pre.name, model:'', ref:'', kind:pre.kind,
+             h:pre.h, ports:pre.ports||0, sfp:pre.sfp||0, u:1, assign:[] };
+  it.u=nextFreeU(r, it.h);
+  r.items.push(it);
+  return it;
+}
+
+/* =========================================================
+   SVG scaffolding
+   ========================================================= */
+const NS='http://www.w3.org/2000/svg';
+const svg = document.getElementById('sheet');
+const stage = document.getElementById('stage');
+svg.innerHTML = `
+  <defs>
+    <pattern id="gfine" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M10 0H0V10" fill="none" stroke="#E0E6E0" stroke-width=".5"/>
+    </pattern>
+    <pattern id="gbold" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#gfine)"/>
+      <path d="M100 0H0V100" fill="none" stroke="#D2DBD3" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect id="bg" x="0" y="0" width="100%" height="100%" fill="url(#gbold)"/>
+  <g id="root">
+    <g id="gGroups"></g>
+    <g id="gLinks"></g>
+    <g id="gNodes"></g>
+    <g id="gTemp"></g>
+  </g>`;
+const root=svg.querySelector('#root'), gGroups=svg.querySelector('#gGroups'),
+      gLinks=svg.querySelector('#gLinks'),
+      gNodes=svg.querySelector('#gNodes'), gTemp=svg.querySelector('#gTemp'),
+      bgRect=svg.querySelector('#bg');
+
+function applyView(){
+  root.setAttribute('transform',`translate(${view.x},${view.y}) scale(${view.k})`);
+  bgRect.setAttribute('fill', view.k>0.55 ? 'url(#gbold)' : 'none');
+  bgRect.setAttribute('x', 0); bgRect.setAttribute('y', 0);
+  const p = svg.querySelector('#gbold');
+  p.setAttribute('patternTransform',`translate(${view.x},${view.y}) scale(${view.k})`);
+  svg.querySelector('#gfine').setAttribute('patternTransform',`scale(1)`);
+  document.getElementById('zVal').textContent = Math.round(view.k*100)+'%';
+}
+function toWorld(cx,cy){
+  const r=svg.getBoundingClientRect();
+  return { x:(cx-r.left-view.x)/view.k, y:(cy-r.top-view.y)/view.k };
+}
+
+/* =========================================================
+   Glyphs
+   ========================================================= */
+function glyph(g,color){
+  const s=`stroke="${color}" fill="none" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"`;
+  switch(g){
+    case 'rack':    return `<rect x="3" y="2" width="14" height="16" rx="1" ${s}/><path d="M5 6h10M5 10h10M5 14h10" ${s}/>`;
+    case 'panel':   return `<rect x="2" y="5" width="16" height="10" rx="1" ${s}/><path d="M5 10h1M8 10h1M11 10h1M14 10h1" ${s}/>`;
+    case 'switch':  return `<rect x="2" y="6" width="16" height="8" rx="1" ${s}/><path d="M6 10h8M11 7.5l3 2.5-3 2.5" ${s}/>`;
+    case 'wifi':    return `<path d="M3 8a12 12 0 0 1 14 0M6 11.5a7 7 0 0 1 8 0" ${s}/><circle cx="10" cy="15" r="1.4" fill="${color}" stroke="none"/>`;
+    case 'camera':  return `<path d="M3 7h9l4-2v10l-4-2H3z" ${s}/><circle cx="7.5" cy="10" r="2.2" ${s}/>`;
+    case 'server':  return `<rect x="2" y="3" width="16" height="6" rx="1" ${s}/><rect x="2" y="11" width="16" height="6" rx="1" ${s}/><path d="M5 6h.01M5 14h.01" stroke="${color}" stroke-width="2" stroke-linecap="round"/>`;
+    case 'shield':  return `<path d="M10 2l6 2v6c0 4-3 6.5-6 8-3-1.5-6-4-6-8V4z" ${s}/>`;
+    case 'reader':  return `<rect x="5" y="2" width="10" height="16" rx="1.5" ${s}/><path d="M8 12a3 3 0 0 1 4 0" ${s}/><circle cx="10" cy="7" r="1.3" ${s}/>`;
+    case 'door':    return `<path d="M4 2h12v16H4z" ${s}/><path d="M7 2v16" ${s}/><circle cx="13" cy="10" r="1" fill="${color}" stroke="none"/>`;
+    case 'motion':  return `<path d="M10 3v6" ${s}/><path d="M4 14a6 6 0 0 1 12 0" ${s}/><path d="M6.5 8.5L4 6M13.5 8.5L16 6" ${s}/>`;
+    case 'keypad':  return `<rect x="4" y="2" width="12" height="16" rx="1.5" ${s}/><path d="M7 7h.01M10 7h.01M13 7h.01M7 11h.01M10 11h.01M13 11h.01M10 15h.01" stroke="${color}" stroke-width="2" stroke-linecap="round"/>`;
+    case 'contact': return `<rect x="2" y="7" width="6" height="6" rx="1" ${s}/><rect x="12" y="7" width="6" height="6" rx="1" ${s}/>`;
+    case 'bell':    return `<path d="M5 14V9a5 5 0 0 1 10 0v5h1H4z" ${s}/><path d="M8.5 16.5a1.8 1.8 0 0 0 3 0" ${s}/>`;
+    case 'battery': return `<rect x="2" y="6" width="14" height="8" rx="1" ${s}/><path d="M16 8.5v3h2v-3z" ${s}/><path d="M5 10h6" ${s}/>`;
+    case 'cloud':   return `<path d="M6 15a3.5 3.5 0 0 1 .5-7 4.5 4.5 0 0 1 8.6 1.3A3 3 0 0 1 14.5 15z" ${s}/>`;
+    case 'monitor': return `<rect x="2" y="4" width="16" height="10" rx="1" ${s}/><path d="M7 17h6M10 14v3" ${s}/>`;
+    case 'mixer':   return `<rect x="2" y="3" width="16" height="14" rx="1.5" ${s}/><path d="M6 6v8M10 6v8M14 6v8" ${s}/><circle cx="6" cy="12" r="1.3" fill="${color}" stroke="none"/><circle cx="10" cy="8" r="1.3" fill="${color}" stroke="none"/><circle cx="14" cy="13" r="1.3" fill="${color}" stroke="none"/>`;
+    case 'mic':     return `<rect x="7.5" y="2" width="5" height="9" rx="2.5" ${s}/><path d="M5 9.5a5 5 0 0 0 10 0M10 14.5v3.5M7 18h6" ${s}/>`;
+    case 'projector': return `<rect x="2" y="5" width="12" height="10" rx="1.5" ${s}/><circle cx="8" cy="10" r="3" ${s}/><path d="M15.5 8.5l2.5-1.5v6l-2.5-1.5" ${s}/>`;
+    case 'box':     return `<rect x="2.5" y="4" width="15" height="12" rx="1.5" ${s}/><path d="M2.5 8h15" ${s}/>`;
+    case 'speaker': return `<path d="M4 8h3l4-3v10l-4-3H4z" ${s}/><path d="M14 8a3 3 0 0 1 0 4" ${s}/>`;
+    default:        return `<rect x="3" y="3" width="14" height="14" rx="1" ${s}/>`;
+  }
+}
+
+/* =========================================================
+   Render
+   ========================================================= */
+function dims(e){ return {x:e.x, y:e.y, w:e.w||W, h:e.h||H} }
+function ent(id){ return S.nodes.find(n=>n.id===id) || S.groups.find(g=>g.id===id) }
+function nodeCenter(e){ const d=dims(e); return {x:d.x+d.w/2, y:d.y+d.h/2} }
+function childrenOf(g){
+  return S.nodes.filter(n=>{
+    const c=nodeCenter(n);
+    return c.x>=g.x && c.x<=g.x+g.w && c.y>=g.y && c.y<=g.y+g.h;
+  });
+}
+function groupOf(n){
+  const c=nodeCenter(n);
+  return S.groups.find(g=>c.x>=g.x&&c.x<=g.x+g.w&&c.y>=g.y&&c.y<=g.y+g.h);
+}
+
+function sidePoint(e, side, off){
+  const d=dims(e); off=off||0;
+  const cx=(v,lim)=>Math.max(-(lim/2-16), Math.min(lim/2-16, v));
+  switch(side){
+    case 'top':    return {x:d.x+d.w/2+cx(off,d.w), y:d.y,       v:true};
+    case 'bottom': return {x:d.x+d.w/2+cx(off,d.w), y:d.y+d.h,   v:true};
+    case 'left':   return {x:d.x,       y:d.y+d.h/2+cx(off,d.h), v:false};
+    default:       return {x:d.x+d.w,   y:d.y+d.h/2+cx(off,d.h), v:false};
+  }
+}
+function autoSides(a,b,route){
+  const A=nodeCenter(a), B=nodeCenter(b);
+  const dx=B.x-A.x, dy=B.y-A.y, vert=Math.abs(dy)>=Math.abs(dx);
+  /* When the second leg would be a stub, meet edge to edge instead. */
+  if(route==='hv') return [ dx>0?'right':'left',
+    Math.abs(dy) < dims(b).h ? (dx>0?'left':'right') : (dy>0?'top':'bottom') ];
+  if(route==='vh') return [ dy>0?'bottom':'top',
+    Math.abs(dx) < dims(b).w ? (dy>0?'top':'bottom') : (dx>0?'left':'right') ];
+  return vert ? [dy>0?'bottom':'top', dy>0?'top':'bottom']
+              : [dx>0?'right':'left', dx>0?'left':'right'];
+}
+function linkGeom(a,b,off,l){
+  off=off||0; l=l||{};
+  const route = l.route || S.settings.route || 'step';
+  const bend  = parseFloat(l.bend)||0;
+  const auto  = autoSides(a,b,route);
+  const P=sidePoint(a, l.fromSide||auto[0], off);
+  const Q=sidePoint(b, l.toSide  ||auto[1], off);
+
+  if(route==='straight')
+    return { d:`M${P.x},${P.y} L${Q.x},${Q.y}`, mid:{x:(P.x+Q.x)/2,y:(P.y+Q.y)/2}, axis:'y' };
+
+  if(P.v && Q.v){
+    const my=(P.y+Q.y)/2 + bend;
+    return { d:`M${P.x},${P.y} L${P.x},${my} L${Q.x},${my} L${Q.x},${Q.y}`,
+             mid:{x:(P.x+Q.x)/2,y:my}, axis:'y' };
+  }
+  if(!P.v && !Q.v){
+    const mx=(P.x+Q.x)/2 + bend;
+    return { d:`M${P.x},${P.y} L${mx},${P.y} L${mx},${Q.y} L${Q.x},${Q.y}`,
+             mid:{x:mx,y:(P.y+Q.y)/2}, axis:'x' };
+  }
+  if(P.v)
+    return { d:`M${P.x},${P.y} L${P.x},${Q.y} L${Q.x},${Q.y}`,
+             mid:{x:P.x,y:(P.y+Q.y)/2}, axis:'x' };
+  return { d:`M${P.x},${P.y} L${Q.x},${P.y} L${Q.x},${Q.y}`,
+           mid:{x:(P.x+Q.x)/2,y:P.y}, axis:'y' };
+}
+/* How far this run sits off centre when a pair carries more than one cable. */
+function linkOffsets(){
+  const bucket={}, out={};
+  for(const l of S.links){
+    const k=[l.from,l.to].sort().join('|');
+    (bucket[k]=bucket[k]||[]).push(l.id);
+  }
+  for(const ids of Object.values(bucket))
+    ids.forEach((id,i)=>{ out[id] = (i-(ids.length-1)/2)*15 });
+  return out;
+}
+
+function renderLinks(){
+  const offs=linkOffsets();
+  let out='';
+  for(const l of S.links){
+    const a=ent(l.from), b=ent(l.to); if(!a||!b) continue;
+    const m=MEDIA[l.media]||MEDIA.cat6;
+    const g=linkGeom(a,b,offs[l.id]||0,l);
+    const on = sel && sel.kind==='link' && sel.id===l.id;
+    const lq=linkQty(l);
+    const lbl = (lq>1? lq+'x ':'') + m.label + (l.label? ' '+l.label : '');
+    const tw = lbl.length*5.6+8;
+    out += `<g data-link="${l.id}">
+      ${on?`<path class="link" d="${g.d}" stroke="#FFD84D" stroke-width="${m.w+5}" stroke-linejoin="round"/>`:''}
+      <path class="link" d="${g.d}" stroke="${m.color}" stroke-width="${m.w}" ${m.dash?`stroke-dasharray="${m.dash}"`:''} stroke-linejoin="round"/>
+      <path class="link-hit" d="${g.d}"/>
+      <rect x="${g.mid.x-tw/2}" y="${g.mid.y-7}" width="${tw}" height="14" fill="#F4F5F1" stroke="${m.color}" stroke-width=".6" rx="1"/>
+      <text x="${g.mid.x}" y="${g.mid.y+3.6}" text-anchor="middle" font-family="${MONO}" font-size="9" fill="${m.color}">${esc(lbl)}</text>
+    </g>`;
+  }
+  gLinks.innerHTML = out;
+}
+
+function nodeMarkup(n){
+  const d=DEVBY[n.type]||DEV[0], c=FAM[d.f].color;
+  const on = (sel && sel.kind==='node' && sel.id===n.id) || multi.includes(n.id);
+  const hit = findHit(n);
+  const q = qtyOf(n);
+  const tag = n.tag||'';
+  const tagSize = tag.length>5 ? 8.5 : tag.length>4 ? 9.5 : 11;
+  const name = n.name || (n.type==='custom' ? '' : d.n);
+  const sub  = [n.room, n.model, n.ip].filter(Boolean).join('  \u00b7  ');
+  const isInfra = d.f==='infra';
+  const hasTag = !!(n.tag||'').trim();
+  const textX = hasTag ? 60 : 16;
+  const stack = q>1
+    ? `<rect x="7" y="7" width="${W}" height="${H}" rx="3" fill="#FFFFFF" stroke="${c}" stroke-width="1" opacity=".55"/>
+       <rect x="3.5" y="3.5" width="${W}" height="${H}" rx="3" fill="#FFFFFF" stroke="${c}" stroke-width="1" opacity=".8"/>` : '';
+  const badge = q>1
+    ? `<g transform="translate(${W-44},${H-21})">
+         <rect x="0" y="0" width="38" height="17" rx="8.5" fill="${c}"/>
+         <text x="19" y="12.4" text-anchor="middle" font-family="${MONO}" font-size="10" font-weight="600" fill="#FFFFFF">\u00d7${q}</text>
+       </g>` : '';
+  const rangeTxt = q>1 ? `<text x="${hasTag?60:16}" y="${H/2+12}" font-family="${MONO}" font-size="8.5" fill="${c}">${esc(tagLabel(n))}</text>` : '';
+  return `<g class="node ${on?'sel':''} ${hit?'':'dim'}" data-node="${n.id}" transform="translate(${n.x},${n.y})">
+    ${findQ.trim()&&hit?`<rect x="-6" y="-6" width="${W+12}" height="${H+12}" rx="5" fill="none" stroke="#1B4F72" stroke-width="2" stroke-dasharray="4 3"/>`:''}
+    ${on?`<rect x="-4" y="-4" width="${W+8}" height="${H+8}" rx="4" fill="none" stroke="#FFD84D" stroke-width="4"/>`:''}
+    ${stack}
+    <rect x="0" y="0" width="${W}" height="${H}" rx="3" fill="${isInfra?'#FBFCFA':'#FFFFFF'}" stroke="${c}" stroke-width="${isInfra?1.8:1.1}"/>
+    <path d="M3,0 h4 v${H} h-4 a3,3 0 0 1 -3,-3 v-${H-6} a3,3 0 0 1 3,-3 z" fill="${c}"/>
+    ${hasTag?`<ellipse cx="34" cy="${H/2}" rx="19" ry="14" fill="${c}14" stroke="${c}" stroke-width="1.2"/>
+    <text x="34" y="${H/2+3.8}" text-anchor="middle" font-family="${MONO}" font-weight="600" font-size="${tagSize}" fill="${c}">${esc(tag)}</text>`:''}
+    <g transform="translate(${W-26},${q>1?5:H/2-10})">${glyph(d.g,c)}</g>
+    ${badge}
+    <text x="${textX}" y="${(sub||q>1)? H/2-2 : H/2+4}" font-family="${SANS}" font-size="12" font-weight="600" fill="#12222C">${esc(clip(name,hasTag?(q>1?14:17):24))}</text>
+    ${q>1 ? rangeTxt : (sub?`<text x="${textX}" y="${H/2+12}" font-family="${MONO}" font-size="8.5" fill="#5A6A73">${esc(clip(sub,hasTag?22:30))}</text>`:'')}
+    <circle class="anchor" data-anchor="1" cx="${W/2}" cy="0" r="4.5"/>
+    <circle class="anchor" data-anchor="1" cx="${W/2}" cy="${H}" r="4.5"/>
+    <circle class="anchor" data-anchor="1" cx="0" cy="${H/2}" r="4.5"/>
+    <circle class="anchor" data-anchor="1" cx="${W}" cy="${H/2}" r="4.5"/>
+  </g>`;
+}
+function clip(s,n){ s=String(s); return s.length>n ? s.slice(0,n-1)+'\u2026' : s }
+
+function renderNodes(){ gNodes.innerHTML = S.nodes.map(nodeMarkup).join('') }
+
+function groupMarkup(g){
+  const on = sel && sel.kind==='group' && sel.id===g.id;
+  const c = g.color || FAM.acs.color;
+  const label = (g.label||'Box').toUpperCase();
+  const lw = Math.max(64, label.length*7.4+22);
+  return `<g class="grp ${on?'sel':''}" data-group="${g.id}" transform="translate(${g.x},${g.y})">
+    ${on?`<rect x="-4" y="-23" width="${g.w+8}" height="${g.h+27}" rx="7" fill="none" stroke="#FFD84D" stroke-width="4" pointer-events="none"/>`:''}
+    <rect x="0" y="0" width="${g.w}" height="${g.h}" rx="5" fill="${c}0A" stroke="${c}" stroke-width="1.4" stroke-dasharray="7 4" pointer-events="none"/>
+    <rect class="grp-edge" x="0" y="0" width="${g.w}" height="${g.h}" rx="5" fill="none" stroke="transparent" stroke-width="16" pointer-events="stroke"/>
+    <g class="grp-bar">
+      <rect x="0" y="-20" width="${lw}" height="20" rx="3" fill="${c}"/>
+      <text x="11" y="-6" font-family="${SANS}" font-size="11" font-weight="700" letter-spacing="1.3" fill="#FFFFFF">${esc(label)}</text>
+    </g>
+    <path class="grp-size" data-gsize="1" d="M${g.w-15},${g.h} L${g.w},${g.h} L${g.w},${g.h-15} Z" fill="${c}" opacity=".5"/>
+    <circle class="anchor" data-anchor="1" cx="${g.w/2}" cy="0" r="4.5"/>
+    <circle class="anchor" data-anchor="1" cx="${g.w/2}" cy="${g.h}" r="4.5"/>
+    <circle class="anchor" data-anchor="1" cx="0" cy="${g.h/2}" r="4.5"/>
+    <circle class="anchor" data-anchor="1" cx="${g.w}" cy="${g.h/2}" r="4.5"/>
+  </g>`;
+}
+function renderGroups(){ gGroups.innerHTML = S.groups.map(groupMarkup).join('') }
+
+function render(){
+  syncAutoTags();
+  renderGroups(); renderLinks(); renderNodes(); applyView();
+  document.getElementById('empty').style.display = (S.nodes.length||S.groups.length)? 'none':'flex';
+  renderStamp(); renderInspector();
+}
+
+function renderStamp(){
+  const m=S.meta;
+  document.getElementById('stamp').innerHTML =
+    `<b>${esc(m.project||'Untitled project')}</b>
+     <em>${esc(m.client||'Client not set')}</em><br>
+     ${esc(m.sheet)}<br>
+     REV ${esc(m.rev)} &nbsp; ${esc(m.date)} &nbsp; ${totalDevices()} dev / ${totalCables()} runs`;
+}
+
+/* =========================================================
+   Palette
+   ========================================================= */
+(function palette(){
+  const pal=document.getElementById('pal');
+  let html='';
+  for(const [key,f] of Object.entries(FAM)){
+    html += `<div class="pal-group"><h3>${f.label}</h3>`;
+    for(const d of DEV.filter(x=>x.f===key)){
+      html += `<button class="dev" data-add="${d.k}" draggable="true">
+        <span class="sw" style="background:${f.color}"></span>${d.n}<span class="px">${d.p}</span></button>`;
+    }
+    html += `</div>`;
+  }
+  html += `<div class="pal-group"><h3>Boxes</h3>
+    <button class="dev" data-addgroup="Door"><span class="sw" style="background:${FAM.acs.color}"></span>Door box<span class="px">DOOR</span></button>
+    <button class="dev" data-addgroup="Area"><span class="sw" style="background:${FAM.net.color}"></span>Area box<span class="px">AREA</span></button>
+    </div>`;
+  pal.innerHTML=html;
+  pal.addEventListener('click',e=>{
+    const g=e.target.closest('[data-addgroup]');
+    const r=stage.getBoundingClientRect();
+    const c=toWorld(r.left+r.width/2, r.top+r.height/2);
+    if(g){ addGroup(g.dataset.addgroup, c.x-GW/2, c.y-GH/2); return }
+    const b=e.target.closest('[data-add]'); if(!b) return;
+    addNode(b.dataset.add, c.x-W/2 + (S.nodes.length%3)*24, c.y-H/2 + (S.nodes.length%5)*18);
+  });
+  pal.addEventListener('dragstart',e=>{
+    const g=e.target.closest('[data-addgroup]');
+    if(g){ e.dataTransfer.setData('text/plain','group:'+g.dataset.addgroup); return }
+    const b=e.target.closest('[data-add]'); if(!b) return;
+    e.dataTransfer.setData('text/plain', b.dataset.add);
+  });
+  stage.addEventListener('dragover',e=>e.preventDefault());
+  stage.addEventListener('drop',e=>{
+    e.preventDefault();
+    const k=e.dataTransfer.getData('text/plain');
+    const c=toWorld(e.clientX,e.clientY);
+    if(k.startsWith('group:')){ addGroup(k.slice(6), c.x-GW/2, c.y-GH/2); return }
+    if(!DEVBY[k]) return;
+    addNode(k, c.x-W/2, c.y-H/2);
+  });
+})();
+
+function snap(v){ return S.settings.snap ? Math.round(v/GRID)*GRID : Math.round(v) }
+
+function addNode(k,x,y){
+  pushUndo();
+  const d=DEVBY[k];
+  const blankTypes=['door','custom'];
+  const n={ id:uid(), type:k, tag: k==='custom'? '' : nextTag(d),
+            name: blankTypes.includes(k)? '' : d.n, qty:1, label:'', unitPrefix:'', units:[],
+            room:'', model:'', ip:'', ports:'', notes:'', x:snap(x), y:snap(y) };
+  S.nodes.push(n); sel={kind:'node',id:n.id}; touch(); render(); showTab('device');
+  return n;
+}
+function addGroup(kind, x, y){
+  pushUndo();
+  const same=S.groups.filter(g=>(g.label||'').startsWith(kind)).length;
+  const g={ id:uid(), label:kind+' '+(same+1), notes:'',
+            color: kind==='Door'? FAM.acs.color : FAM.net.color,
+            x:snap(x), y:snap(y), w:GW, h:GH };
+  S.groups.push(g); sel={kind:'group',id:g.id}; touch(); render(); showTab('device');
+  return g;
+}
+function fitGroup(g){
+  const kids=childrenOf(g); if(!kids.length) return;
+  const pad=26;
+  const x=Math.min(...kids.map(n=>n.x))-pad, y=Math.min(...kids.map(n=>n.y))-pad;
+  g.w=Math.max(160, Math.max(...kids.map(n=>n.x+W))+pad-x);
+  g.h=Math.max(90,  Math.max(...kids.map(n=>n.y+H))+pad-y);
+  g.x=snap(x); g.y=snap(y);
+}
+
+function delSel(){
+  if(!sel) return;
+  pushUndo();
+  if(sel.kind==='group'){
+    S.groups=S.groups.filter(g=>g.id!==sel.id);
+    S.links=S.links.filter(l=>l.from!==sel.id&&l.to!==sel.id);
+    sel=null; touch(); render(); return;
+  }
+  if(sel.kind==='node'){
+    S.nodes=S.nodes.filter(n=>n.id!==sel.id);
+    S.links=S.links.filter(l=>l.from!==sel.id&&l.to!==sel.id);
+    S.nodes.forEach(n=>{ if(n.rack) n.rack.items.forEach(it=>{ if(it.ref===sel.id) it.ref='' }) });
+  } else {
+    S.links=S.links.filter(l=>l.id!==sel.id);
+  }
+  sel=null; touch(); render();
+}
+function dupSel(){
+  if(!sel||sel.kind!=='node') return;
+  pushUndo();
+  const s=S.nodes.find(n=>n.id===sel.id); if(!s) return;
+  const d=DEVBY[s.type];
+  const n={...s, id:uid(), tag:nextTag(d), x:s.x+24, y:s.y+24};
+  S.nodes.push(n); sel={kind:'node',id:n.id}; touch(); render();
+}
+/* ---- clipboard, works across projects ---- */
+let clipMem=null;
+const CLIPKEY='topo:clip';
+function copySelection(){
+  const ids = multi.length ? multi : (sel && sel.kind==='node' ? [sel.id] : []);
+  if(!ids.length){ toast('Nothing selected to copy'); return }
+  const set=new Set(ids);
+  const payload={
+    nodes:S.nodes.filter(n=>set.has(n.id)).map(n=>JSON.parse(JSON.stringify(n))),
+    links:S.links.filter(l=>set.has(l.from)&&set.has(l.to)).map(l=>JSON.parse(JSON.stringify(l)))
+  };
+  clipMem=payload;
+  store.set(CLIPKEY, JSON.stringify(payload)).catch(()=>{});
+  toast(payload.nodes.length+' copied');
+}
+async function pasteClip(){
+  let payload=clipMem;
+  if(!payload){
+    try{ payload=JSON.parse((await store.get(CLIPKEY)).value) }catch{ }
+  }
+  if(!payload || !payload.nodes || !payload.nodes.length){ toast('Clipboard is empty'); return }
+  pushUndo();
+  const r=svg.getBoundingClientRect();
+  const c=toWorld(r.left+r.width/2, r.top+r.height/2);
+  const minX=Math.min(...payload.nodes.map(n=>n.x)), minY=Math.min(...payload.nodes.map(n=>n.y));
+  const map={}, made=[];
+  for(const src of payload.nodes){
+    const n=JSON.parse(JSON.stringify(src));
+    const d=DEVBY[n.type]||DEV[0];
+    n.id=uid();
+    n.x=snap(c.x + (src.x-minX) - W/2);
+    n.y=snap(c.y + (src.y-minY) - H/2);
+    if(numMode(n.type)!=='restart' && !n.tagLock) n.tag=nextTagAfter(d, made);
+    map[src.id]=n.id; made.push(n);
+  }
+  S.nodes.push(...made);
+  for(const l of (payload.links||[])){
+    if(!map[l.from]||!map[l.to]) continue;
+    S.links.push({...JSON.parse(JSON.stringify(l)), id:uid(), from:map[l.from], to:map[l.to]});
+  }
+  multi=made.map(n=>n.id); sel={kind:'node', id:multi[0]};
+  touch(); render(); showTab('device');
+  toast(made.length+' pasted');
+}
+
+/* ---- undo ---- */
+const undoStack=[], redoStack=[];
+function snapshot(){ S.view=view; return JSON.stringify(S) }
+function pushUndo(){
+  undoStack.push(snapshot());
+  if(undoStack.length>30) undoStack.shift();
+  redoStack.length=0;
+}
+function restore(json){
+  const obj=JSON.parse(json);
+  S=obj;
+  view=Object.assign({x:60,y:60,k:1}, obj.view||{});
+  sel=null; rackCtx.itemId=null;
+  const pn=document.getElementById('projName'); if(pn) pn.value=S.meta.project||'';
+  clearLocCache(); dirty=true; render(); showSaveState();
+}
+function undo(){
+  if(!undoStack.length){ toast('Nothing to undo'); return }
+  redoStack.push(snapshot());
+  restore(undoStack.pop());
+  toast('Undone');
+}
+function redo(){
+  if(!redoStack.length){ toast('Nothing to redo'); return }
+  undoStack.push(snapshot());
+  restore(redoStack.pop());
+  toast('Redone');
+}
+
+function touch(){ dirty=true; clearLocCache(); if(typeof showSaveState==='function') showSaveState() }
+
+/* =========================================================
+   Canvas interaction: move, link, pan, zoom
+   ========================================================= */
+let drag=null;
+
+svg.addEventListener('pointerdown', e=>{
+  const anchor=e.target.closest('[data-anchor]');
+  const sizeEl=e.target.closest('[data-gsize]');
+  const nodeEl=e.target.closest('[data-node]');
+  const grpEl =e.target.closest('[data-group]');
+  const linkEl=e.target.closest('[data-link]');
+
+  if(sizeEl && grpEl){
+    e.preventDefault();
+    const g=S.groups.find(x=>x.id===grpEl.dataset.group); if(!g) return;
+    const w0=toWorld(e.clientX,e.clientY);
+    drag={mode:'resize', id:g.id, sx:w0.x, sy:w0.y, w:g.w, h:g.h};
+    sel={kind:'group',id:g.id}; render(); showTab('device');
+    if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+    return;
+  }
+  if(anchor && (nodeEl||grpEl)){
+    e.preventDefault();
+    drag={mode:'link', from: nodeEl ? nodeEl.dataset.node : grpEl.dataset.group};
+    if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+    return;
+  }
+  if(nodeEl){
+    e.preventDefault();
+    const n=S.nodes.find(x=>x.id===nodeEl.dataset.node); if(!n) return;
+    const w=toWorld(e.clientX,e.clientY);
+    if(e.shiftKey){
+      multi = multi.includes(n.id) ? multi.filter(id=>id!==n.id) : [...multi, n.id];
+      if(!multi.includes(n.id) && multi.length) sel={kind:'node',id:multi[0]};
+      else sel={kind:'node',id:n.id};
+      render(); showTab('device');
+      return;
+    }
+    if(!multi.includes(n.id)) multi=[n.id];
+    const movers = multi.length>1 ? multi : [n.id];
+    drag={mode:'move', id:n.id, moved:false,
+          set: movers.map(id=>{const m=S.nodes.find(x=>x.id===id); return {id, dx:w.x-m.x, dy:w.y-m.y}})};
+    sel={kind:'node',id:n.id}; render(); showTab('device');
+    if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+    return;
+  }
+  if(grpEl){
+    e.preventDefault();
+    const g=S.groups.find(x=>x.id===grpEl.dataset.group); if(!g) return;
+    const w=toWorld(e.clientX,e.clientY);
+    const kids=childrenOf(g).map(n=>({id:n.id, ox:n.x-g.x, oy:n.y-g.y}));
+    drag={mode:'gmove', id:g.id, dx:w.x-g.x, dy:w.y-g.y, kids, moved:false};
+    sel={kind:'group',id:g.id}; render(); showTab('device');
+    if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+    return;
+  }
+  if(linkEl){
+    e.preventDefault();
+    const l=S.links.find(x=>x.id===linkEl.dataset.link);
+    sel={kind:'link',id:linkEl.dataset.link};
+    render(); showTab('device');
+    if(l){
+      const a=ent(l.from), b=ent(l.to);
+      const route=l.route||S.settings.route||'step';
+      if(a&&b&&route!=='straight'){
+        const g=linkGeom(a,b,0,l);
+        const w=toWorld(e.clientX,e.clientY);
+        drag={mode:'bend', id:l.id, axis:g.axis, sx:w.x, sy:w.y, base:parseFloat(l.bend)||0, moved:false};
+        if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+      }
+    }
+    return;
+  }
+  if(e.shiftKey){
+    const w=toWorld(e.clientX,e.clientY);
+    drag={mode:'marquee', x0:w.x, y0:w.y, moved:false};
+    if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+    return;
+  }
+  // empty canvas: pan
+  drag={mode:'pan', sx:e.clientX, sy:e.clientY, vx:view.x, vy:view.y, moved:false};
+  svg.classList.add('panning');
+  if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+});
+
+svg.addEventListener('pointermove', e=>{
+  if(!drag) return;
+  if(drag.mode==='move'){
+    const w=toWorld(e.clientX,e.clientY);
+    for(const m of drag.set){
+      const n=S.nodes.find(x=>x.id===m.id); if(!n) continue;
+      n.x=snap(w.x-m.dx); n.y=snap(w.y-m.dy);
+      const g=gNodes.querySelector(`[data-node="${n.id}"]`);
+      if(g) g.setAttribute('transform',`translate(${n.x},${n.y})`);
+    }
+    drag.moved=true;
+    renderLinks();
+  } else if(drag.mode==='gmove'){
+    const g=S.groups.find(x=>x.id===drag.id); if(!g) return;
+    const w=toWorld(e.clientX,e.clientY);
+    g.x=snap(w.x-drag.dx); g.y=snap(w.y-drag.dy);
+    for(const k of drag.kids){
+      const n=S.nodes.find(x=>x.id===k.id); if(n){ n.x=g.x+k.ox; n.y=g.y+k.oy }
+    }
+    drag.moved=true; renderGroups(); renderNodes(); renderLinks();
+  } else if(drag.mode==='resize'){
+    const g=S.groups.find(x=>x.id===drag.id); if(!g) return;
+    const w=toWorld(e.clientX,e.clientY);
+    g.w=Math.max(150, snap(drag.w + (w.x-drag.sx)));
+    g.h=Math.max(90,  snap(drag.h + (w.y-drag.sy)));
+    drag.moved=true; renderGroups(); renderLinks();
+  } else if(drag.mode==='marquee'){
+    const w=toWorld(e.clientX,e.clientY);
+    drag.x1=w.x; drag.y1=w.y; drag.moved=true;
+    const x=Math.min(drag.x0,w.x), y=Math.min(drag.y0,w.y);
+    gTemp.innerHTML=`<rect x="${x}" y="${y}" width="${Math.abs(w.x-drag.x0)}" height="${Math.abs(w.y-drag.y0)}"
+      fill="#FFD84D22" stroke="#12222C" stroke-width="1" stroke-dasharray="4 3"/>`;
+  } else if(drag.mode==='bend'){
+    const l=S.links.find(x=>x.id===drag.id); if(!l) return;
+    const w=toWorld(e.clientX,e.clientY);
+    const d = drag.axis==='x' ? (w.x-drag.sx) : (w.y-drag.sy);
+    if(Math.abs(d)>2) drag.moved=true;
+    l.bend = snap(drag.base + d);
+    renderLinks();
+  } else if(drag.mode==='pan'){
+    view.x=drag.vx+(e.clientX-drag.sx); view.y=drag.vy+(e.clientY-drag.sy);
+    drag.moved=true; applyView();
+  } else if(drag.mode==='link'){
+    const a=S.nodes.find(x=>x.id===drag.from); if(!a) return;
+    const A=nodeCenter(a), w=toWorld(e.clientX,e.clientY);
+    gTemp.innerHTML=`<path d="M${A.x},${A.y} L${w.x},${w.y}" stroke="#1B4F72" stroke-width="1.6"
+       stroke-dasharray="5 4" fill="none"/><circle cx="${w.x}" cy="${w.y}" r="4" fill="#1B4F72"/>`;
+  }
+});
+
+svg.addEventListener('pointerup', e=>{
+  if(!drag){ return }
+  if(drag.mode==='link'){
+    gTemp.innerHTML='';
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const hitNode=el && el.closest && el.closest('[data-node]');
+    const hitGrp =el && el.closest && el.closest('[data-group]');
+    let to = hitNode ? hitNode.dataset.node : hitGrp ? hitGrp.dataset.group : null;
+    if(!to){                                   // dropped inside a box, not on its border
+      const w=toWorld(e.clientX,e.clientY);
+      const g=S.groups.find(g=>w.x>=g.x&&w.x<=g.x+g.w&&w.y>=g.y&&w.y<=g.y+g.h);
+      if(g) to=g.id;
+    }
+    if(to && to!==drag.from){
+      pushUndo();
+      const l={id:uid(), from:drag.from, to,
+               media:guessMedia(drag.from,to),
+               qty:1, label:''};
+      S.links.push(l); sel={kind:'link',id:l.id}; touch();
+    }
+    render(); showTab('device');
+  }
+  if((drag.mode==='move'||drag.mode==='gmove'||drag.mode==='resize'||drag.mode==='bend') && drag.moved) touch();
+  if(drag.mode==='bend' && drag.moved) renderInspector();
+  if(drag.mode==='marquee'){
+    gTemp.innerHTML='';
+    if(drag.moved){
+      const x0=Math.min(drag.x0,drag.x1), x1=Math.max(drag.x0,drag.x1);
+      const y0=Math.min(drag.y0,drag.y1), y1=Math.max(drag.y0,drag.y1);
+      multi=S.nodes.filter(n=>n.x+W>x0 && n.x<x1 && n.y+H>y0 && n.y<y1).map(n=>n.id);
+      sel = multi.length ? {kind:'node', id:multi[0]} : null;
+      showTab('device');
+    }
+    render();
+  }
+  if(drag.mode==='pan' && !drag.moved){ sel=null; multi=[]; render() }
+  svg.classList.remove('panning');
+  drag=null;
+});
+
+function guessMedia(aId,bId){
+  const a=S.nodes.find(n=>n.id===aId), b=S.nodes.find(n=>n.id===bId);
+  const t=[a&&a.type, b&&b.type];
+  const has=(...k)=>k.some(x=>t.includes(x));
+  if(has('mdf','idf') && t.includes('mdf') && t.includes('idf')) return 'smf';
+  if(has('fe')) return 'smf';
+  if(has('rdr','push')) return 's224';
+  if(has('mic')) return 'xlr';
+  if(has('prj','ctl')) return 'hdmi';
+  if(has('enc','vsw','cvt')) return 'sdi';
+  if(has('mix')) return 'xlr';
+  if(has('spk','ispk')) return 's182';
+  if(has('strike','sir','ps')) return 's182';
+  if(has('door')) return 's224';
+  if(has('dc','gb','md','kp')) return 's224';
+  if(has('wb')) return 'rf';
+  return 'cat6';
+}
+
+svg.addEventListener('dblclick', e=>{
+  const nodeEl=e.target.closest('[data-node]'), grpEl=e.target.closest('[data-group]');
+  if(nodeEl) sel={kind:'node', id:nodeEl.dataset.node};
+  else if(grpEl) sel={kind:'group', id:grpEl.dataset.group};
+  else return;
+  showTab('device'); render();
+  const f=document.querySelector('[data-n="name"], [data-g="label"]');
+  if(f){ f.focus(); f.select() }
+});
+
+svg.addEventListener('wheel', e=>{
+  e.preventDefault();
+  const r=svg.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
+  const k=Math.min(2.5, Math.max(.25, view.k * (e.deltaY<0?1.12:1/1.12)));
+  view.x = mx - (mx-view.x)*(k/view.k);
+  view.y = my - (my-view.y)*(k/view.k);
+  view.k = k; applyView();
+},{passive:false});
+
+function zoomBy(f){
+  const r=svg.getBoundingClientRect(), mx=r.width/2, my=r.height/2;
+  const k=Math.min(2.5,Math.max(.25,view.k*f));
+  view.x=mx-(mx-view.x)*(k/view.k); view.y=my-(my-view.y)*(k/view.k); view.k=k; applyView();
+}
+function bbox(pad=40){
+  const items=[...S.nodes.map(n=>({x:n.x,y:n.y,w:W,h:H})),
+               ...S.groups.map(g=>({x:g.x,y:g.y-22,w:g.w,h:g.h+22}))];
+  if(!items.length) return {x:0,y:0,w:800,h:600};
+  const x=Math.min(...items.map(i=>i.x))-pad, y=Math.min(...items.map(i=>i.y))-pad;
+  const w=Math.max(...items.map(i=>i.x+i.w))+pad-x, h=Math.max(...items.map(i=>i.y+i.h))+pad-y;
+  return {x,y,w,h};
+}
+function fit(){
+  const b=bbox(60), r=svg.getBoundingClientRect();
+  const k=Math.min(2, Math.max(.25, Math.min(r.width/b.w, r.height/b.h)));
+  view.k=k; view.x=(r.width-b.w*k)/2-b.x*k; view.y=(r.height-b.h*k)/2-b.y*k; applyView();
+}
+
+document.addEventListener('keydown', e=>{
+  const tag=(e.target.tagName||'').toLowerCase();
+  if(tag==='input'||tag==='textarea'||tag==='select') return;
+  if(e.key==='Delete'||e.key==='Backspace'){
+    e.preventDefault();
+    if(multi.length>1){ const b=document.querySelector('#mdel'); if(b) b.click(); else delSel() }
+    else delSel();
+  }
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='c'){ e.preventDefault(); copySelection() }
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='v'){ e.preventDefault(); pasteClip() }
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='f'){
+    e.preventDefault(); const fb=document.getElementById('findBox'); fb.focus(); fb.select();
+  }
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){
+    e.preventDefault();
+    if(e.shiftKey) redo(); else undo();
+  }
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='d'){ e.preventDefault(); dupSel() }
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){ e.preventDefault(); saveProject() }
+  else if(e.key==='Escape'){
+    if(povl.classList.contains('on')) closePorts();
+    else if(ovl.classList.contains('on')) closeLibrary();
+    else { sel=null; multi=[]; render() }
+  }
+  else if(e.key.startsWith('Arrow') && sel && (sel.kind==='node'||sel.kind==='group')){
+    e.preventDefault();
+    const step=e.shiftKey?1:GRID;
+    const dx=(e.key==='ArrowRight'?step:0)-(e.key==='ArrowLeft'?step:0);
+    const dy=(e.key==='ArrowDown'?step:0)-(e.key==='ArrowUp'?step:0);
+    if(sel.kind==='node'){
+      const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+      n.x+=dx; n.y+=dy;
+    } else {
+      const g=S.groups.find(x=>x.id===sel.id); if(!g) return;
+      const kids=childrenOf(g);
+      g.x+=dx; g.y+=dy; kids.forEach(n=>{ n.x+=dx; n.y+=dy });
+    }
+    touch(); render();
+  }
+});
+
+/* =========================================================
+   Auto arrange (tier layout)
+   ========================================================= */
+function autoArrange(){
+  if(!S.nodes.length) return;
+  pushUndo();
+  const kids=new Map(), indeg=new Map();
+  S.nodes.forEach(n=>{kids.set(n.id,[]); indeg.set(n.id,0)});
+  S.links.forEach(l=>{
+    if(kids.has(l.from)&&kids.has(l.to)){ kids.get(l.from).push(l.to); indeg.set(l.to,indeg.get(l.to)+1) }
+  });
+  const rank=new Map();
+  const roots=S.nodes.filter(n=>indeg.get(n.id)===0).map(n=>n.id);
+  const q=[...(roots.length?roots:[S.nodes[0].id])];
+  q.forEach(id=>rank.set(id,0));
+  while(q.length){
+    const id=q.shift();
+    for(const c of kids.get(id)||[]){
+      if(!rank.has(c)){ rank.set(c, rank.get(id)+1); q.push(c) }
+    }
+  }
+  S.nodes.forEach(n=>{ if(!rank.has(n.id)) rank.set(n.id, 0) });
+  const tiers={};
+  S.nodes.forEach(n=>{
+    if(groupOf(n)) return;                 // leave boxed devices where you put them
+    const r=rank.get(n.id); (tiers[r]=tiers[r]||[]).push(n);
+  });
+  Object.keys(tiers).forEach(r=>{
+    const row=tiers[r]; const gapX=W+52, total=row.length*gapX-52;
+    row.sort((a,b)=>a.x-b.x);
+    row.forEach((n,i)=>{ n.x=snap(-total/2 + i*gapX + 400); n.y=snap(80 + Number(r)*(H+72)) });
+  });
+  touch(); render(); fit(); toast('Arranged by tier. Devices inside a box were left alone.');
+}
+
+/* =========================================================
+   Inspector
+   ========================================================= */
+let activeTab='device';
+function showTab(t){ activeTab=t; renderInspector() }
+document.getElementById('tabDevice').onclick=()=>showTab('device');
+document.getElementById('tabSheet').onclick =()=>showTab('sheet');
+document.getElementById('tabCover').onclick =()=>showTab('cover');
+document.getElementById('tabRack').onclick  =()=>{
+  const n=sel&&sel.kind==='node'? S.nodes.find(x=>x.id===sel.id):null;
+  if(n && isRack(n)) rackCtx.nodeId=n.id;
+  showTab('rack');
+};
+document.getElementById('tabSched').onclick =()=>showTab('sched');
+document.getElementById('stamp').onclick=()=>showTab('sheet');
+
+function renderInspector(){
+  for(const [id,name] of [['tabDevice','device'],['tabSheet','sheet'],['tabRack','rack'],['tabCover','cover'],['tabSched','sched']])
+    document.getElementById(id).setAttribute('aria-selected', String(activeTab===name));
+  document.querySelector('.insp').classList.toggle('wide', activeTab==='rack');
+  const el=document.getElementById('tabbody');
+  el.innerHTML = activeTab==='device' ? inspDevice()
+               : activeTab==='sheet'  ? inspSheet()
+               : activeTab==='rack'   ? inspRack()
+               : activeTab==='cover'  ? inspCover() : inspSched();
+  wireInspector();
+}
+
+function alignMulti(mode){
+  const ns=S.nodes.filter(n=>multi.includes(n.id));
+  if(ns.length<2) return;
+  pushUndo();
+  const xs=ns.map(n=>n.x), ys=ns.map(n=>n.y);
+  if(mode==='left'){ const v=Math.min(...xs); ns.forEach(n=>n.x=v) }
+  if(mode==='right'){ const v=Math.max(...xs.map((x,i)=>x+W)); ns.forEach(n=>n.x=v-W) }
+  if(mode==='cx'){ const v=(Math.min(...xs)+Math.max(...xs))/2; ns.forEach(n=>n.x=snap(v)) }
+  if(mode==='top'){ const v=Math.min(...ys); ns.forEach(n=>n.y=v) }
+  if(mode==='bottom'){ const v=Math.max(...ys.map(y=>y+H)); ns.forEach(n=>n.y=v-H) }
+  if(mode==='cy'){ const v=(Math.min(...ys)+Math.max(...ys))/2; ns.forEach(n=>n.y=snap(v)) }
+  if(mode==='dh'){
+    ns.sort((a,b)=>a.x-b.x);
+    const first=ns[0].x, last=ns[ns.length-1].x, step=(last-first)/(ns.length-1);
+    ns.forEach((n,i)=>n.x=snap(first+i*step));
+  }
+  if(mode==='dv'){
+    ns.sort((a,b)=>a.y-b.y);
+    const first=ns[0].y, last=ns[ns.length-1].y, step=(last-first)/(ns.length-1);
+    ns.forEach((n,i)=>n.y=snap(first+i*step));
+  }
+  if(mode==='row'){
+    ns.sort((a,b)=>a.x-b.x);
+    const y=Math.min(...ys), gap=W+30;
+    ns.forEach((n,i)=>{ n.y=y; n.x=snap(ns[0].x+i*gap) });
+  }
+  touch(); render();
+}
+function inspMulti(){
+  const ns=S.nodes.filter(n=>multi.includes(n.id));
+  const kinds={};
+  ns.forEach(n=>{ const d=DEVBY[n.type]; kinds[d.n]=(kinds[d.n]||0)+1 });
+  return `<div class="tagchip" style="color:var(--blue)">${ns.length} SELECTED</div>
+    <p class="hint" style="margin-top:-4px">${Object.entries(kinds).map(([k,v])=>esc(k)+' \u00d7'+v).join(', ')}</p>
+    <div class="sec">Line them up</div>
+    <div class="alignpad">
+      <button class="mini" data-align="left">Left</button>
+      <button class="mini" data-align="cx">Centre</button>
+      <button class="mini" data-align="right">Right</button>
+      <button class="mini" data-align="top">Top</button>
+      <button class="mini" data-align="cy">Middle</button>
+      <button class="mini" data-align="bottom">Bottom</button>
+      <button class="mini" data-align="dh">Space across</button>
+      <button class="mini" data-align="dv">Space down</button>
+      <button class="mini" data-align="row">Even row</button>
+    </div>
+    <div class="sec">All ${ns.length}</div>
+    <div class="row2">
+      <button class="mini" id="mdup">Duplicate</button>
+      <button class="mini" id="mcopyclip">Copy</button>
+    </div>
+    <div class="row2" style="margin-top:6px">
+      <button class="mini" id="mpaste">Paste</button>
+      <button class="mini danger" id="mdel">Delete</button>
+    </div>
+    <p class="hint" style="margin-top:6px">Copy carries into any other project. Paste drops it in the middle of the view.</p>
+    <p class="hint" style="margin-top:8px">Shift click adds or removes one. Shift drag on blank canvas draws a box around several. Escape clears.</p>`;
+}
+
+function inspDevice(){
+  if(multi.length>1) return inspMulti();
+  if(!sel) return `<p class="hint">Nothing selected.<br><br>
+    Click a device in the library to drop it on the sheet. Drag a node to place it.
+    Hover a node and drag from one of its blue edge dots onto another node to run a cable.</p>
+    <button class="mini" id="mpaste" style="margin-bottom:10px">Paste copied devices</button>
+    <div class="sec">Shortcuts</div>
+    <p class="hint">Ctrl+C copies, Ctrl+V pastes into any project, Ctrl+F finds, Ctrl+Z undoes.<br>
+    Delete removes the selection. Arrow keys nudge, hold Shift for one pixel.
+    Wheel zooms, drag empty space to pan.</p>`;
+
+  if(sel.kind==='group'){
+    const g=S.groups.find(x=>x.id===sel.id); if(!g) return '<p class="hint">Box not found.</p>';
+    const kids=childrenOf(g);
+    return `<div class="tagchip" style="color:${g.color}">${esc((g.label||'BOX').toUpperCase())}</div>
+    <div class="fld"><label>Box label</label><input data-g="label" value="${esc(g.label||'')}" placeholder="Door 1"></div>
+    <div class="fld"><label>Colour</label><select data-g="color">
+      ${Object.entries(FAM).map(([k,f])=>`<option value="${f.color}" ${g.color===f.color?'selected':''}>${f.label}</option>`).join('')}
+    </select></div>
+    <div class="fld"><label>Photo link</label>
+      <input data-g="photo" value="${esc(g.photo||'')}" placeholder="https://app.companycam.com/..."></div>
+    <div class="fld"><label>Notes</label><textarea data-g="notes" placeholder="Fail secure, exterior, ADA operator">${esc(g.notes||'')}</textarea></div>
+    <div class="row2">
+      <button class="mini" id="gfit">Shrink to fit</button>
+      <button class="mini danger" id="del">Delete box</button>
+    </div>
+    <p class="hint" style="margin-top:8px">Anything sitting inside the box moves with it and shows this label as its location on the schedule. Drag the corner triangle to resize.</p>
+    ${kids.length?`<div class="sec">Inside this box</div><table class="tbl"><tbody>${kids.map(n=>
+      `<tr data-node="${n.id}"><td>${esc(tagLabel(n))}</td><td>${esc(n.name||'')}</td></tr>`).join('')}</tbody></table>`
+      :`<div class="sec">Inside this box</div><p class="hint">Empty. Drag devices into it.</p>`}`;
+  }
+
+  if(sel.kind==='link'){
+    const l=S.links.find(x=>x.id===sel.id); if(!l) return '<p class="hint">Cable not found.</p>';
+    const a=ent(l.from), b=ent(l.to);
+    const nm=x=>x ? (x.tag || x.label || '?') : '?';
+    return `<div class="tagchip" style="color:${(MEDIA[l.media]||MEDIA.cat6).color}">CABLE RUN</div>
+    <p class="hint" style="margin-top:-4px">${esc(nm(a))} to ${esc(nm(b))}</p>
+    <div class="fld"><label>Cable type</label><select data-l="media">
+      ${Object.entries(MEDIA).map(([k,m])=>`<option value="${k}" ${l.media===k?'selected':''}>${m.label}</option>`).join('')}
+    </select></div>
+    <div class="row2">
+      <div class="fld"><label>Runs${l.qtyLock?'':' (follows count)'}</label><input type="number" min="1" data-l="qty" value="${linkQty(l)}"></div>
+      <div class="fld"><label>Note on drawing</label><input data-l="label" value="${esc(l.label||'')}" placeholder="e.g. 180 ft"></div>
+    </div>
+    <div class="sec">Routing</div>
+    <div class="fld"><label>Path</label><select data-l="route">
+      <option value="" ${!l.route?'selected':''}>Follow sheet default</option>
+      <option value="step" ${l.route==='step'?'selected':''}>Elbow, meets in the middle</option>
+      <option value="hv" ${l.route==='hv'?'selected':''}>Across, then down</option>
+      <option value="vh" ${l.route==='vh'?'selected':''}>Down, then across</option>
+      <option value="straight" ${l.route==='straight'?'selected':''}>Straight line</option>
+    </select></div>
+    <div class="row2">
+      <div class="fld"><label>Leaves ${esc(nm(a))}</label><select data-l="fromSide">
+        ${['','top','right','bottom','left'].map(v=>`<option value="${v}" ${l.fromSide===v?'selected':''}>${v||'auto'}</option>`).join('')}
+      </select></div>
+      <div class="fld"><label>Enters ${esc(nm(b))}</label><select data-l="toSide">
+        ${['','top','right','bottom','left'].map(v=>`<option value="${v}" ${l.toSide===v?'selected':''}>${v||'auto'}</option>`).join('')}
+      </select></div>
+    </div>
+    <p class="hint" style="margin:-2px 0 8px">Drag the middle of a line on the sheet to move the elbow.</p>
+    <div class="row2" style="margin-top:6px">
+      <button class="mini" id="addrun">Add another run</button>
+      <button class="mini" id="unbend">Reset elbow</button>
+    </div>
+    <div class="row2" style="margin-top:6px">
+      <button class="mini" id="flip">Reverse</button>
+      <span></span>
+    </div>
+    <button class="mini danger" id="del" style="margin-top:6px">Delete run</button>
+    ${S.links.filter(x=>(x.from===l.from&&x.to===l.to)||(x.from===l.to&&x.to===l.from)).length>1
+      ? `<p class="hint" style="margin-top:8px">This pair carries ${S.links.filter(x=>(x.from===l.from&&x.to===l.to)||(x.from===l.to&&x.to===l.from)).length} runs. They draw side by side on the sheet.</p>` : ''}`;
+  }
+
+  const n=S.nodes.find(x=>x.id===sel.id); if(!n) return '<p class="hint">Device not found.</p>';
+  const d=DEVBY[n.type], c=FAM[d.f].color;
+  const conns=S.links.filter(l=>l.from===n.id||l.to===n.id).map(l=>{
+    const o=ent(l.from===n.id?l.to:l.from);
+    return `<tr data-goto="${l.id}"><td>${esc(o?(o.tag||o.label||'?'):'?')}</td><td>${esc((MEDIA[l.media]||{}).label||'')}</td><td>${esc(o?clip(o.name||o.label||'',14):'')}</td></tr>`;
+  }).join('');
+  return `<div class="tagchip" style="color:${c}">${esc(tagLabel(n)||'no tag')}</div>
+    <div class="fld"><label>Device type</label><select data-n="type">
+      ${DEV.map(x=>`<option value="${x.k}" ${x.k===n.type?'selected':''}>${x.n}</option>`).join('')}
+    </select></div>
+    <div class="row2">
+      <div class="fld"><label>Tag</label><input data-n="tag" value="${esc(n.tag)}" placeholder="${n.type==='custom'?'leave blank':'C01'}"></div>
+      <div class="fld"><label>Count</label><input type="number" min="1" max="999" data-n="qty" value="${qtyOf(n)}"></div>
+    </div>
+    ${qtyOf(n)>1?`<p class="hint" style="margin-top:-4px;margin-bottom:10px">Covers ${esc(tagLabel(n))}. Cable runs to this box default to ${qtyOf(n)} lines.</p>`:''}
+    ${qtyOf(n)<2?`<div class="fld"><label>Cable label</label><input data-n="label" value="${esc(n.label||'')}" placeholder="${esc(autoLabel(n,n.tag))}"></div>`:''}
+    <div class="fld"><label>Room / location</label><input data-n="room" value="${esc(n.room||'')}" placeholder="Suite 200"></div>
+    <div class="fld"><label>Name on drawing</label><input data-n="name" value="${esc(n.name||'')}" placeholder="${n.type==='door'?'Front door':'Lobby dome'}"></div>
+    ${n.type==='door'? `<div class="sec">Hardware on this door</div>
+      <p class="hint" style="margin-bottom:8px">Adds the device below ${esc(n.tag)} and wires it up. Cable type is set from what it is.</p>
+      <div class="doorkit">
+        ${[['rdr','Reader'],['strike','Strike'],['rex','REX'],['int','Intercom'],['ispk','Int speaker'],['dc','Contact'],['kp','Keypad']]
+          .map(([k,lbl])=>`<button class="mini" data-kit="${k}">+ ${lbl}</button>`).join('')}
+      </div>`:''}
+    <div class="row2">
+      <div class="fld"><label>Model${qtyOf(n)>1?' (all)':''}</label><input data-n="model" value="${esc(n.model||'')}" placeholder="Axis P3265"></div>
+      <div class="fld"><label>IP / port</label><input data-n="ip" value="${esc(n.ip||'')}" placeholder="10.0.4.21"></div>
+    </div>
+    <div class="fld"><label>Photo link</label>
+      <input data-n="photo" value="${esc(n.photo||'')}" placeholder="https://app.companycam.com/..."></div>
+    <div class="fld"><label>Install notes${qtyOf(n)>1?' (applies to all)':''}</label><textarea data-n="notes" placeholder="Mount 12 ft, aim at entry">${esc(n.notes||'')}</textarea></div>
+    <div class="row2">
+      <button class="mini" id="dup">Duplicate</button>
+      <button class="mini" id="mcopyclip">Copy</button>
+    </div>
+    <div class="row2" style="margin-top:6px">
+      <button class="mini" id="mpaste">Paste</button>
+      <button class="mini danger" id="del">Delete device</button>
+    </div>
+    ${isRack(n)? `<div class="sec">Rack</div>
+      <button class="mini" id="gorack" style="width:100%">Open rack builder${rackOf(n).items.length? ' ('+rackOf(n).items.length+' items)' : ''}</button>` : ''}
+    ${accEditor(n)}
+    ${qtyOf(n)>1?`<div class="sec">Install list</div>
+      <div class="fld"><label>How this prints</label><select data-n="expand">
+        <option value="1" ${expandsList(n)?'selected':''}>One line per device</option>
+        <option value="0" ${!expandsList(n)?'selected':''}>Single line with a count</option>
+      </select></div>`:''}
+    ${qtyOf(n)>1 && expandsList(n) ? unitEditor(n) : ''}
+    ${conns?`<div class="sec">Cable runs</div><table class="tbl"><thead><tr><th>To</th><th>Cable</th><th>Device</th></tr></thead><tbody>${conns}</tbody></table>`:''}`;
+}
+
+function rackElevation(n, height){
+  const r=rackOf(n);
+  const uh=Math.max(7, Math.min(15, (height-26)/r.ru));
+  const W0=210, x0=30, w=W0-x0-8, top=14, H0=top+r.ru*uh+12;
+  let out=`<svg viewBox="0 0 ${W0} ${H0}" width="100%" style="display:block;margin-bottom:10px" xmlns="${NS}">
+    <text x="${x0}" y="9" font-family="${SANS}" font-size="8" letter-spacing="1.4" fill="#5A6A73">${esc(n.tag)} \u00b7 ${r.ru}U</text>
+    <rect x="${x0}" y="${top}" width="${w}" height="${r.ru*uh}" fill="#FBFCFA" stroke="#12222C" stroke-width="1.2"/>`;
+  for(let u=1; u<=r.ru; u++){
+    const y=top+(r.ru-u)*uh;
+    out+=`<line x1="${x0}" y1="${y}" x2="${x0+w}" y2="${y}" stroke="#E3E8E4" stroke-width=".5"/>`;
+    if(u%5===0||u===1) out+=`<text x="${x0-4}" y="${y+uh-1.5}" text-anchor="end" font-family="${MONO}" font-size="${Math.min(7,uh-1)}" fill="#8A8F8B">${u}</text>`;
+  }
+  for(const it of r.items){
+    const h=Math.max(1,it.h||1), y=top+(r.ru-(it.u+h-1))*uh;
+    const c=RACK_FILL[it.kind]||'#5A6A73';
+    const ref=it.ref? (S.nodes.find(x=>x.id===it.ref)||{}).tag : '';
+    const txt=[ref, it.name].filter(Boolean).join('  ');
+    const fs=Math.min(7.5, h*uh-3);
+    out+=`<g><rect x="${x0+1.5}" y="${y+1}" width="${w-3}" height="${h*uh-2}" rx="1.5"
+        fill="${c}1A" stroke="${c}" stroke-width="1"/>
+      <rect x="${x0+1.5}" y="${y+1}" width="3.5" height="${h*uh-2}" fill="${c}"/>
+      <text x="${x0+9}" y="${y+h*uh/2+fs*0.36}" font-family="${MONO}" font-size="${fs}" fill="#12222C">${esc(clip(txt,30))}</text>
+      ${itemPorts(it)?`<text x="${x0+w-5}" y="${y+h*uh/2+fs*0.36}" text-anchor="end" font-family="${MONO}" font-size="${fs*0.9}" fill="${c}">${itemPorts(it)}p${it.sfp?'+'+it.sfp+'sfp':''}</text>`:''}
+    </g>`;
+  }
+  return out+`</svg>`;
+}
+
+let rackCtx={ nodeId:null, itemId:null };
+
+function rackTargets(){ return S.nodes.filter(isRack) }
+function currentRack(){
+  const list=rackTargets();
+  if(!list.length) return null;
+  return list.find(n=>n.id===rackCtx.nodeId) || list[0];
+}
+/* Nearest run of free U to the one asked for. */
+function freeAt(r, u, h, skipId){
+  const taken=new Set();
+  r.items.forEach(i=>{ if(i.id===skipId) return;
+    for(let x=i.u; x<i.u+(i.h||1); x++) taken.add(x) });
+  const fits=start=>{
+    if(start<1 || start+h-1>r.ru) return false;
+    for(let x=start; x<start+h; x++) if(taken.has(x)) return false;
+    return true;
+  };
+  if(fits(u)) return u;
+  for(let d=1; d<=r.ru; d++){
+    if(fits(u-d)) return u-d;
+    if(fits(u+d)) return u+d;
+  }
+  return null;
+}
+
+function inspRack(){
+  const list=rackTargets();
+  if(!list.length) return `<p class="hint">No racks on the drawing yet. Drop an MDF, IDF or rack from the library and it shows up here.</p>`;
+  const n=currentRack(); const r=rackOf(n);
+  const uh=Math.max(13, Math.min(22, 620/r.ru));
+  const it=r.items.find(x=>x.id===rackCtx.itemId);
+  const linkable=S.nodes.filter(x=>x.id!==n.id && ['net','cam','av','power','infra'].includes(DEVBY[x.type].f));
+
+  const rows=[];
+  for(let u=r.ru; u>=1; u--)
+    rows.push(`<div class="rk-u" style="bottom:${(u-1)*uh}px;height:${uh}px"><i>${u}</i></div>`);
+  const items=r.items.map(x=>{
+    const c=RACK_FILL[x.kind]||'#5A6A73';
+    const ref=x.ref? (S.nodes.find(y=>y.id===x.ref)||{}).tag : '';
+    return `<div class="rk-item ${x.id===rackCtx.itemId?'sel':''}" data-rkit="${x.id}"
+      style="bottom:${(x.u-1)*uh}px;height:${(x.h||1)*uh-2}px;background:${c}1A;border-color:${c}">
+      <b style="background:${c}"></b>
+      <span>${esc([ref,x.name].filter(Boolean).join(' \u00b7 '))}</span>
+      ${itemPorts(x)?`<em>${itemPorts(x)}p${x.sfp?'+'+x.sfp:''}</em>`:''}
+    </div>`;
+  }).join('');
+
+  return `<div class="rkwrap">
+    <div class="rkcol">
+      <div class="row2">
+        <div class="fld"><label>Rack</label><select id="rkPick">
+          ${list.map(x=>`<option value="${x.id}" ${x.id===n.id?'selected':''}>${esc(x.tag)} ${esc(clip(x.name||'',12))}</option>`).join('')}
+        </select></div>
+        <div class="fld"><label>Height</label><select data-r="ru">
+          ${[6,9,12,18,24,27,36,42,45,48].map(u=>`<option value="${u}" ${r.ru==u?'selected':''}>${u}U</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="rk" id="rkFrame" style="height:${r.ru*uh}px" data-uh="${uh}">
+        ${rows.join('')}${items}
+      </div>
+      <p class="hint" style="margin-top:8px">Drag an item to move it. Drag a part from the right into the rack, or click it to drop in the top free slot.</p>
+    </div>
+
+    <div class="rkside">
+      <div class="sec" style="margin-top:0">Parts</div>
+      <div class="rkparts">
+        ${RU_PRESETS.map(pr=>`<button class="rkpart" draggable="true" data-rkadd="${pr.k}">
+          <i style="background:${RACK_FILL[pr.kind]}"></i>${pr.name}<em>${pr.h}U</em></button>`).join('')}
+      </div>
+
+      ${it? `<div class="sec">Selected</div>
+        <div class="fld"><label>Label</label><input data-ri="${it.id}" data-rf="name" value="${esc(it.name||'')}"></div>
+        <div class="fld"><label>Model</label><input data-ri="${it.id}" data-rf="model" value="${esc(it.model||'')}" placeholder="Unifi USW Pro 48 PoE"></div>
+        <div class="fld"><label>Linked device on the drawing</label>
+          <select data-ri="${it.id}" data-rf="ref"><option value="">none</option>
+          ${linkable.map(x=>`<option value="${x.id}" ${it.ref===x.id?'selected':''}>${esc(x.tag)} ${esc(clip(x.name||'',16))}</option>`).join('')}
+          </select></div>
+        <div class="row2">
+          <div class="fld"><label>Bottom U</label><input type="number" min="1" max="${r.ru}" data-ri="${it.id}" data-rf="u" value="${it.u}"></div>
+          <div class="fld"><label>Height U</label><input type="number" min="1" max="12" data-ri="${it.id}" data-rf="h" value="${it.h||1}"></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Ports</label><input type="number" min="0" max="96" data-ri="${it.id}" data-rf="ports" value="${itemPorts(it)}"></div>
+          <div class="fld"><label>SFP</label><input type="number" min="0" max="8" data-ri="${it.id}" data-rf="sfp" value="${it.sfp||0}"></div>
+        </div>
+        <div class="row2">
+          ${itemPorts(it)?(()=>{const dr=portDrift(n,it);
+            const flag=(dr.added||dr.orphan||dr.over)?' \u26a0':'';
+            return `<button class="mini" data-rports="${it.id}">Ports: ${(it.assign||[]).filter(a=>a&&a.tag).length} of ${itemPorts(it)}${flag}</button>`;
+          })():'<span></span>'}
+          <button class="mini danger" data-rdel="${it.id}">Remove item</button>
+        </div>`
+      : `<p class="hint" style="margin-top:14px">Click an item in the rack to edit its model, ports and position.</p>`}
+
+      ${r.items.length? `<div class="sec">Bill of materials</div>
+        <table class="tbl"><thead><tr><th>U</th><th>Item</th><th>Ports</th></tr></thead><tbody>
+        ${[...r.items].sort((a,b)=>b.u-a.u).map(x=>{
+          const ref=x.ref? (S.nodes.find(y=>y.id===x.ref)||{}).tag:'';
+          return `<tr data-rkit="${x.id}"><td>${x.u}${(x.h||1)>1?'\u2013'+(x.u+(x.h||1)-1):''}</td>
+            <td>${esc([ref,x.name].filter(Boolean).join(' \u00b7 '))}</td>
+            <td>${itemPorts(x)||''}</td></tr>`;
+        }).join('')}</tbody></table>`:''}
+    </div>
+  </div>`;
+}
+
+function accEditor(n){
+  const acc=n.acc||[];
+  return `<div class="sec">Attachments</div>
+    <p class="hint" style="margin-bottom:8px">Mounts, patch panels, power supplies, anything that ships with this but does not get its own cable run. Prints as a sub line under ${esc(n.tag)} on page 2.</p>
+    ${acc.map((a,i)=>`<div class="unit" style="border-left-color:#5A6A73">
+      <div class="unit-h">Item ${i+1}<button class="xbtn" data-adel="${i}" title="Remove">&times;</button></div>
+      <span class="unit-l">What it is</span>
+      <input data-a="${i}" data-af="name" value="${esc(a.name||'')}" placeholder="Arm mount">
+      <span class="unit-l">Model</span>
+      <input data-a="${i}" data-af="model" value="${esc(a.model||'')}" placeholder="Axis T91B21">
+      <span class="unit-l">Qty per device</span>
+      <input type="number" min="1" data-a="${i}" data-af="qty" value="${accQty(a)}">
+    </div>`).join('')}
+    <button class="mini" id="addacc">Add attachment</button>`;
+}
+
+function unitEditor(n){
+  const units=syncUnits(n);
+  const auto=locCode(n);
+  return `<div class="sec">Each device</div>
+    <div class="row2" style="align-items:flex-end">
+      <div class="fld" style="margin-bottom:0"><label>Location code</label>
+        <input data-n="unitPrefix" value="${esc(n.unitPrefix||'')}" placeholder="${esc(auto||'I03')}"></div>
+      <button class="mini" id="applypfx" style="margin-bottom:1px">Fill labels</button>
+    </div>
+    <p class="hint" style="margin:6px 0 8px">${auto?`Picked up ${esc(auto)} from the closet it feeds. `:''}Labels print as ${esc(autoLabel(n, units[0]?units[0].tag:'C01'))} unless you type over them.</p>
+    ${units.map((u,i)=>`<div class="unit">
+      <div class="unit-h">${esc(u.tag)}</div>
+      <span class="unit-l">Label</span>
+      <input data-u="${i}" data-uf="label" value="${esc(u.label||'')}" placeholder="${esc(autoLabel(n,u.tag))}">
+      <span class="unit-l">Model</span>
+      <input data-u="${i}" data-uf="model" value="${esc(u.model||'')}" placeholder="${esc(n.model||'e.g. Unifi G6 Bullet')}">
+      <span class="unit-l">Note</span>
+      <input data-u="${i}" data-uf="note"  value="${esc(u.note||'')}"  placeholder="Mounting, room, aim">
+    </div>`).join('')}`;
+}
+
+function inspCover(){
+  const m=S.meta;
+  return `<p class="hint" style="margin-bottom:10px">Front matter for the client set. Page 1 cover, page 2 your marked map, then the drawing and the list.</p>
+  <div class="fld"><label>Proposal version</label><input data-m="version" value="${esc(m.version||'')}" placeholder="1.0"></div>
+  <div class="fld"><label>Summary of work</label>
+    <textarea data-m="summary" style="min-height:96px" placeholder="Twenty two cameras, eight access points and card access on four doors across the main building and annex.">${esc(m.summary||'')}</textarea></div>
+
+  <div class="sec">Cover photo</div>
+  ${m.coverImg?`<img class="imgprev" src="${m.coverImg}" alt="Cover photo">
+    <div class="row2"><button class="mini" id="coverPick">Replace</button>
+      <button class="mini danger" id="coverClear">Remove</button></div>`
+   :`<button class="mini" id="coverPick">Choose an image</button>
+     <p class="hint" style="margin-top:6px">Building exterior works well. Resized automatically.</p>`}
+
+  <div class="sec">Marked map</div>
+  ${m.mapImg?`<img class="imgprev" src="${m.mapImg}" alt="Marked map">
+    <div class="row2"><button class="mini" id="mapPick">Replace</button>
+      <button class="mini danger" id="mapClear">Remove</button></div>`
+   :`<button class="mini" id="mapPick">Choose a PNG</button>
+     <p class="hint" style="margin-top:6px">Your marked up floor plan or site photo.</p>`}
+  <div class="fld" style="margin-top:10px"><label>Caption</label>
+    <input data-m="mapCaption" value="${esc(m.mapCaption||'')}" placeholder="Camera coverage, ground floor"></div>
+  <div class="fld"><label>Link to full detail</label>
+    <input data-m="mapLink" value="${esc(m.mapLink||'')}" placeholder="https://app.companycam.com/..."></div>
+  <p class="hint">Prints as a clickable link on the map page and stays readable on paper.</p>
+
+  <div class="sec">Your company</div>
+  ${brand.logo?`<img class="imgprev" style="max-height:80px;object-fit:contain;background:#fff" src="${brand.logo}" alt="Logo">
+    <div class="row2"><button class="mini" id="logoPick">Replace</button>
+      <button class="mini danger" id="logoClear">Remove</button></div>`
+   :`<button class="mini" id="logoPick">Add logo</button>`}
+  <div class="fld" style="margin-top:10px"><label>Name</label><input data-b="name" value="${esc(brand.name||'')}"></div>
+  <div class="row2">
+    <div class="fld"><label>Phone</label><input data-b="phone" value="${esc(brand.phone||'')}" placeholder="215 555 0100"></div>
+    <div class="fld"><label>Website</label><input data-b="site" value="${esc(brand.site||'')}" placeholder="bridgecable.com"></div>
+  </div>
+  <p class="hint">Sits bottom right on every printed page and carries across all your projects.</p>
+
+  <div class="sec">Photo links</div>
+  ${(()=>{ const ph=photoItems();
+    return ph.length
+      ? `<p class="hint" style="margin-bottom:8px">Tick the ones to print. They land on their own page as clickable links.</p>
+         ${ph.map(x=>`<label class="phrow">
+            <input type="checkbox" data-ph="${x.id}" ${x.on?'checked':''}>
+            <span><b>${esc([x.tag,x.name].filter(Boolean).join(' \u00b7 '))}</b><em>${esc(x.url)}</em></span>
+          </label>`).join('')}
+         <div class="row2" style="margin-top:8px">
+           <button class="mini" id="phAll">Tick all</button>
+           <button class="mini" id="phNone">Untick all</button>
+         </div>`
+      : `<p class="hint">Nothing yet. Put a link in the Photo link field on any device or box and it shows up here.</p>`;
+  })()}
+
+  <div class="sec">What prints</div>
+  <div class="fld"><select data-s="deliverable">
+    <option value="full" ${S.settings.deliverable!=='tech'?'selected':''}>Client set: cover, map, drawing, list</option>
+    <option value="tech" ${S.settings.deliverable==='tech'?'selected':''}>Field set: drawing and list only</option>
+  </select></div>`;
+}
+
+function inspSheet(){
+  const m=S.meta,s=S.settings;
+  return `<div class="fld"><label>Project</label><input data-m="project" value="${esc(m.project)}" placeholder="Chester Housing Authority"></div>
+  <div class="fld"><label>Client</label><input data-m="client" value="${esc(m.client)}"></div>
+  <div class="fld"><label>Site address</label><input data-m="site" value="${esc(m.site)}"></div>
+  <div class="fld"><label>Sheet title</label><input data-m="sheet" value="${esc(m.sheet)}"></div>
+  <div class="row2">
+    <div class="fld"><label>Drawn by</label><input data-m="drawnBy" value="${esc(m.drawnBy)}"></div>
+    <div class="fld"><label>Revision</label><input data-m="rev" value="${esc(m.rev)}"></div>
+  </div>
+  <div class="fld"><label>Date</label><input data-m="date" value="${esc(m.date)}"></div>
+  <div class="fld"><label>General notes</label><textarea data-m="notes" placeholder="All cable plenum rated. Verify pathways in field.">${esc(m.notes)}</textarea></div>
+  <div class="sec">Revisions</div>
+  <button class="mini" id="saverev" style="width:100%">Save this as a revision</button>
+  ${revList.length? `<p class="hint" style="margin:8px 0 4px">Snapshots of this project you can come back to.</p>` +
+    revList.map(r=>`<div class="revrow">
+      <span><b>${esc(r.label)}</b><em>${esc(ago(r.ts))} \u00b7 ${r.devices||0} devices</em></span>
+      <button class="mini" data-revopen="${r.ts}">Load</button>
+      <button class="mini danger" data-revdel="${r.ts}">&times;</button>
+    </div>`).join('')
+    : `<p class="hint" style="margin-top:6px">None yet. Save one before you send a proposal, then again when the scope changes.</p>`}
+
+  <div class="sec">Tag format</div>
+  <div class="row2">
+    <div class="fld"><label>Style</label><select data-s="tagStyle">
+      <option value="plain" ${s.tagStyle==='plain'?'selected':''}>C01</option>
+      <option value="dash" ${s.tagStyle==='dash'?'selected':''}>C-01</option>
+      <option value="paren" ${s.tagStyle==='paren'?'selected':''}>C(01)</option>
+    </select></div>
+    <div class="fld"><label>Digits</label><select data-s="pad">
+      <option value="2" ${s.pad==2?'selected':''}>2</option>
+      <option value="3" ${s.pad==3?'selected':''}>3</option>
+    </select></div>
+  </div>
+  <button class="mini" id="retag">Renumber all tags</button>
+  <div class="sec">Numbering</div>
+  ${(()=>{
+    const used=[...new Set(S.nodes.map(n=>n.type))];
+    if(!used.length) return `<p class="hint">Add a few devices and their numbering options show up here.</p>`;
+    return `<p class="hint" style="margin-bottom:8px">Continuous runs C01 to C80 across the whole site. Restart starts over in each closet and puts the closet in the tag, like I03-D01.</p>` +
+      used.map(k=>`<div class="numrow"><span>${esc(DEVBY[k].n)}</span>
+        <select data-num="${k}">
+          <option value="continuous" ${numMode(k)==='continuous'?'selected':''}>Continuous</option>
+          <option value="restart" ${numMode(k)==='restart'?'selected':''}>Restart per closet</option>
+        </select></div>`).join('');
+  })()}
+  <div class="sec">PDF</div>
+  <div class="fld"><label>Rack pages</label><select data-s="rackPages">
+    <option value="1" ${S.settings.rackPages!==false?'selected':''}>Print when a rack is built</option>
+    <option value="0" ${S.settings.rackPages===false?'selected':''}>Never print rack pages</option>
+  </select></div>
+  <div class="fld"><label>Pages</label><select data-s="cableSheet">
+    <option value="0" ${!s.cableSheet?'selected':''}>2 pages: drawing, then device list</option>
+    <option value="1" ${s.cableSheet?'selected':''}>3 pages: add a cable schedule</option>
+  </select></div>
+  <p class="hint">Print to PDF, then pick Save as PDF in the dialog. Landscape and margins are set for you, and the browser date and file path are suppressed. If your browser still stamps them, open More settings in the print dialog and untick Headers and footers.</p>
+  <div class="sec">Connections</div>
+  <div class="fld"><label>Default path</label><select data-s="route">
+    <option value="step" ${s.route!=='hv'&&s.route!=='vh'&&s.route!=='straight'?'selected':''}>Elbow, meets in the middle</option>
+    <option value="hv" ${s.route==='hv'?'selected':''}>Across, then down</option>
+    <option value="vh" ${s.route==='vh'?'selected':''}>Down, then across</option>
+    <option value="straight" ${s.route==='straight'?'selected':''}>Straight line</option>
+  </select></div>
+  <button class="mini" id="tidy">Tidy all connections</button>
+  <p class="hint" style="margin-top:6px">Clears every hand placed elbow and side, putting all lines back on the default.</p>
+
+  <div class="sec">Canvas</div>
+  <div class="fld"><label>Snap to grid</label><select data-s="snap">
+    <option value="1" ${s.snap?'selected':''}>On, 10 px</option>
+    <option value="0" ${!s.snap?'selected':''}>Off</option>
+  </select></div>
+  ${legendHtml()}`;
+}
+
+function usedMedia(){ return [...new Set(S.links.map(l=>l.media))] }
+function legendHtml(){
+  const u=usedMedia(); if(!u.length) return '';
+  return `<div class="sec">Cable legend</div>` + u.map(k=>{
+    const m=MEDIA[k]||MEDIA.cat6;
+    return `<div class="lgd"><i style="border-top-color:${m.color};border-top-style:${m.dash?'dashed':'solid'}"></i>${m.label}</div>`;
+  }).join('');
+}
+
+/* Flat list of every physical device, counted boxes expanded out. */
+function deviceList(){
+  syncAutoTags();
+  const g=adj();
+  return [...S.nodes]
+    .sort((a,b)=>(a.tag||'').localeCompare(b.tag||'',undefined,{numeric:true}))
+    .flatMap(n=>{
+      const to=[...new Set((g.get(n.id)||[])
+        .map(id=>{const o=entFast(id); return o?(o.tag||o.label||''):''})
+        .filter(Boolean))].join(', ');
+      const rows=unitRows(n).map(r=>({...r, kind:'device', name:n.name||'', loc:locOf(n), ip:n.ip||'', to, nodeId:n.id}));
+      const acc=accOf(n);
+      if(!acc.length) return rows;
+      /* One sub line under each listed device, or a single multiplied line when the box is collapsed. */
+      const mult = rows.length===1 && qtyOf(n)>1 ? qtyOf(n) : 1;
+      return rows.flatMap(r=>[r, ...acc.map(a=>({
+        kind:'accessory', parent:r.tag, tag:'\u21b3', label:'', type:a.name||'Accessory',
+        qty:accQty(a)*mult, model:a.model||'', loc:'', ip:'', to:'', note:'', nodeId:n.id
+      }))]);
+    });
+}
+function locOf(n){
+  if(n.room) return n.room;
+  const g=groupOf(n);
+  return g ? (g.label||'') : '';
+}
+function inspSched(){
+  if(!S.nodes.length) return `<p class="hint">No devices yet. The schedule fills in as you build and prints on page two.</p>`;
+  const rows=[...S.nodes].sort((a,b)=>(a.tag||'').localeCompare(b.tag||'',undefined,{numeric:true})).map(n=>{
+    const d=DEVBY[n.type];
+    const to=[...new Set((adj().get(n.id)||[])
+      .map(id=>{const o=entFast(id); return o?(o.tag||o.label||''):''}).filter(Boolean))].join(', ');
+    return `<tr data-node="${n.id}"><td>${esc(tagLabel(n))}</td><td>${esc(d.n)}</td><td style="text-align:center">${qtyOf(n)}</td><td>${esc(locOf(n))}</td></tr>`;
+  }).join('');
+  const counts={}; let total=0;
+  S.nodes.forEach(n=>{const d=DEVBY[n.type]; counts[d.n]=(counts[d.n]||0)+qtyOf(n); total+=qtyOf(n)});
+  const flat=deviceList().map(r=> r.kind==='accessory'
+    ? `<tr data-node="${r.nodeId}" class="accrow"><td>\u21b3</td><td>${esc(clip(r.type,14))}${r.qty>1?' \u00d7'+r.qty:''}</td><td>${esc(clip(r.model||'\u2014',18))}</td></tr>`
+    : `<tr data-node="${r.nodeId}"><td>${esc(r.tag)}</td><td>${esc(r.label||'\u2014')}</td><td>${esc(clip(r.model||'\u2014',18))}</td></tr>`).join('');
+  return `<div class="sec">Device count</div>
+    <table class="tbl"><tbody>${Object.entries(counts).map(([k,v])=>`<tr><td>${esc(k)}</td><td style="text-align:right">${v}</td></tr>`).join('')}
+    <tr><td style="font-weight:700">Total</td><td style="text-align:right;font-weight:700">${total}</td></tr></tbody></table>
+    <div class="sec">Summary by box</div>
+    <table class="tbl"><thead><tr><th>Tag</th><th>Type</th><th>Qty</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="sec">Install list, one line per device</div>
+    <table class="tbl"><thead><tr><th>Tag</th><th>Label</th><th>Model</th></tr></thead><tbody>${flat}</tbody></table>
+    <button class="mini" id="csv" style="margin-top:10px">Also export CSV</button>`;
+}
+
+function wireInspector(){
+  const body=document.getElementById('tabbody');
+  body.querySelectorAll('[data-n]').forEach(inp=>{
+    inp.oninput=()=>{
+      const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+      const f=inp.dataset.n;
+      if(f==='expand'){
+        n.expand = inp.value==='1';
+        touch(); renderInspector(); return;
+      }
+      if(f==='qty'){
+        n.qty=Math.min(999, Math.max(1, parseInt(inp.value||1,10)||1));
+        touch(); renderNodes(); renderInspector(); return;
+      }
+      if(f==='tag'){
+        n.tag=inp.value; n.tagLock=true; touch(); renderNodes(); renderStamp(); return;
+      }
+      if(f==='type'){
+        n.type=inp.value;
+        const d=DEVBY[inp.value];
+        if(!n.name || DEV.some(x=>x.n===n.name)) n.name=d.n;
+        n.tag=nextTag(d);
+      } else n[f]=inp.value;
+      touch(); renderNodes(); renderStamp();
+      if(f==='type'){ renderInspector(); renderLinks() }
+    };
+  });
+  body.querySelectorAll('[data-l]').forEach(inp=>{
+    const set=()=>{
+      const l=S.links.find(x=>x.id===sel.id); if(!l) return;
+      const f=inp.dataset.l;
+      if(f==='qty'){ l.qty=Math.max(1,parseInt(inp.value||1,10)); l.qtyLock=true }
+      else l[f]=inp.value;
+      if(f==='route'||f==='fromSide'||f==='toSide') l.bend=0;
+      touch(); renderLinks();
+    };
+    inp.oninput=set; inp.onchange=set;
+  });
+  body.querySelectorAll('[data-m]').forEach(inp=>{
+    inp.oninput=()=>{ S.meta[inp.dataset.m]=inp.value; touch(); renderStamp();
+      if(inp.dataset.m==='project') document.getElementById('projName').value=inp.value; };
+  });
+  body.querySelectorAll('[data-s]').forEach(inp=>{
+    inp.onchange=()=>{
+      const f=inp.dataset.s;
+      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages') ? inp.value==='1'
+                    : f==='pad' ? parseInt(inp.value,10) : inp.value;
+      touch(); render();
+    };
+  });
+  const gr=body.querySelector('#gorack'); if(gr) gr.onclick=()=>{ rackCtx.nodeId=sel.id; showTab('rack') };
+  const rkPick=body.querySelector('#rkPick'); if(rkPick) rkPick.onchange=()=>{
+    rackCtx.nodeId=rkPick.value; rackCtx.itemId=null; renderInspector();
+  };
+  body.querySelectorAll('[data-rkadd]').forEach(b=>{
+    b.onclick=()=>{
+      const n=currentRack(); if(!n) return;
+      const it=addRackItem(n, b.dataset.rkadd);
+      rackCtx.itemId=it.id; touch(); renderInspector();
+    };
+    b.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain','rkpart:'+b.dataset.rkadd));
+  });
+  body.querySelectorAll('[data-rkit]').forEach(el=>{
+    if(el.tagName==='TR'){ el.onclick=()=>{ rackCtx.itemId=el.dataset.rkit; renderInspector() }; return }
+    el.addEventListener('pointerdown', e=>startRackDrag(e, el));
+  });
+  const frame=body.querySelector('#rkFrame');
+  if(frame){
+    frame.addEventListener('dragover', e=>e.preventDefault());
+    frame.addEventListener('drop', e=>{
+      e.preventDefault();
+      const data=e.dataTransfer.getData('text/plain')||'';
+      if(!data.startsWith('rkpart:')) return;
+      const n=currentRack(); if(!n) return;
+      const r=rackOf(n), uh=parseFloat(frame.dataset.uh);
+      const rect=frame.getBoundingClientRect();
+      const pre=RU_PRESETS.find(x=>x.k===data.slice(7))||RU_PRESETS[0];
+      const u=Math.max(1, Math.min(r.ru, Math.floor((rect.bottom-e.clientY)/uh)+1));
+      const it=addRackItem(n, pre.k);
+      const spot=freeAt(r, u, it.h, it.id);
+      it.u = spot===null? it.u : spot;
+      rackCtx.itemId=it.id; touch(); renderInspector();
+    });
+  }
+  const ru=body.querySelector('[data-r="ru"]'); if(ru) ru.onchange=()=>{
+    const n=currentRack(); if(!n) return;
+    rackOf(n).ru=parseInt(ru.value,10)||42; touch(); renderInspector();
+  };
+  body.querySelectorAll('[data-ri]').forEach(inp=>{
+    const commit=()=>{
+      const n=currentRack(); if(!n) return;
+      const it=rackOf(n).items.find(x=>x.id===inp.dataset.ri); if(!it) return;
+      const f=inp.dataset.rf;
+      if(['u','h','ports','sfp'].includes(f)){
+        it[f]=Math.max(f==='ports'||f==='sfp'?0:1, parseInt(inp.value||0,10)||0);
+        if(f==='ports') it.assign=(it.assign||[]).slice(0,it.ports);
+      } else if(f==='ref'){
+        it.ref=inp.value;
+        const o=S.nodes.find(x=>x.id===inp.value);
+        if(o && !it.model) it.model=o.model||'';
+      } else it[f]=inp.value;
+      touch();
+      if(f==='name'||f==='model') renderInspector(); else renderInspector();
+    };
+    inp.onchange=commit;
+    if(inp.tagName==='INPUT' && inp.type!=='number') inp.onblur=commit;
+  });
+  body.querySelectorAll('[data-rdel]').forEach(b=>{
+    b.onclick=()=>{
+      const n=currentRack(); if(!n) return;
+      pushUndo();
+      const r=rackOf(n); r.items=r.items.filter(i=>i.id!==b.dataset.rdel);
+      rackCtx.itemId=null; touch(); renderInspector();
+    };
+  });
+  body.querySelectorAll('[data-rports]').forEach(b=>{
+    b.onclick=()=>{ const n=currentRack(); if(n) openPorts(n.id, b.dataset.rports) };
+  });
+  body.querySelectorAll('[data-a]').forEach(inp=>{
+    inp.oninput=()=>{
+      const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+      const a=(n.acc||[])[parseInt(inp.dataset.a,10)]; if(!a) return;
+      a[inp.dataset.af] = inp.dataset.af==='qty'
+        ? Math.max(1, parseInt(inp.value||1,10)||1) : inp.value;
+      touch();
+    };
+  });
+  body.querySelectorAll('[data-adel]').forEach(b=>{
+    b.onclick=()=>{
+      const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+      n.acc.splice(parseInt(b.dataset.adel,10),1); touch(); renderInspector();
+    };
+  });
+  const addacc=body.querySelector('#addacc'); if(addacc) addacc.onclick=()=>{
+    const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+    n.acc=n.acc||[]; n.acc.push({name:'',model:'',qty:1}); touch(); renderInspector();
+  };
+  body.querySelectorAll('[data-u]').forEach(inp=>{
+    inp.oninput=()=>{
+      const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+      const u=syncUnits(n)[parseInt(inp.dataset.u,10)]; if(!u) return;
+      u[inp.dataset.uf]=inp.value; touch();
+    };
+  });
+  const apf=body.querySelector('#applypfx'); if(apf) apf.onclick=()=>{
+    const n=S.nodes.find(x=>x.id===sel.id); if(!n) return;
+    syncUnits(n).forEach(u=>{ u.label = autoLabel(n,u.tag) });
+    touch(); renderInspector();
+  };
+  body.querySelectorAll('[data-g]').forEach(inp=>{
+    inp.oninput=inp.onchange=()=>{
+      const g=S.groups.find(x=>x.id===sel.id); if(!g) return;
+      g[inp.dataset.g]=inp.value; touch(); renderGroups();
+    };
+  });
+  body.querySelectorAll('[data-b]').forEach(inp=>{
+    inp.oninput=()=>{ brand[inp.dataset.b]=inp.value; saveBrand(); };
+  });
+  const lp=body.querySelector('#logoPick');  if(lp) lp.onclick=()=>pickImage('logo');
+  const lc=body.querySelector('#logoClear'); if(lc) lc.onclick=()=>{ brand.logo=''; saveBrand(); renderInspector() };
+  body.querySelectorAll('[data-ph]').forEach(cb=>{
+    cb.onchange=()=>{ const o=photoItemById(cb.dataset.ph); if(o){ o.photoOn=cb.checked; touch() } };
+  });
+  const phAll=body.querySelector('#phAll');   if(phAll) phAll.onclick=()=>{
+    photoItems().forEach(x=>{ const o=photoItemById(x.id); if(o) o.photoOn=true });
+    touch(); renderInspector();
+  };
+  const phNone=body.querySelector('#phNone'); if(phNone) phNone.onclick=()=>{
+    photoItems().forEach(x=>{ const o=photoItemById(x.id); if(o) o.photoOn=false });
+    touch(); renderInspector();
+  };
+  const cp=body.querySelector('#coverPick'); if(cp) cp.onclick=()=>pickImage('coverImg');
+  const mp=body.querySelector('#mapPick');   if(mp) mp.onclick=()=>pickImage('mapImg');
+  const cc=body.querySelector('#coverClear');if(cc) cc.onclick=()=>{ S.meta.coverImg=''; touch(); renderInspector() };
+  const mc=body.querySelector('#mapClear');  if(mc) mc.onclick=()=>{ S.meta.mapImg=''; touch(); renderInspector() };
+  const csv=body.querySelector('#csv'); if(csv) csv.onclick=()=>{
+    const head=['Tag','Label','Type','Qty','Model','Location','IP / port','Feeds from','Notes'];
+    const q=v=>`"${String(v==null?'':v).replace(/"/g,'""')}"`;
+    const lines=[head.map(q).join(',')].concat(
+      deviceList().map(r=>[r.tag,r.label,r.type,r.qty||1,r.model,r.loc,r.ip,r.to,r.note].map(q).join(','))
+    );
+    download(slug(S.meta.project)+'_device_list.csv', lines.join('\n'), 'text/csv');
+  };
+  const gfit=body.querySelector('#gfit'); if(gfit) gfit.onclick=()=>{
+    const g=S.groups.find(x=>x.id===sel.id); if(!g) return;
+    fitGroup(g); touch(); render();
+  };
+  const mcc=body.querySelector('#mcopyclip'); if(mcc) mcc.onclick=copySelection;
+  const mpp=body.querySelector('#mpaste');    if(mpp) mpp.onclick=pasteClip;
+  body.querySelectorAll('[data-align]').forEach(b=>{ b.onclick=()=>alignMulti(b.dataset.align) });
+  const mdel=body.querySelector('#mdel'); if(mdel) mdel.onclick=()=>{
+    pushUndo();
+    const ids=new Set(multi);
+    S.nodes=S.nodes.filter(n=>!ids.has(n.id));
+    S.links=S.links.filter(l=>!ids.has(l.from)&&!ids.has(l.to));
+    S.nodes.forEach(n=>{ if(n.rack) n.rack.items.forEach(it=>{ if(ids.has(it.ref)) it.ref='' }) });
+    multi=[]; sel=null; touch(); render();
+  };
+  const mdup=body.querySelector('#mdup'); if(mdup) mdup.onclick=()=>{
+    pushUndo();
+    const copies=[], map={};
+    S.nodes.filter(n=>multi.includes(n.id)).forEach(n=>{
+      const d=DEVBY[n.type];
+      const c={...n, id:uid(), tag: numMode(n.type)==='restart'? n.tag : nextTagAfter(d, copies),
+               x:n.x+24, y:n.y+24, acc:(n.acc||[]).map(a=>({...a})), units:(n.units||[]).map(u=>({...u}))};
+      map[n.id]=c.id; copies.push(c);
+    });
+    S.nodes.push(...copies);
+    S.links.filter(l=>map[l.from]&&map[l.to]).forEach(l=>{
+      S.links.push({...l, id:uid(), from:map[l.from], to:map[l.to]});
+    });
+    multi=copies.map(c=>c.id); sel={kind:'node',id:multi[0]};
+    touch(); render();
+  };
+  const del=body.querySelector('#del'); if(del) del.onclick=delSel;
+  body.querySelectorAll('[data-kit]').forEach(b=>{
+    b.onclick=()=>{
+      const door=S.nodes.find(x=>x.id===sel.id); if(!door) return;
+      const kids=S.links.filter(l=>l.from===door.id||l.to===door.id).length;
+      const child=addNode(b.dataset.kit, door.x + (kids%3-1)*(W+30), door.y + 130 + Math.floor(kids/3)*90);
+      S.links.push({ id:uid(), from:door.id, to:child.id,
+                     media:guessMedia(door.id, child.id), qty:1, label:'' });
+      sel={kind:'node', id:door.id};
+      touch(); render();
+    };
+  });
+  const dup=body.querySelector('#dup'); if(dup) dup.onclick=dupSel;
+  const addrun=body.querySelector('#addrun'); if(addrun) addrun.onclick=()=>{
+    const l=S.links.find(x=>x.id===sel.id); if(!l) return;
+    const alt = l.media==='hdmi' ? 'cat6' : l.media==='sdi' ? 'cat6' : l.media==='cat6' ? 'hdmi' : 'cat6';
+    const n={id:uid(), from:l.from, to:l.to, media:alt, qty:l.qty||1, label:''};
+    S.links.push(n); sel={kind:'link',id:n.id}; touch(); render();
+  };
+  const ub=body.querySelector('#unbend'); if(ub) ub.onclick=()=>{
+    const l=S.links.find(x=>x.id===sel.id); if(!l) return;
+    l.bend=0; touch(); renderLinks();
+  };
+  const flip=body.querySelector('#flip'); if(flip) flip.onclick=()=>{
+    const l=S.links.find(x=>x.id===sel.id); if(!l) return;
+    [l.from,l.to]=[l.to,l.from]; touch(); render();
+  };
+  body.querySelectorAll('[data-num]').forEach(sl=>{
+    sl.onchange=()=>{
+      S.settings.numbering=S.settings.numbering||{};
+      S.settings.numbering[sl.dataset.num]=sl.value;
+      if(sl.value==='restart'){
+        S.nodes.filter(n=>n.type===sl.dataset.num).forEach(n=>{ n.tagLock=false });
+      } else {
+        const d=DEVBY[sl.dataset.num]; let i=1;
+        S.nodes.filter(n=>n.type===sl.dataset.num)
+          .sort((a,b)=>(a.y-b.y)||(a.x-b.x))
+          .forEach(n=>{ n.tag=tagFor(d,i); n.tagLock=false; i+=qtyOf(n) });
+      }
+      touch(); render(); renderInspector();
+    };
+  });
+  const sr=body.querySelector('#saverev'); if(sr) sr.onclick=saveRevision;
+  body.querySelectorAll('[data-revopen]').forEach(b=>{ b.onclick=()=>openRevision(Number(b.dataset.revopen)) });
+  body.querySelectorAll('[data-revdel]').forEach(b=>{ b.onclick=()=>deleteRevision(Number(b.dataset.revdel)) });
+  const tidy=body.querySelector('#tidy'); if(tidy) tidy.onclick=()=>{
+    pushUndo();
+    S.links.forEach(l=>{ l.bend=0; l.route=''; l.fromSide=''; l.toSide='' });
+    touch(); render(); toast('Connections reset to the default path.');
+  };
+  const retag=body.querySelector('#retag'); if(retag) retag.onclick=()=>{
+    pushUndo();
+    const c={};
+    [...S.nodes].sort((a,b)=> (a.y-b.y) || (a.x-b.x)).forEach(n=>{
+      n.tagLock=false;
+      if(numMode(n.type)==='restart') return;      // handled by the drawing
+      const d=DEVBY[n.type];
+      const start=(c[d.k]||0)+1;
+      n.tag=tagFor(d, start);
+      c[d.k]=start+qtyOf(n)-1;
+    });
+    syncAutoTags();
+    touch(); render(); toast('Renumbered top to bottom, left to right.');
+  };
+  body.querySelectorAll('[data-goto]').forEach(tr=>{
+    tr.onclick=()=>{ sel={kind:'link',id:tr.dataset.goto}; render() };
+  });
+  body.querySelectorAll('tr[data-node]').forEach(tr=>{
+    tr.onclick=()=>{ sel={kind:'node',id:tr.dataset.node}; showTab('device'); render() };
+  });
+}
+
+/* Drag an item up and down its rack. */
+function startRackDrag(e, el){
+  const n=currentRack(); if(!n) return;
+  const r=rackOf(n);
+  const it=r.items.find(x=>x.id===el.dataset.rkit); if(!it) return;
+  rackCtx.itemId=it.id;
+  const frame=document.getElementById('rkFrame');
+  const uh=parseFloat(frame.dataset.uh);
+  const startY=e.clientY, startU=it.u;
+  el.classList.add('drag');
+  el.setPointerCapture && el.setPointerCapture(e.pointerId);
+  document.querySelectorAll('.rk-item').forEach(x=>x.classList.toggle('sel', x===el));
+
+  const move=ev=>{
+    const shift=Math.round((startY-ev.clientY)/uh);
+    let want=Math.max(1, Math.min(r.ru-(it.h||1)+1, startU+shift));
+    const spot=freeAt(r, want, it.h||1, it.id);
+    if(spot!==null && spot!==it.u){
+      it.u=spot;
+      el.style.bottom=((it.u-1)*uh)+'px';
+    }
+  };
+  const up=()=>{
+    el.classList.remove('drag');
+    window.removeEventListener('pointermove',move);
+    window.removeEventListener('pointerup',up);
+    touch(); renderInspector();
+  };
+  window.addEventListener('pointermove',move);
+  window.addEventListener('pointerup',up);
+  e.preventDefault();
+}
+
+/* ---- port assignment ---- */
+const povl=document.getElementById('povl');
+let portCtx=null;
+
+function portSources(rackNode, item){
+  const anchor = item.ref ? S.nodes.find(x=>x.id===item.ref) : rackNode;
+  if(!anchor) return [];
+  const seen=new Set(), out=[];
+  for(const l of S.links){
+    if(l.from!==anchor.id && l.to!==anchor.id) continue;
+    const o=ent(l.from===anchor.id? l.to : l.from);
+    if(!o || o.w || seen.has(o.id)) continue;
+    const d=DEVBY[o.type]; if(!d) continue;
+    const wantInfra = item.kind==='fiber';
+    if(d.f==='infra' && !wantInfra) continue;
+    seen.add(o.id);
+    for(let i=0;i<qtyOf(o);i++){
+      const t=unitTagAt(o,i);
+      const u=(o.units||[])[i];
+      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t) });
+    }
+  }
+  return out.sort((a,b)=>a.tag.localeCompare(b.tag,undefined,{numeric:true}));
+}
+function portDrift(n, it){
+  const src=portSources(n,it);
+  const srcTags=new Set(src.map(x=>x.tag));
+  const assigned=(it.assign||[]).filter(a=>a&&a.tag);
+  const aTags=new Set(assigned.map(a=>a.tag));
+  return {
+    added:   src.filter(x=>!aTags.has(x.tag)).length,
+    orphan:  assigned.filter(a=>!srcTags.has(a.tag)).length,
+    over:    src.length>itemPorts(it)+ (it.sfp||0),
+    src
+  };
+}
+function refreshPorts(n, it){
+  const {src}=portDrift(n,it);
+  const total=itemPorts(it)+(it.sfp||0);
+  const keep=(it.assign||[]).map(a=>a&&a.tag? a : null);
+  const have=new Set(keep.filter(Boolean).map(a=>a.tag));
+  const queue=src.filter(x=>!have.has(x.tag));
+  const out=[];
+  for(let i=0;i<total;i++){
+    if(keep[i] && keep[i].tag) out[i]=keep[i];
+    else if(queue.length) out[i]={tag:queue[0].tag, label:queue.shift().label};
+  }
+  it.assign=out;
+  return src.length;
+}
+
+function openPorts(nodeId, itemId){
+  const n=S.nodes.find(x=>x.id===nodeId); if(!n) return;
+  const it=rackOf(n).items.find(x=>x.id===itemId); if(!it) return;
+  portCtx={nodeId, itemId};
+  povl.classList.add('on');
+  renderPorts();
+}
+function closePorts(){ povl.classList.remove('on'); portCtx=null; renderInspector() }
+function renderPorts(){
+  if(!portCtx) return;
+  const n=S.nodes.find(x=>x.id===portCtx.nodeId);
+  const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
+  const total=itemPorts(it);
+  it.assign=it.assign||[];
+  document.getElementById('ptitle').textContent=`${n.tag} \u00b7 ${it.name||'Item'} \u00b7 ${total} ports`;
+  const filled=it.assign.filter(a=>a&&a.tag).length;
+  const dr=portDrift(n,it);
+  const warn=[];
+  if(dr.added)  warn.push(dr.added+' device'+(dr.added>1?'s':'')+' on the drawing not assigned yet');
+  if(dr.orphan) warn.push(dr.orphan+' assignment'+(dr.orphan>1?'s':'')+' no longer match a device');
+  if(dr.over)   warn.push('more devices than this has ports');
+  document.getElementById('pnote').innerHTML=
+    `${filled} of ${total} assigned. Blank ports print as empty rows for the tech to write in.` +
+    (warn.length? `<b class="pwarn">${esc(warn.join(' \u00b7 '))}</b>` : '');
+  let html='<div class="pgridwrap">';
+  for(let i=0;i<total;i++){
+    const a=it.assign[i]||{};
+    html+=`<div class="prow2"><span>${String(i+1).padStart(2,'0')}</span>
+      <input data-p="${i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="\u2014">
+      <input data-p="${i}" data-pf="label" value="${esc(a.label||'')}" placeholder="label"></div>`;
+  }
+  if(it.sfp){
+    for(let i=0;i<it.sfp;i++){
+      const a=it.assign[total+i]||{};
+      html+=`<div class="prow2 sfp"><span>SFP${i+1}</span>
+        <input data-p="${total+i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="\u2014">
+        <input data-p="${total+i}" data-pf="label" value="${esc(a.label||'')}" placeholder="uplink"></div>`;
+    }
+  }
+  document.getElementById('pgrid').innerHTML=html+'</div>';
+  document.getElementById('pgrid').querySelectorAll('[data-p]').forEach(inp=>{
+    inp.oninput=()=>{
+      const i=parseInt(inp.dataset.p,10);
+      it.assign[i]=Object.assign({tag:'',label:''}, it.assign[i], {[inp.dataset.pf]:inp.value});
+      touch();
+    };
+  });
+}
+document.getElementById('pclose').onclick=closePorts;
+povl.addEventListener('click',e=>{ if(e.target===povl) closePorts() });
+document.getElementById('prefresh').onclick=()=>{
+  if(!portCtx) return;
+  const n=S.nodes.find(x=>x.id===portCtx.nodeId);
+  const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
+  const c=refreshPorts(n,it); touch(); renderPorts();
+  toast(c? 'Filled the gaps, kept what you had' : 'Nothing feeds this yet');
+};
+document.getElementById('pauto').onclick=()=>{
+  if(!portCtx) return;
+  const n=S.nodes.find(x=>x.id===portCtx.nodeId);
+  const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
+  const src=portSources(n,it);
+  if(!src.length){ toast('Nothing feeds this yet. Link it on the drawing first.'); return }
+  it.assign=src.slice(0, itemPorts(it)).map(x=>({tag:x.tag, label:x.label}));
+  touch(); renderPorts();
+  toast(Math.min(src.length,itemPorts(it))+' ports filled');
+};
+document.getElementById('pclear').onclick=()=>{
+  if(!portCtx) return;
+  const n=S.nodes.find(x=>x.id===portCtx.nodeId);
+  const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
+  it.assign=[]; touch(); renderPorts();
+};
+
+/* =========================================================
+   Storage
+   ========================================================= */
+const mem={};
+/* Three homes for data, in order: the Claude host, IndexedDB in a normal browser,
+   memory as a last resort. IndexedDB is what makes this work as a standalone app. */
+const idb=(()=>{
+  let dbp=null;
+  function open(){
+    if(dbp) return dbp;
+    dbp=new Promise((res,rej)=>{
+      if(!window.indexedDB) return rej(new Error('no idb'));
+      const rq=indexedDB.open('riser-builder',1);
+      rq.onupgradeneeded=()=>{ rq.result.createObjectStore('kv') };
+      rq.onsuccess=()=>res(rq.result);
+      rq.onerror=()=>rej(rq.error);
+    });
+    return dbp;
+  }
+  const run=(mode,fn)=>open().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction('kv',mode), st=tx.objectStore('kv');
+    const rq=fn(st);
+    rq.onsuccess=()=>res(rq.result);
+    rq.onerror=()=>rej(rq.error);
+  }));
+  return {
+    get:k=>run('readonly',st=>st.get(k)),
+    set:(k,v)=>run('readwrite',st=>st.put(v,k)),
+    del:k=>run('readwrite',st=>st.delete(k))
+  };
+})();
+
+const store={
+  async get(k){
+    if(window.storage) return await window.storage.get(k,false);
+    try{
+      const v=await idb.get(k);
+      if(v!==undefined) return {key:k,value:v};
+      throw new Error('missing');
+    }catch(e){
+      if(e && e.message==='missing') throw e;
+      const v=mem[k]; if(v===undefined) throw new Error('missing');
+      return {key:k,value:v};
+    }
+  },
+  async set(k,v){
+    if(window.storage) return await window.storage.set(k,v,false);
+    mem[k]=v;
+    try{ await idb.set(k,v) }catch{}
+    return {key:k,value:v};
+  },
+  async del(k){
+    if(window.storage) return await window.storage.delete(k,false);
+    delete mem[k];
+    try{ await idb.del(k) }catch{}
+    return {key:k,deleted:true};
+  }
+};
+const IDX='topo:index';
+
+const BRANDKEY='topo:company';
+const revKey=id=>'topo:revidx:'+id;
+let revList=[];
+
+async function loadRevs(){
+  try{ revList=JSON.parse((await store.get(revKey(S.id))).value)||[] }
+  catch{ revList=[] }
+  if(activeTab==='sheet') renderInspector();
+}
+async function saveRevision(){
+  const label=prompt('Label this revision:', 'Rev '+(S.meta.rev||'A'));
+  if(label===null) return;
+  const ts=Date.now();
+  try{
+    S.view=view;
+    await store.set('topo:rev:'+S.id+':'+ts, JSON.stringify(S));
+    revList.unshift({ts, label:label.trim()||('Rev '+(S.meta.rev||'A')),
+                     devices:totalDevices(), rev:S.meta.rev||''});
+    revList=revList.slice(0,20);
+    await store.set(revKey(S.id), JSON.stringify(revList));
+    toast('Revision saved');
+    renderInspector();
+  }catch{ toast('Could not save that revision') }
+}
+async function openRevision(ts){
+  if(!confirm('Load that revision? The current sheet is replaced. Undo will bring it back.')) return;
+  try{
+    const raw=(await store.get('topo:rev:'+S.id+':'+ts)).value;
+    pushUndo();
+    const keep=S.id;
+    const obj=JSON.parse(raw); obj.id=keep;
+    loadState(obj);
+    toast('Revision loaded. Save to keep it.');
+  }catch{ toast('Could not load that revision') }
+}
+async function deleteRevision(ts){
+  try{
+    await store.del('topo:rev:'+S.id+':'+ts);
+    revList=revList.filter(r=>r.ts!==ts);
+    await store.set(revKey(S.id), JSON.stringify(revList));
+    renderInspector();
+  }catch{ toast('Could not remove it') }
+}
+async function loadBrand(){
+  try{
+    const r=await store.get(BRANDKEY);
+    brand=Object.assign(brand, JSON.parse(r.value)||{});
+  }catch{}
+  renderInspector();
+}
+async function saveBrand(){
+  try{ await store.set(BRANDKEY, JSON.stringify(brand)) }catch{}
+}
+function brandBlock(){
+  if(!(brand.logo||brand.name||brand.site||brand.phone)) return '';
+  return `<div class="pbrand">
+    ${brand.logo?`<img src="${brand.logo}" alt="">`:''}
+    <div class="pbtext">
+      ${brand.name?`<b>${esc(brand.name)}</b>`:''}
+      ${brand.phone?`<span>${esc(brand.phone)}</span>`:''}
+      ${brand.site?`<span>${esc(brand.site)}</span>`:''}
+    </div>
+  </div>`;
+}
+
+async function readIndex(){
+  try{ const r=await store.get(IDX); return JSON.parse(r.value) }catch{ return [] }
+}
+let savedOnce=false, lastSaved=0;
+
+async function saveProject(quiet){
+  S.view=view;
+  if(!S.meta.project) S.meta.project = document.getElementById('projName').value || 'Untitled project';
+  try{
+    await store.set('topo:proj:'+S.id, JSON.stringify(S));
+    const idx=await readIndex();
+    const rec={id:S.id, name:S.meta.project, client:S.meta.client||'',
+               updated:Date.now(), devices:totalDevices(), cables:totalCables()};
+    const i=idx.findIndex(x=>x.id===S.id);
+    if(i>=0) idx[i]=rec; else idx.unshift(rec);
+    await store.set(IDX, JSON.stringify(idx));
+    dirty=false; savedOnce=true; lastSaved=Date.now(); showSaveState();
+    if(!quiet) toast('Saved '+rec.name);
+    return true;
+  }catch(err){
+    if(!quiet) toast('Save failed. Use Export file to keep a copy.');
+    return false;
+  }
+}
+async function saveAsCopy(){
+  const name=prompt('Name for the copy:', (S.meta.project||'Untitled')+' copy');
+  if(name===null) return;
+  S.id=uid(); S.meta.project=name.trim()||S.meta.project;
+  document.getElementById('projName').value=S.meta.project;
+  await saveProject(); renderStamp(); openLibrary();
+}
+
+/* ---- project library ---- */
+const ovl=document.getElementById('ovl');
+let libIndex=[], libFilter='';
+
+function ago(t){
+  if(!t) return '';
+  const m=Math.round((Date.now()-t)/60000);
+  if(m<1) return 'just now';
+  if(m<60) return m+' min ago';
+  const h=Math.round(m/60); if(h<24) return h+(h===1?' hour ago':' hours ago');
+  const d=Math.round(h/24); if(d<30) return d+(d===1?' day ago':' days ago');
+  return new Date(t).toLocaleDateString();
+}
+function showSaveState(){
+  const el=document.getElementById('saveState');
+  if(!el) return;
+  el.textContent = !savedOnce ? 'not saved yet' : dirty ? 'unsaved changes' : 'saved '+ago(lastSaved);
+}
+async function openLibrary(){
+  libIndex=await readIndex();
+  libIndex.sort((a,b)=>(b.updated||0)-(a.updated||0));
+  ovl.classList.add('on');
+  renderLibrary();
+  const sb=document.getElementById('msearch'); sb.value=libFilter; sb.focus();
+}
+function closeLibrary(){ ovl.classList.remove('on') }
+
+function renderLibrary(){
+  const f=libFilter.trim().toLowerCase();
+  const rows=libIndex.filter(r=>!f
+    || (r.name||'').toLowerCase().includes(f)
+    || (r.client||'').toLowerCase().includes(f));
+  document.getElementById('mcount').textContent =
+    libIndex.length ? rows.length+' of '+libIndex.length+' shown' : '';
+  document.getElementById('mlist').innerHTML = rows.length ? rows.map(r=>`
+    <div class="prow ${r.id===S.id?'cur':''}">
+      <div class="pname" data-open="${r.id}">
+        <b>${esc(r.name||'Untitled project')}${r.id===S.id?' \u00b7 open now':''}</b>
+        <span>${esc(r.client||'no client')} &nbsp; ${r.devices||0} devices &nbsp; ${esc(ago(r.updated))}</span>
+      </div>
+      <div class="pacts">
+        <button data-open="${r.id}">Open</button>
+        <button data-ren="${r.id}">Rename</button>
+        <button data-dup="${r.id}">Copy</button>
+        <button data-exp="${r.id}">File</button>
+        <button class="danger" data-del="${r.id}">Delete</button>
+      </div>
+    </div>`).join('')
+    : `<div class="mempty">${libIndex.length? 'Nothing matches that search.' : 'No saved projects yet. Hit Save to add this one.'}</div>`;
+}
+
+async function loadProject(id){
+  if(dirty && !confirm('Open another project? Unsaved changes here are lost.')) return;
+  try{
+    const r=await store.get('topo:proj:'+id);
+    loadState(JSON.parse(r.value));
+    savedOnce=true; lastSaved=(libIndex.find(x=>x.id===id)||{}).updated||Date.now();
+    loadRevs();
+    showSaveState(); closeLibrary(); toast('Opened '+(S.meta.project||'project'));
+  }catch{ toast('Could not open that project.') }
+}
+
+ovl.addEventListener('click', async e=>{
+  if(e.target===ovl){ closeLibrary(); return }
+  const b=e.target.closest('[data-open],[data-ren],[data-dup],[data-exp],[data-del]');
+  if(!b) return;
+  const d=b.dataset;
+  if(d.open) return loadProject(d.open);
+  const rec=libIndex.find(x=>x.id===(d.ren||d.dup||d.exp||d.del));
+  if(!rec) return;
+  if(d.ren){
+    const name=prompt('Rename project:', rec.name||'');
+    if(name===null || !name.trim()) return;
+    try{
+      const r=await store.get('topo:proj:'+rec.id);
+      const obj=JSON.parse(r.value); obj.meta=obj.meta||{}; obj.meta.project=name.trim();
+      await store.set('topo:proj:'+rec.id, JSON.stringify(obj));
+      rec.name=name.trim();
+      await store.set(IDX, JSON.stringify(libIndex));
+      if(rec.id===S.id){ S.meta.project=rec.name; document.getElementById('projName').value=rec.name; renderStamp() }
+      renderLibrary();
+    }catch{ toast('Rename failed.') }
+  } else if(d.dup){
+    try{
+      const r=await store.get('topo:proj:'+rec.id);
+      const obj=JSON.parse(r.value);
+      obj.id=uid(); obj.meta=obj.meta||{}; obj.meta.project=(rec.name||'Untitled')+' copy';
+      await store.set('topo:proj:'+obj.id, JSON.stringify(obj));
+      libIndex.unshift({...rec, id:obj.id, name:obj.meta.project, updated:Date.now()});
+      await store.set(IDX, JSON.stringify(libIndex));
+      renderLibrary(); toast('Copied');
+    }catch{ toast('Copy failed.') }
+  } else if(d.exp){
+    try{
+      const r=await store.get('topo:proj:'+rec.id);
+      download(slug(rec.name)+'.topology.json', r.value);
+    }catch{ toast('Export failed.') }
+  } else if(d.del){
+    if(!confirm('Delete "'+(rec.name||'Untitled')+'" permanently?')) return;
+    try{
+      await store.del('topo:proj:'+rec.id);
+      libIndex=libIndex.filter(x=>x.id!==rec.id);
+      await store.set(IDX, JSON.stringify(libIndex));
+      renderLibrary(); toast('Deleted');
+    }catch{ toast('Delete failed.') }
+  }
+});
+document.getElementById('msearch').oninput=e=>{ libFilter=e.target.value; renderLibrary() };
+document.getElementById('mclose').onclick=closeLibrary;
+document.getElementById('mcopy').onclick=saveAsCopy;
+document.getElementById('mnew').onclick=()=>{
+  if(dirty && !confirm('Start a new sheet? Unsaved changes are lost.')) return;
+  loadState(blank()); savedOnce=false; revList=[]; showSaveState(); closeLibrary();
+};
+
+/* quietly save in the background once a project has a home */
+setInterval(()=>{ if(savedOnce && dirty) saveProject(true) }, 45000);
+setInterval(showSaveState, 30000);
+function loadState(obj){
+  S=Object.assign(blank(), obj);
+  S.groups=obj.groups||[];
+  S.settings=Object.assign({tagStyle:'plain',snap:true,pad:2,cableSheet:false,deliverable:'full',route:'step'}, obj.settings||{});
+  S.meta=Object.assign(blank().meta, obj.meta||{});
+  view=Object.assign({x:60,y:60,k:1}, obj.view||{});
+  sel=null; dirty=false;
+  document.getElementById('projName').value=S.meta.project||'';
+  render(); if(S.nodes.length) fit();
+}
+
+/* =========================================================
+   Export / import / print
+   ========================================================= */
+/* Photos get resized before they go anywhere near storage. */
+function readImage(file, maxW){
+  return new Promise((res,rej)=>{
+    const fr=new FileReader();
+    fr.onerror=()=>rej(new Error('read'));
+    fr.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>rej(new Error('decode'));
+      img.onload=()=>{
+        const scale=Math.min(1, maxW/img.width);
+        const cv=document.createElement('canvas');
+        cv.width=Math.round(img.width*scale); cv.height=Math.round(img.height*scale);
+        cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+        try{ res(cv.toDataURL('image/jpeg',0.82)) }catch(e){ rej(e) }
+      };
+      img.src=fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+let imgTarget=null;
+document.getElementById('imgIn').onchange=async e=>{
+  const f=e.target.files[0]; e.target.value='';
+  if(!f||!imgTarget) return;
+  try{
+    if(imgTarget==='logo'){
+      brand.logo=await readImage(f, 600); await saveBrand();
+    } else {
+      S.meta[imgTarget]=await readImage(f, imgTarget==='mapImg'?1800:1600); touch();
+    }
+    renderInspector(); toast('Image added');
+  }catch{ toast('Could not read that image.') }
+};
+function pickImage(field){ imgTarget=field; document.getElementById('imgIn').click() }
+
+function download(name, text, type){
+  const b=new Blob([text],{type:type||'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b); a.download=name; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function slug(s){ return (s||'topology').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'') }
+
+function totalDevices(){ return S.nodes.reduce((a,n)=>a+qtyOf(n),0) }
+function totalCables(){ return S.links.reduce((a,l)=>a+linkQty(l),0) }
+function photoItems(){
+  const out=[];
+  for(const n of S.nodes) if((n.photo||'').trim())
+    out.push({id:n.id, kind:'node', tag:n.tag||'', name:n.name||DEVBY[n.type].n,
+              loc:locOf(n), url:n.photo.trim(), on:n.photoOn!==false});
+  for(const g of S.groups) if((g.photo||'').trim())
+    out.push({id:g.id, kind:'group', tag:'', name:g.label||'Box', loc:'',
+              url:g.photo.trim(), on:g.photoOn!==false});
+  return out;
+}
+function photoItemById(id){
+  return S.nodes.find(n=>n.id===id) || S.groups.find(g=>g.id===id);
+}
+function totalAcc(){ return deviceList().filter(r=>r.kind==='accessory').reduce((a,r)=>a+(r.qty||1),0) }
+
+function photoPage(m){
+  const ph=photoItems().filter(x=>x.on);
+  if(!ph.length) return '';
+  return `<section class="psheet"><div class="pframe flow">
+    <div class="phead"><div class="ptitle">Photo links</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; ${ph.length} link${ph.length>1?'s':''}</div></div>
+    <p style="font-family:var(--sans);font-size:10px;color:#5A6A73;margin:0 0 8px">
+      Tap any row to open the photos for that location.</p>
+    <table class="ptable" style="--rowfs:9px;--rowpad:5px 5px">
+      <colgroup><col style="width:12%"><col style="width:26%"><col style="width:16%"><col style="width:46%"></colgroup>
+      <thead><tr><th>Tag</th><th>Where</th><th>Location</th><th>Link</th></tr></thead>
+      <tbody>${ph.map(x=>`<tr>
+        <td>${esc(x.tag)}</td><td>${esc(x.name)}</td><td>${esc(x.loc)}</td>
+        <td><a href="${esc(x.url)}" style="color:#1B4F72">${esc(x.url)}</a></td></tr>`).join('')}</tbody>
+    </table>
+    <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; Photo links</span>${brandBlock()}</div>
+  </div></section>`;
+}
+
+function rackPages(m){
+  if(S.settings.rackPages===false) return '';
+  const racks=racksInUse();
+  if(!racks.length) return '';
+  return racks.map(n=>{
+    const r=rackOf(n);
+    const withPorts=r.items.filter(it=>itemPorts(it) && (it.assign||[]).some(a=>a&&a.tag));
+    const tables=withPorts.map(it=>{
+      const total=itemPorts(it), sfp=it.sfp||0;
+      const rows=[];
+      for(let i=0;i<total+sfp;i++){
+        const a=(it.assign||[])[i]||{};
+        const num=i<total? String(i+1).padStart(2,'0') : 'SFP'+(i-total+1);
+        rows.push(`<tr><td class="pn">${num}</td><td>${esc(a.tag||'')}</td><td>${esc(a.label||'')}</td></tr>`);
+      }
+      const half=Math.ceil(rows.length/2);
+      const col=x=>`<table class="ptable ports"><thead><tr><th>Port</th><th>Device</th><th>Label</th></tr></thead><tbody>${x.join('')}</tbody></table>`;
+      return `<div class="portblk">
+        <div class="portname">${esc([it.ref?(S.nodes.find(x=>x.id===it.ref)||{}).tag:'', it.name].filter(Boolean).join(' \u00b7 '))}${it.model?' \u00b7 '+esc(it.model):''}</div>
+        <div class="portcols">${col(rows.slice(0,half))}${col(rows.slice(half))}</div>
+      </div>`;
+    }).join('');
+    return `<section class="psheet"><div class="pframe flow">
+      <div class="phead"><div class="ptitle">${esc(n.tag)} rack elevation</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; ${r.ru}U &nbsp; ${r.items.length} items</div></div>
+      <div class="rackwrap">
+        <div class="rackelev">${rackElevation(n, 620)}</div>
+        <table class="ptable rackbom" style="--rowfs:8.5px;--rowpad:3px 5px">
+          <thead><tr><th>U</th><th>Item</th><th>Model</th><th>Ports</th></tr></thead>
+          <tbody>${[...r.items].sort((a,b)=>b.u-a.u).map(it=>{
+            const ref=it.ref? (S.nodes.find(x=>x.id===it.ref)||{}).tag : '';
+            return `<tr><td>${it.u}${(it.h||1)>1?'\u2013'+(it.u+(it.h||1)-1):''}</td>
+              <td>${esc([ref,it.name].filter(Boolean).join(' \u00b7 '))}</td>
+              <td>${esc(it.model||'')}</td>
+              <td>${itemPorts(it)?itemPorts(it)+(it.sfp?' +'+it.sfp+' SFP':''):''}</td></tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+      ${tables? `<div class="portsec"><div class="ptitle" style="font-size:11px;margin:10px 0 6px">Port assignment</div>${tables}</div>`:''}
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; ${esc(n.tag)} elevation</span>${brandBlock()}</div>
+    </div></section>`;
+  }).join('');
+}
+
+function buildPrint(){
+  const keep=sel;
+  if(keep){ sel=null; renderGroups(); renderLinks(); renderNodes() }
+  const b=bbox(50), m=S.meta;
+  const inner = gGroups.innerHTML + gLinks.innerHTML + gNodes.innerHTML;
+  if(keep){ sel=keep; renderGroups(); renderLinks(); renderNodes() }
+  const drawSvg = `<svg xmlns="${NS}" viewBox="${b.x} ${b.y} ${b.w} ${b.h}"
+      preserveAspectRatio="xMidYMid meet" width="100%" height="100%">${inner}</svg>`;
+  const u=usedMedia();
+  const legend = u.length ? `<div class="plegend">${u.map(k=>{const md=MEDIA[k];
+      return `<span><i style="border-top-color:${md.color};border-top-style:${md.dash?'dashed':'solid'}"></i>${md.label}</span>`}).join('')}
+      ${m.notes?`<span style="margin-left:auto">${esc(m.notes)}</span>`:''}</div>` : '';
+
+  const devRows=deviceList().map(r=>
+    `<tr class="${r.kind==='accessory'?'acc':''}"><td>${esc(r.tag)}</td><td>${esc(r.label)}</td><td>${esc(r.type)}</td><td style="text-align:center">${r.qty||1}</td><td>${esc(r.model)}</td>
+     <td>${esc(r.loc)}</td><td>${esc(r.ip)}</td><td>${esc(r.to)}</td><td>${esc(r.note)}</td></tr>`).join('');
+  const cabRows=S.links.map((l,i)=>{
+    const a=ent(l.from), c=ent(l.to), md=MEDIA[l.media]||MEDIA.cat6;
+    return `<tr><td>${String(i+1).padStart(2,'0')}</td><td>${esc(a?(a.tag||a.label||''):'')}</td><td>${esc(c?(c.tag||c.label||''):'')}</td>
+      <td>${esc(md.label)}</td><td>${linkQty(l)}</td><td>${esc(l.label||'')}</td></tr>`;
+  }).join('');
+
+  const listRows=deviceList().length;
+  /* Shrink the list until it lands on a single page. */
+  /* Readability wins over page count: one step down, then it runs onto a second page. */
+  const fs  = listRows<=38 ? 9 : 8;
+  const pad = listRows<=38 ? '3.4px 5px' : '2.8px 5px';
+
+  const tb = `<div class="ptb">
+      <div class="wide"><span class="k">Project</span>${esc(m.project||'Untitled project')}</div>
+      <div class="wide"><span class="k">Client</span>${esc(m.client||'')}</div>
+      <div class="wide"><span class="k">Site</span>${esc(m.site||'')}</div>
+      <div><span class="k">Drawn by</span>${esc(m.drawnBy||'')}</div>
+      <div><span class="k">Date</span>${esc(m.date||'')}</div>
+      <div><span class="k">Rev</span>${esc(m.rev||'')}</div>
+      <div><span class="k">Sheet</span>Drawing</div>
+      <div class="tbbrand">${brandBlock()}</div>
+    </div>`;
+
+  const full = S.settings.deliverable!=='tech';
+  const cover = !full ? '' : `
+    <section class="psheet"><div class="pframe pcover">
+      ${m.coverImg?`<img class="cimg" src="${m.coverImg}" alt="">`
+                  :`<div class="cimg cimg-blank"></div>`}
+      <div class="cbody">
+        <div class="ckicker">${esc(m.drawnBy||'')}${m.site?' &nbsp;\u00b7&nbsp; '+esc(m.site):''}</div>
+        <div class="ctitle">${esc(m.project||'Untitled project')}</div>
+        <div class="csub">${esc(m.sheet||'Low voltage system')}${m.client?' &nbsp; for &nbsp; '+esc(m.client):''}</div>
+        ${m.summary?`<p class="csum">${esc(m.summary)}</p>`:''}
+        <div style="flex:1"></div>
+        <div class="cmeta">
+          <div><span class="k">Prepared for</span>${esc(m.client||'\u2014')}</div>
+          <div><span class="k">Prepared by</span>${esc(m.drawnBy||'\u2014')}</div>
+          <div><span class="k">Proposal</span>v${esc(m.version||'1.0')}</div>
+          <div><span class="k">Date</span>${esc(m.date||'')}</div>
+          <div><span class="k">Scope</span>${totalDevices()} devices</div>
+          <div style="margin-left:auto">${brandBlock()}</div>
+        </div>
+      </div>
+    </div></section>`;
+
+  const mapPage = (!full || !(m.mapImg||m.mapLink)) ? '' : `
+    <section class="psheet"><div class="pframe">
+      <div class="phead"><div class="ptitle">${esc(m.mapCaption||'Site map')}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; v${esc(m.version||'1.0')}</div></div>
+      <div class="pmap">${m.mapImg?`<img src="${m.mapImg}" alt="Marked map">`:'<div class="mapnote">Map to follow</div>'}</div>
+      ${m.mapLink?`<div class="plink">Full detail drawing:
+        <a href="${esc(m.mapLink)}">${esc(m.mapLink)}</a></div>`:''}
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; Reference only, see the drawing and list that follow</span>${brandBlock()}</div>
+    </div></section>`;
+
+  document.getElementById('printRoot').innerHTML = cover + mapPage + `
+    <section class="psheet"><div class="pframe">
+      <div class="phead"><div class="ptitle">${esc(m.sheet||'Riser diagram')}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${totalDevices()} devices &nbsp; ${totalCables()} cable runs</div></div>
+      ${legend}
+      <div class="pdraw">${drawSvg}</div>
+      ${tb}
+    </div></section>
+    <section class="psheet"><div class="pframe flow">
+      <div class="phead"><div class="ptitle">Device list</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')}${m.client?' &nbsp; '+esc(m.client):''} &nbsp; REV ${esc(m.rev||'')} &nbsp; ${esc(m.date||'')}</div></div>
+      <div class="plist" style="--rowfs:${fs}px;--rowpad:${pad}">
+        <table class="ptable">
+          <colgroup><col class="c-tag"><col class="c-lab"><col class="c-typ"><col class="c-qty"><col class="c-mod"><col class="c-loc"><col class="c-ip"><col class="c-frm"><col class="c-not"></colgroup>
+          <thead><tr><th>Tag</th><th>Label</th><th>Type</th><th>Qty</th><th>Model</th><th>Location</th><th>IP / port</th><th>Feeds from</th><th>Notes</th></tr></thead>
+          <tbody>${devRows||'<tr><td colspan="9">No devices</td></tr>'}</tbody>
+        </table>
+      </div>
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; ${esc(m.project||'')} &nbsp; Device list, ${totalDevices()} devices${totalAcc()?', '+totalAcc()+' accessories':''}${listRows>44?', continues overleaf':''}</span>${brandBlock()}</div>
+    </div></section>
+    ${photoPage(m)}
+    ${rackPages(m)}
+    ${S.settings.cableSheet && cabRows ? `<section class="psheet"><div class="pframe flow">
+      <div class="phead"><div class="ptitle">Cable schedule</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; REV ${esc(m.rev||'')}</div></div>
+      <div class="plist" style="--rowfs:8.2px;--rowpad:3px 5px">
+        <table class="ptable"><thead><tr><th>#</th><th>From</th><th>To</th><th>Cable</th><th>Qty</th><th>Note</th></tr></thead>
+        <tbody>${cabRows}</tbody></table>
+      </div>
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; Cable schedule, ${totalCables()} runs</span>${brandBlock()}</div>
+    </div></section>` : ''}`;
+}
+window.addEventListener('beforeprint', buildPrint);
+
+/* =========================================================
+   Toolbar wiring
+   ========================================================= */
+document.getElementById('projName').oninput=e=>{ S.meta.project=e.target.value; touch(); renderStamp() };
+const findBox=document.getElementById('findBox');
+findBox.oninput=()=>{ findQ=findBox.value; findIdx=0; renderNodes() };
+findBox.onkeydown=e=>{
+  if(e.key==='Escape'){ findBox.value=''; findQ=''; renderNodes(); findBox.blur(); return }
+  if(e.key!=='Enter') return;
+  const hits=findMatches();
+  if(!hits.length){ toast('No match'); return }
+  const n=hits[findIdx % hits.length];
+  findIdx++;
+  sel={kind:'node',id:n.id}; multi=[n.id];
+  render(); centreOn(n); showTab('device');
+  toast(`${(findIdx-1)%hits.length+1} of ${hits.length}`);
+};
+
+document.getElementById('btnUndo').onclick=undo;
+document.getElementById('btnArrange').onclick=autoArrange;
+document.getElementById('btnFit').onclick=fit;
+document.getElementById('zIn').onclick=()=>zoomBy(1.15);
+document.getElementById('zOut').onclick=()=>zoomBy(1/1.15);
+document.getElementById('btnSave').onclick=saveProject;
+document.getElementById('btnOpen').onclick=openLibrary;
+document.getElementById('btnExport').onclick=()=>{
+  S.view=view; download(slug(S.meta.project)+'.topology.json', JSON.stringify(S,null,2));
+};
+document.getElementById('btnImport').onclick=()=>document.getElementById('fileIn').click();
+document.getElementById('fileIn').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ loadState(JSON.parse(r.result)); toast('Imported') }catch{ toast('That file is not a topology export.') } };
+  r.readAsText(f); e.target.value='';
+};
+document.getElementById('btnPrint').onclick=()=>{ buildPrint(); setTimeout(()=>window.print(),60) };
+
+let tT;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(tT); tT=setTimeout(()=>t.classList.remove('on'),2200);
+}
+window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.returnValue='' } });
+
+/* =========================================================
+   Boot: small starter so the sheet is never confusing
+   ========================================================= */
+const APP_VERSION='1.0.0';
+document.getElementById('ver').textContent='v'+APP_VERSION;
+
+/* Offline support when this runs as a normal web app, ignored inside Claude. */
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      reg.addEventListener('updatefound',()=>{
+        const sw=reg.installing;
+        sw && sw.addEventListener('statechange',()=>{
+          if(sw.state==='installed' && navigator.serviceWorker.controller)
+            toast('Update ready. Reload to get it.');
+        });
+      });
+    }).catch(()=>{});
+  });
+}
+
+(function boot(){
+  applyView(); render(); loadBrand(); showSaveState(); loadRevs();
+  window.addEventListener('resize', applyView);
+})();
+</script>
