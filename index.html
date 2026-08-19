@@ -95,6 +95,35 @@ button,input,select,textarea{font:inherit;color:inherit}
   font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-left:auto;
   letter-spacing:.04em;
 }
+.pal-head{
+  display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--panel);
+  border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:3;
+}
+.pal-head .ttl{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
+}
+.pal-tool{
+  margin-left:auto;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--rule);background:var(--panel);border-radius:2px;cursor:pointer;color:var(--ink-soft);
+}
+.pal-tool:hover{border-color:var(--ink);color:var(--ink)}
+.pal-tool.on{background:var(--ink);border-color:var(--ink);color:var(--mark)}
+.pal-note{
+  padding:8px 10px;background:#FFFCEC;border-bottom:1px solid var(--rule-soft);
+  font-size:11px;line-height:1.45;color:var(--ink-soft);
+}
+.pal-note .btns{display:flex;gap:6px;margin-top:6px}
+.pal.reorder{user-select:none}
+.pal.reorder .dev{cursor:grab}
+.pal.reorder .pal-group>h3{cursor:grab;display:flex;align-items:center}
+.pal.reorder .pal-group{background:#FCFDFB}
+.pal.reorder .dev .px{display:none}
+.dev .grip,.pal-group>h3 .grip{display:none}
+.pal.reorder .dev .grip,.pal.reorder .pal-group>h3 .grip{
+  display:inline-flex;margin-left:auto;color:var(--rule);flex:0 0 auto;
+}
+.pal .dragging{opacity:.45;background:#FFF8DC}
+.pal-group.dragging{outline:1px dashed var(--ink-soft)}
 
 /* ---------- canvas ---------- */
 .stage{flex:1;position:relative;min-width:0;background:var(--paper);overflow:hidden}
@@ -327,6 +356,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .node:hover .anchor,.node.sel .anchor{opacity:1;pointer-events:all}
 .link{fill:none}
 .link-hit{fill:none;stroke:transparent;stroke-width:14;cursor:move}
+.lend{fill:#FFFFFF;stroke:#12222C;stroke-width:1.6;cursor:grab}
+.lend:hover{stroke:var(--blue);stroke-width:2.4}
+.lend.on{cursor:grabbing}
 .grp text{user-select:none}
 .grp-bar,.grp-edge{cursor:move}
 .grp-size{cursor:nwse-resize}
@@ -904,11 +936,13 @@ svg.innerHTML = `
     <g id="gGroups"></g>
     <g id="gLinks"></g>
     <g id="gNodes"></g>
+    <g id="gEnds"></g>
     <g id="gTemp"></g>
   </g>`;
 const root=svg.querySelector('#root'), gGroups=svg.querySelector('#gGroups'),
       gLinks=svg.querySelector('#gLinks'),
-      gNodes=svg.querySelector('#gNodes'), gTemp=svg.querySelector('#gTemp'),
+      gNodes=svg.querySelector('#gNodes'), gEnds=svg.querySelector('#gEnds'),
+      gTemp=svg.querySelector('#gTemp'),
       bgRect=svg.querySelector('#bg');
 
 function applyView(){
@@ -983,6 +1017,16 @@ function sidePoint(e, side, off){
     default:       return {x:d.x+d.w,   y:d.y+d.h/2+cx(off,d.h), v:false};
   }
 }
+/* Where on the outside of a box does a loose point belong?  Weigh the sideways
+   pull against the up and down pull, each scaled by the box, so the answer holds
+   whether the pointer is inside the box or well away from it. */
+function anchorFromPoint(e, wx, wy){
+  const d=dims(e);
+  const dx=wx-(d.x+d.w/2), dy=wy-(d.y+d.h/2);
+  if(Math.abs(dx)/Math.max(1,d.w) >= Math.abs(dy)/Math.max(1,d.h))
+    return {side: dx>0?'right':'left',  off: Math.round(dy)};
+  return   {side: dy>0?'bottom':'top',  off: Math.round(dx)};
+}
 function autoSides(a,b,route){
   const A=nodeCenter(a), B=nodeCenter(b);
   const dx=B.x-A.x, dy=B.y-A.y, vert=Math.abs(dy)>=Math.abs(dx);
@@ -999,27 +1043,32 @@ function linkGeom(a,b,off,l){
   const route = l.route || S.settings.route || 'step';
   const bend  = parseFloat(l.bend)||0;
   const auto  = autoSides(a,b,route);
-  const P=sidePoint(a, l.fromSide||auto[0], off);
-  const Q=sidePoint(b, l.toSide  ||auto[1], off);
+  /* An end placed by hand stays where it was put.  An end left on automatic
+     still fans out when the pair carries more than one run. */
+  const offA = l.fromSide ? (parseFloat(l.fromOff)||0) : off;
+  const offB = l.toSide   ? (parseFloat(l.toOff)  ||0) : off;
+  const P=sidePoint(a, l.fromSide||auto[0], offA);
+  const Q=sidePoint(b, l.toSide  ||auto[1], offB);
+  const out = g => (g.p=P, g.q=Q, g);
 
   if(route==='straight')
-    return { d:`M${P.x},${P.y} L${Q.x},${Q.y}`, mid:{x:(P.x+Q.x)/2,y:(P.y+Q.y)/2}, axis:'y' };
+    return out({ d:`M${P.x},${P.y} L${Q.x},${Q.y}`, mid:{x:(P.x+Q.x)/2,y:(P.y+Q.y)/2}, axis:'y' });
 
   if(P.v && Q.v){
     const my=(P.y+Q.y)/2 + bend;
-    return { d:`M${P.x},${P.y} L${P.x},${my} L${Q.x},${my} L${Q.x},${Q.y}`,
-             mid:{x:(P.x+Q.x)/2,y:my}, axis:'y' };
+    return out({ d:`M${P.x},${P.y} L${P.x},${my} L${Q.x},${my} L${Q.x},${Q.y}`,
+             mid:{x:(P.x+Q.x)/2,y:my}, axis:'y' });
   }
   if(!P.v && !Q.v){
     const mx=(P.x+Q.x)/2 + bend;
-    return { d:`M${P.x},${P.y} L${mx},${P.y} L${mx},${Q.y} L${Q.x},${Q.y}`,
-             mid:{x:mx,y:(P.y+Q.y)/2}, axis:'x' };
+    return out({ d:`M${P.x},${P.y} L${mx},${P.y} L${mx},${Q.y} L${Q.x},${Q.y}`,
+             mid:{x:mx,y:(P.y+Q.y)/2}, axis:'x' });
   }
   if(P.v)
-    return { d:`M${P.x},${P.y} L${P.x},${Q.y} L${Q.x},${Q.y}`,
-             mid:{x:P.x,y:(P.y+Q.y)/2}, axis:'x' };
-  return { d:`M${P.x},${P.y} L${Q.x},${P.y} L${Q.x},${Q.y}`,
-           mid:{x:(P.x+Q.x)/2,y:P.y}, axis:'y' };
+    return out({ d:`M${P.x},${P.y} L${P.x},${Q.y} L${Q.x},${Q.y}`,
+             mid:{x:P.x,y:(P.y+Q.y)/2}, axis:'x' });
+  return out({ d:`M${P.x},${P.y} L${Q.x},${P.y} L${Q.x},${Q.y}`,
+           mid:{x:(P.x+Q.x)/2,y:P.y}, axis:'y' });
 }
 /* How far this run sits off centre when a pair carries more than one cable. */
 function linkOffsets(){
@@ -1035,7 +1084,7 @@ function linkOffsets(){
 
 function renderLinks(){
   const offs=linkOffsets();
-  let out='';
+  let out='', ends='';
   for(const l of S.links){
     const a=ent(l.from), b=ent(l.to); if(!a||!b) continue;
     const m=MEDIA[l.media]||MEDIA.cat6;
@@ -1051,8 +1100,11 @@ function renderLinks(){
       <rect x="${g.mid.x-tw/2}" y="${g.mid.y-7}" width="${tw}" height="14" fill="#F4F5F1" stroke="${m.color}" stroke-width=".6" rx="1"/>
       <text x="${g.mid.x}" y="${g.mid.y+3.6}" text-anchor="middle" font-family="${MONO}" font-size="9" fill="${m.color}">${esc(lbl)}</text>
     </g>`;
+    if(on) ends += `<circle class="lend" data-lend="from" data-lid="${l.id}" cx="${g.p.x}" cy="${g.p.y}" r="5"><title>Drag to move this end. Double click for automatic.</title></circle>
+      <circle class="lend" data-lend="to" data-lid="${l.id}" cx="${g.q.x}" cy="${g.q.y}" r="5"><title>Drag to move this end. Double click for automatic.</title></circle>`;
   }
   gLinks.innerHTML = out;
+  gEnds.innerHTML = ends;
 }
 
 function nodeMarkup(n){
@@ -1139,23 +1191,110 @@ function renderStamp(){
 /* =========================================================
    Palette
    ========================================================= */
-(function palette(){
-  const pal=document.getElementById('pal');
-  let html='';
-  for(const [key,f] of Object.entries(FAM)){
-    html += `<div class="pal-group"><h3>${f.label}</h3>`;
-    for(const d of DEV.filter(x=>x.f===key)){
-      html += `<button class="dev" data-add="${d.k}" draggable="true">
-        <span class="sw" style="background:${f.color}"></span>${d.n}<span class="px">${d.p}</span></button>`;
+/* =========================================================
+   Device library, and the order it sits in
+   ========================================================= */
+const PALKEY='topo:palorder';
+const PALBOX='__boxes';
+const PALBOXES=[
+  {k:'grp:Door', n:'Door box', p:'DOOR', g:'Door', c:()=>FAM.acs.color},
+  {k:'grp:Area', n:'Area box', p:'AREA', g:'Area', c:()=>FAM.net.color}
+];
+const GRIP='<svg class="grip" width="10" height="14" viewBox="0 0 10 14" aria-hidden="true" fill="currentColor">'
+  + [3,7,11].map(y=>`<circle cx="2.6" cy="${y}" r="1.15"/><circle cx="7.4" cy="${y}" r="1.15"/>`).join('')
+  + '</svg>';
+const PALTOOL='<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" '
+  + 'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+  + '<path d="M4.5 13.5v-11M2.5 4.5 4.5 2.5 6.5 4.5"/>'
+  + '<path d="M11.5 2.5v11M9.5 11.5l2 2 2-2"/></svg>';
+
+let palOrder=null, palEdit=false;
+
+const palLabel = k => k===PALBOX ? 'Boxes' : ((FAM[k]||{}).label || k);
+
+function defaultPalOrder(){
+  const fams=[...Object.keys(FAM), PALBOX], devs={};
+  for(const k of Object.keys(FAM)) devs[k]=DEV.filter(d=>d.f===k).map(d=>d.k);
+  devs[PALBOX]=PALBOXES.map(b=>b.k);
+  return {fams,devs};
+}
+/* Keep a saved order usable when the catalog grows: drop what no longer exists,
+   append anything new at the end of its section. */
+function palNormalise(o){
+  const def=defaultPalOrder();
+  if(!o || typeof o!=='object') return def;
+  const fams=[...new Set((o.fams||[]).filter(k=>def.fams.includes(k)))];
+  for(const k of def.fams) if(!fams.includes(k)) fams.push(k);
+  const devs={};
+  for(const f of fams){
+    const want=def.devs[f]||[];
+    const keep=[...new Set(((o.devs&&o.devs[f])||[]).filter(k=>want.includes(k)))];
+    for(const k of want) if(!keep.includes(k)) keep.push(k);
+    devs[f]=keep;
+  }
+  return {fams,devs};
+}
+
+function renderPalette(){
+  const pal=document.getElementById('pal'); if(!pal) return;
+  const ord = palOrder = palNormalise(palOrder);
+  pal.classList.toggle('reorder', palEdit);
+  let html=`<div class="pal-head"><span class="ttl">Devices</span>
+    <button class="pal-tool ${palEdit?'on':''}" id="palTool" type="button"
+      aria-pressed="${palEdit?'true':'false'}"
+      title="${palEdit?'Finish reordering':'Reorder the list'}">${PALTOOL}</button></div>`;
+  if(palEdit) html+=`<div class="pal-note">Drag a row to move it inside its section.
+    Drag a section heading to move the whole section.
+    <div class="btns"><button class="mini" id="palDone" type="button">Done</button>
+    <button class="mini" id="palReset" type="button">Reset order</button></div></div>`;
+  for(const fk of ord.fams){
+    html += `<div class="pal-group" data-fam="${fk}"><h3>${esc(palLabel(fk))}${GRIP}</h3>`;
+    for(const k of (ord.devs[fk]||[])){
+      if(fk===PALBOX){
+        const b=PALBOXES.find(x=>x.k===k); if(!b) continue;
+        html += `<button class="dev" type="button" data-k="${b.k}" data-addgroup="${b.g}" draggable="${palEdit?'false':'true'}">
+          <span class="sw" style="background:${b.c()}"></span>${esc(b.n)}<span class="px">${b.p}</span>${GRIP}</button>`;
+      }else{
+        const d=DEVBY[k]; if(!d) continue;
+        html += `<button class="dev" type="button" data-k="${d.k}" data-add="${d.k}" draggable="${palEdit?'false':'true'}">
+          <span class="sw" style="background:${FAM[fk].color}"></span>${esc(d.n)}<span class="px">${d.p}</span>${GRIP}</button>`;
+      }
     }
     html += `</div>`;
   }
-  html += `<div class="pal-group"><h3>Boxes</h3>
-    <button class="dev" data-addgroup="Door"><span class="sw" style="background:${FAM.acs.color}"></span>Door box<span class="px">DOOR</span></button>
-    <button class="dev" data-addgroup="Area"><span class="sw" style="background:${FAM.net.color}"></span>Area box<span class="px">AREA</span></button>
-    </div>`;
   pal.innerHTML=html;
+}
+
+/* Read the order back off the DOM after a drag. */
+function palCommit(){
+  const pal=document.getElementById('pal');
+  const groups=[...pal.querySelectorAll('.pal-group')];
+  const fams=groups.map(g=>g.dataset.fam), devs={};
+  for(const g of groups) devs[g.dataset.fam]=[...g.querySelectorAll('.dev')].map(b=>b.dataset.k);
+  palOrder={fams,devs};
+  savePalOrder();
+}
+async function savePalOrder(){
+  try{ await store.set(PALKEY, JSON.stringify(palOrder)) }catch{}
+}
+async function loadPalOrder(){
+  try{ palOrder=palNormalise(JSON.parse((await store.get(PALKEY)).value)) }
+  catch{ palOrder=defaultPalOrder() }
+  renderPalette();
+}
+
+(function paletteWiring(){
+  const pal=document.getElementById('pal');
+  renderPalette();
+
   pal.addEventListener('click',e=>{
+    if(e.target.closest('#palTool')){ palEdit=!palEdit; renderPalette(); return }
+    if(e.target.closest('#palDone')){ palEdit=false; renderPalette(); return }
+    if(e.target.closest('#palReset')){
+      palOrder=defaultPalOrder(); savePalOrder(); renderPalette();
+      toast('Device list back to its original order.'); return;
+    }
+    if(palEdit) return;                       /* reordering, not placing */
     const g=e.target.closest('[data-addgroup]');
     const r=stage.getBoundingClientRect();
     const c=toWorld(r.left+r.width/2, r.top+r.height/2);
@@ -1163,12 +1302,46 @@ function renderStamp(){
     const b=e.target.closest('[data-add]'); if(!b) return;
     addNode(b.dataset.add, c.x-W/2 + (S.nodes.length%3)*24, c.y-H/2 + (S.nodes.length%5)*18);
   });
+
   pal.addEventListener('dragstart',e=>{
+    if(palEdit){ e.preventDefault(); return }
     const g=e.target.closest('[data-addgroup]');
     if(g){ e.dataTransfer.setData('text/plain','group:'+g.dataset.addgroup); return }
     const b=e.target.closest('[data-add]'); if(!b) return;
     e.dataTransfer.setData('text/plain', b.dataset.add);
   });
+
+  /* ---- reorder drag, rows inside a section and whole sections ---- */
+  let pd=null;
+  pal.addEventListener('pointerdown',e=>{
+    if(!palEdit || e.button!==0) return;
+    const head=e.target.closest('.pal-group>h3');
+    const row=head ? null : e.target.closest('.dev');
+    const el = head ? head.parentElement : row;
+    if(!el) return;
+    e.preventDefault();
+    pd={el, kind: head ? 'fam' : 'dev'};
+    el.classList.add('dragging');
+    if(pal.setPointerCapture) pal.setPointerCapture(e.pointerId);
+  });
+  pal.addEventListener('pointermove',e=>{
+    if(!pd) return;
+    e.preventDefault();
+    const t=document.elementFromPoint(e.clientX,e.clientY); if(!t) return;
+    const over = pd.kind==='dev' ? t.closest('.dev') : t.closest('.pal-group');
+    if(!over || over===pd.el) return;
+    if(pd.kind==='dev' && over.parentElement!==pd.el.parentElement) return;
+    const r=over.getBoundingClientRect();
+    over.parentElement.insertBefore(pd.el, e.clientY > r.top+r.height/2 ? over.nextSibling : over);
+  });
+  const endReorder=()=>{
+    if(!pd) return;
+    pd.el.classList.remove('dragging'); pd=null;
+    palCommit();
+  };
+  pal.addEventListener('pointerup',endReorder);
+  pal.addEventListener('pointercancel',endReorder);
+
   stage.addEventListener('dragover',e=>e.preventDefault());
   stage.addEventListener('drop',e=>{
     e.preventDefault();
@@ -1322,7 +1495,15 @@ svg.addEventListener('pointerdown', e=>{
   const nodeEl=e.target.closest('[data-node]');
   const grpEl =e.target.closest('[data-group]');
   const linkEl=e.target.closest('[data-link]');
+  const endEl =e.target.closest('[data-lend]');
 
+  if(endEl){
+    e.preventDefault();
+    const l=S.links.find(x=>x.id===endEl.dataset.lid); if(!l) return;
+    drag={mode:'lend', id:l.id, end:endEl.dataset.lend, moved:false};
+    if(svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+    return;
+  }
   if(sizeEl && grpEl){
     e.preventDefault();
     const g=S.groups.find(x=>x.id===grpEl.dataset.group); if(!g) return;
@@ -1435,6 +1616,15 @@ svg.addEventListener('pointermove', e=>{
     if(Math.abs(d)>2) drag.moved=true;
     l.bend = snap(drag.base + d);
     renderLinks();
+  } else if(drag.mode==='lend'){
+    const l=S.links.find(x=>x.id===drag.id); if(!l) return;
+    const t=ent(drag.end==='from' ? l.from : l.to); if(!t) return;
+    const w=toWorld(e.clientX,e.clientY);
+    const a=anchorFromPoint(t, w.x, w.y);
+    if(!drag.moved) pushUndo();
+    if(drag.end==='from'){ l.fromSide=a.side; l.fromOff=a.off }
+    else                 { l.toSide  =a.side; l.toOff  =a.off }
+    drag.moved=true; renderLinks();
   } else if(drag.mode==='pan'){
     view.x=drag.vx+(e.clientX-drag.sx); view.y=drag.vy+(e.clientY-drag.sy);
     drag.moved=true; applyView();
@@ -1468,8 +1658,8 @@ svg.addEventListener('pointerup', e=>{
     }
     render(); showTab('device');
   }
-  if((drag.mode==='move'||drag.mode==='gmove'||drag.mode==='resize'||drag.mode==='bend') && drag.moved) touch();
-  if(drag.mode==='bend' && drag.moved) renderInspector();
+  if((drag.mode==='move'||drag.mode==='gmove'||drag.mode==='resize'||drag.mode==='bend'||drag.mode==='lend') && drag.moved) touch();
+  if((drag.mode==='bend'||drag.mode==='lend') && drag.moved) renderInspector();
   if(drag.mode==='marquee'){
     gTemp.innerHTML='';
     if(drag.moved){
@@ -1506,6 +1696,19 @@ function guessMedia(aId,bId){
 }
 
 svg.addEventListener('dblclick', e=>{
+  /* The drag captures the pointer on the sheet, which retargets the clicks that
+     make up a double click, so ask what is actually under the cursor instead. */
+  const under=document.elementFromPoint(e.clientX,e.clientY);
+  const endEl=(under&&under.closest&&under.closest('[data-lend]')) || e.target.closest('[data-lend]');
+  if(endEl){
+    const l=S.links.find(x=>x.id===endEl.dataset.lid); if(!l) return;
+    pushUndo();
+    if(endEl.dataset.lend==='from'){ l.fromSide=''; l.fromOff=0 }
+    else                           { l.toSide  =''; l.toOff  =0 }
+    touch(); renderLinks(); renderInspector();
+    toast('That end is back on automatic.');
+    return;
+  }
   const nodeEl=e.target.closest('[data-node]'), grpEl=e.target.closest('[data-group]');
   if(nodeEl) sel={kind:'node', id:nodeEl.dataset.node};
   else if(grpEl) sel={kind:'group', id:grpEl.dataset.group};
@@ -1767,14 +1970,15 @@ function inspDevice(){
         ${['','top','right','bottom','left'].map(v=>`<option value="${v}" ${l.toSide===v?'selected':''}>${v||'auto'}</option>`).join('')}
       </select></div>
     </div>
-    <p class="hint" style="margin:-2px 0 8px">Drag the middle of a line on the sheet to move the elbow.</p>
+    <p class="hint" style="margin:-2px 0 8px">Pick the run on the sheet and drag the white dot at either end to move where it lands.
+    Double click a dot to hand that end back to automatic. Drag the middle of the line to move the elbow.</p>
     <div class="row2" style="margin-top:6px">
       <button class="mini" id="addrun">Add another run</button>
       <button class="mini" id="unbend">Reset elbow</button>
     </div>
     <div class="row2" style="margin-top:6px">
       <button class="mini" id="flip">Reverse</button>
-      <span></span>
+      <button class="mini" id="unends">Reset ends</button>
     </div>
     <button class="mini danger" id="del" style="margin-top:6px">Delete run</button>
     ${S.links.filter(x=>(x.from===l.from&&x.to===l.to)||(x.from===l.to&&x.to===l.from)).length>1
@@ -2230,6 +2434,8 @@ function wireInspector(){
       if(f==='qty'){ l.qty=Math.max(1,parseInt(inp.value||1,10)); l.qtyLock=true }
       else l[f]=inp.value;
       if(f==='route'||f==='fromSide'||f==='toSide') l.bend=0;
+      if(f==='fromSide') l.fromOff=0;
+      if(f==='toSide')   l.toOff=0;
       touch(); renderLinks();
     };
     inp.oninput=set; inp.onchange=set;
@@ -2433,6 +2639,12 @@ function wireInspector(){
     const l=S.links.find(x=>x.id===sel.id); if(!l) return;
     l.bend=0; touch(); renderLinks();
   };
+  const ue=body.querySelector('#unends'); if(ue) ue.onclick=()=>{
+    const l=S.links.find(x=>x.id===sel.id); if(!l) return;
+    pushUndo();
+    l.fromSide=''; l.toSide=''; l.fromOff=0; l.toOff=0;
+    touch(); renderLinks(); renderInspector();
+  };
   const flip=body.querySelector('#flip'); if(flip) flip.onclick=()=>{
     const l=S.links.find(x=>x.id===sel.id); if(!l) return;
     [l.from,l.to]=[l.to,l.from]; touch(); render();
@@ -2457,7 +2669,7 @@ function wireInspector(){
   body.querySelectorAll('[data-revdel]').forEach(b=>{ b.onclick=()=>deleteRevision(Number(b.dataset.revdel)) });
   const tidy=body.querySelector('#tidy'); if(tidy) tidy.onclick=()=>{
     pushUndo();
-    S.links.forEach(l=>{ l.bend=0; l.route=''; l.fromSide=''; l.toSide='' });
+    S.links.forEach(l=>{ l.bend=0; l.route=''; l.fromSide=''; l.toSide=''; l.fromOff=0; l.toOff=0 });
     touch(); render(); toast('Connections reset to the default path.');
   };
   const retag=body.querySelector('#retag'); if(retag) retag.onclick=()=>{
@@ -3412,7 +3624,7 @@ if('serviceWorker' in navigator && served){
 if(navigator.onLine!==false) setTimeout(()=>checkUpdate(false), 1500);
 
 (function boot(){
-  applyView(); render(); loadBrand(); showSaveState(); loadRevs();
+  applyView(); render(); loadBrand(); loadPalOrder(); showSaveState(); loadRevs();
   window.addEventListener('resize', applyView);
 })();
 </script>

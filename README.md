@@ -34,6 +34,7 @@ Full history is in [CHANGELOG.md](CHANGELOG.md).
 **Diagram**
 
 * Drag from a device to another device to create a link, then place the boxes wherever you want. Linking and layout are separate steps, so the drawing does not fight you.
+* Pick a cable run and both ends grow a white dot. Drag a dot anywhere around the outside of its device to say exactly where that end lands, one end at a time. Double click a dot to hand that end back to automatic, or use **Reset ends** in the panel to release both.
 * Devices carry a quantity, so seven APs in one IDF is one box with a count on it rather than seven boxes to drag around.
 * Named container boxes group related gear. A box called "Door 1" can hold the card reader, the strike, and the REX together.
 * Tag bubbles on every device, auto numbered by family. Cameras come out C01, C02, C03. There is a **Renumber all tags** action when the job changes.
@@ -43,7 +44,8 @@ Full history is in [CHANGELOG.md](CHANGELOG.md).
 
 **Device library**
 
-Around fifty device types across eight families, each with its own color and tag prefix:
+Around fifty device types across eight families, each with its own color and tag prefix. The arrows button beside **Devices** at the top of the sidebar turns on reordering: drag a row to move it inside its section, drag a section heading to move the whole section, and put the gear you sell most at the top. The order is remembered on that machine and applies to every project, so it is a preference rather than something that travels with a drawing. **Reset order** puts the list back the way it shipped.
+
 
 | Family | Examples |
 | --- | --- |
@@ -97,6 +99,7 @@ JSON export and import for the full project, so a drawing travels between machin
 Projects are stored in the browser using IndexedDB, under the database `riser-builder`. That means:
 
 * Data stays on the machine that made it. Nothing is uploaded anywhere.
+* Company branding and your sidebar order live here too, alongside the projects. They are per machine settings, so they do not ride along in an export.
 * Clearing site data or browser storage for the file wipes saved projects.
 * A different browser, a different computer, or an incognito window will not see your projects.
 
