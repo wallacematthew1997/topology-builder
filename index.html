@@ -3597,7 +3597,7 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Version, changelog, and updates
    ========================================================= */
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.3.0';
 
 /* Where released builds live. Change this if the repo ever moves. */
 const HOME='https://wallacematthew1997.github.io/topology-builder/';
@@ -3605,6 +3605,13 @@ const REPO='https://github.com/wallacematthew1997/topology-builder';
 
 /* Newest first. Keep this in step with CHANGELOG.md and version.json. */
 const CHANGELOG=[
+  {v:'1.3.0', d:'2026-08-19', notes:[
+    "Backup folder: pick a folder once in Projects and every save also writes a plain .json copy of the project there, so your work is not trapped in browser storage.",
+    "Linking a folder writes every project you already have, not just the open one.",
+    "The toolbar says when there is no copy on the computer yet, and Projects says when the folder needs permission again.",
+    "The app now asks the browser to keep its storage permanently, so projects are not cleared when the disk gets tight.",
+    "Autosave no longer waits for a first manual save, so a new drawing cannot be lost by closing the tab."
+  ]},
   {v:'1.2.0', d:'2026-08-19', notes:[
     "Reorder the device sidebar: the arrows button beside Devices lets you drag rows inside a section, or drag a section heading to move the whole block. The order is remembered on this machine.",
     "Cable ends place by hand: pick a run and drag the white dot at either end anywhere around the outside of its device. Double click a dot, or Reset ends, puts it back on automatic."

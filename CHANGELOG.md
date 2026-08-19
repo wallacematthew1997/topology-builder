@@ -2,6 +2,16 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.3.0
+
+2026-08-19
+
+* Backup folder: pick a folder once in Projects and every save also writes a plain .json copy of the project there, so your work is not trapped in browser storage.
+* Linking a folder writes every project you already have, not just the open one.
+* The toolbar says when there is no copy on the computer yet, and Projects says when the folder needs permission again.
+* The app now asks the browser to keep its storage permanently, so projects are not cleared when the disk gets tight.
+* Autosave no longer waits for a first manual save, so a new drawing cannot be lost by closing the tab.
+
 ## v1.2.0
 
 2026-08-19
