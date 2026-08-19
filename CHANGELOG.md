@@ -2,6 +2,13 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.2.0
+
+2026-08-19
+
+* Reorder the device sidebar: the arrows button beside Devices lets you drag rows inside a section, or drag a section heading to move the whole block. The order is remembered on this machine.
+* Cable ends place by hand: pick a run and drag the white dot at either end anywhere around the outside of its device. Double click a dot, or Reset ends, puts it back on automatic.
+
 ## v1.1.1
 
 2026-08-19
