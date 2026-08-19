@@ -1,0 +1,12 @@
+{
+  "version": "1.1.0",
+  "date": "2026-08-19",
+  "file": "index.html",
+  "notes": [
+    "Installs as a real app with its own window, taskbar icon, and offline use.",
+    "Version button in the toolbar with a one click update check.",
+    "Built in changelog so you can see what changed before updating.",
+    "Update now button pulls the new build and reloads, no file swapping.",
+    "Drawings and saved projects survive an update untouched."
+  ]
+}

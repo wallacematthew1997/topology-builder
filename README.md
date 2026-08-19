@@ -1,17 +1,33 @@
-# Topology Builder
+# Riser Builder
 
-A single file browser app for drawing low voltage and network riser diagrams, then handing the client a clean PDF.
+An app for drawing low voltage and network riser diagrams, then handing the client a clean PDF.
 
-Built for real field work: you type in what is going where, drag to link it, arrange it however the job actually looks, and print. No install, no server, no account. Open the HTML file and go.
+Built for real field work: you type in what is going where, drag to link it, arrange it however the job actually looks, and print. Still one HTML file under the hood, so nothing can rot.
 
-## Quick start
+**Live app: https://wallacematthew1997.github.io/topology-builder/**
 
-1. Download `topology-builder.html`
-2. Double click it, or drag it into Chrome or Edge
-3. Build the diagram
-4. Hit **Print to PDF**
+## Install it
 
-That is the whole setup. The file works offline once loaded. It also runs fine off a USB stick on a jobsite laptop.
+1. Open https://wallacematthew1997.github.io/topology-builder/ in Chrome or Edge
+2. Click the install icon in the address bar, or use the **Install app** button inside the version panel
+3. It lands in your Start menu and taskbar with its own icon and its own window, no browser chrome
+
+Once installed it works with no internet. Everything it needs is cached on the machine.
+
+### Or just run the file
+
+Save the page as `topology-builder.html` and double click it. Works offline, runs off a USB stick, emails fine. You give up one click updates, since a file cannot replace itself, but the app will still tell you when a new version is out and download it for you.
+
+## Updates
+
+The toolbar shows the version you are running. Click it.
+
+* It checks for a newer release and shows you exactly what changed before you commit to anything
+* A yellow dot on the version button means something new is waiting
+* **Update now** pulls the new build and reloads, one click, done
+* Your saved projects, drawings, and company branding are untouched by an update
+
+Full history is in [CHANGELOG.md](CHANGELOG.md).
 
 ## What it does
 
@@ -88,30 +104,43 @@ So for anything you care about, use **Export file** to drop a JSON copy into the
 
 ## Browser support
 
-Built and tested against Chromium browsers, meaning Chrome and Edge. Print to PDF uses the browser print dialog, so pick "Save as PDF" as the destination and turn on background graphics for the colors to come through.
+Built and tested against Chromium browsers, meaning Chrome and Edge. Those are also the two that support installing it as an app. Print to PDF uses the browser print dialog, so pick "Save as PDF" as the destination and turn on background graphics for the colors to come through.
 
-Two fonts, Archivo Narrow and IBM Plex Mono, load from Google Fonts. With no internet the app still runs, it just falls back to system fonts.
+Two fonts, Archivo Narrow and IBM Plex Mono, load from Google Fonts and then get cached for offline use. If they never load the app still runs, it just falls back to system fonts.
 
 ## Repo layout
 
 ```
-topology-builder.html   the entire application
-README.md
-LICENSE
-.gitignore
+index.html              the entire application, one file
+sw.js                   offline cache worker
+manifest.webmanifest    makes it installable
+version.json            what the update check reads
+icons/                  app icons
+CHANGELOG.md            release history
+release.sh              cut a new version in one command
 ```
 
-One file on purpose. No build step, no dependencies to install, nothing to break six months from now when you need to reopen an old drawing.
+The app is deliberately one file. No build step, no dependencies to install, nothing to break six months from now when you need to reopen an old drawing. The other files exist only to make it installable and updatable.
+
+## Publishing a new version
+
+```
+./release.sh 1.2.0 "What changed" "Another thing that changed"
+git push && git push --tags
+```
+
+That bumps the version in `index.html`, `sw.js`, and `version.json`, writes the entry into `CHANGELOG.md` and into the app's built in changelog, commits, and tags. GitHub Pages redeploys within a minute or two, and every installed copy sees the update on its next check.
 
 ## Editing it
 
-Open `topology-builder.html` in an editor. The structure runs top to bottom:
+Open `index.html` in an editor. The structure runs top to bottom:
 
 * CSS in the `<style>` block at the top
 * `FAM` and `DEV` near line 418, the device families and the device catalog
 * `MEDIA` just after, the cable types
 * Rendering and drag logic in the middle
 * Storage, projects, and revisions near the bottom
+* Version, changelog, and the updater at the very bottom
 
 Adding a device type is one line in `DEV`: a key, a display name, a tag prefix, a family, and a glyph.
 
@@ -121,3 +150,4 @@ Adding a device type is one line in `DEV`: a key, a display name, a tag prefix, 
 * Port level detail on switches
 * Floor plan underlay
 * Direct BOM export shaped for the estimating template
+* Optional sync so the same project opens on the office machine and the truck laptop

@@ -4,6 +4,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#12222C">
+<meta name="description" content="Low voltage and network riser diagram builder. Draw it, schedule it, print it.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Riser Builder">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
 :root{
   --ink:#12222C;
@@ -205,6 +213,76 @@ button,input,select,textarea{font:inherit;color:inherit}
 .pacts button:hover{border-color:var(--ink)}
 .pacts button.danger:hover{border-color:var(--red);color:var(--red)}
 .mfoot{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--rule);font-size:11px;color:var(--ink-soft)}
+
+/* ---------- version button and update panel ---------- */
+.verbtn{
+  position:relative;background:transparent;border:1px solid rgba(237,240,236,.32);
+  color:#EDF0EC;padding:5px 9px;border-radius:2px;cursor:pointer;
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;white-space:nowrap;
+}
+.verbtn:hover{border-color:var(--mark);color:var(--mark)}
+.verbtn:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.verbtn.new{border-color:var(--mark);color:var(--mark)}
+.verbtn.new::after{
+  content:'';position:absolute;top:-4px;right:-4px;width:8px;height:8px;border-radius:50%;
+  background:var(--mark);box-shadow:0 0 0 2px var(--ink);
+}
+.verbtn.checking{opacity:.6}
+
+.ucard{width:560px}
+.ustate{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-bottom:1px solid var(--rule-soft);font-size:12px;
+}
+.udot{width:9px;height:9px;border-radius:50%;background:var(--rule);flex:0 0 auto}
+.udot.ok{background:var(--teal)}
+.udot.new{background:var(--mark);box-shadow:0 0 0 3px rgba(255,216,77,.28)}
+.udot.warn{background:var(--bronze)}
+.udot.busy{background:var(--blue);animation:upulse 1s ease-in-out infinite}
+@keyframes upulse{0%,100%{opacity:.35}50%{opacity:1}}
+.ustate .utxt{flex:1;line-height:1.45}
+.ustate .utxt small{display:block;color:var(--ink-soft);font-size:11px;margin-top:2px}
+.ubody{overflow:auto;padding:0 14px 4px}
+.urow{
+  display:flex;gap:12px;align-items:center;padding:10px 14px;
+  border-bottom:1px solid var(--rule-soft);font-size:11.5px;color:var(--ink-soft);
+}
+.urow b{color:var(--ink);font-family:var(--mono);font-size:11.5px;font-weight:500}
+.urow .grow{flex:1}
+.clg{margin:0;padding:0;list-style:none}
+.clg li{padding:12px 0;border-bottom:1px solid var(--rule-soft)}
+.clg li:last-child{border-bottom:0}
+.clg .cver{
+  display:flex;align-items:baseline;gap:9px;margin-bottom:5px;
+}
+.clg .cver b{font-family:var(--mono);font-size:12px}
+.clg .cver time{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft)}
+.clg .cver .tagnow{
+  font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--ink);color:var(--mark);padding:2px 6px;border-radius:2px;
+}
+.clg .cver .tagnew{
+  font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--mark);color:var(--ink);padding:2px 6px;border-radius:2px;font-weight:600;
+}
+.clg ul{margin:0;padding-left:16px}
+.clg ul li{padding:1.5px 0;border:0;font-size:12px;line-height:1.5}
+.uhelp{
+  background:#FBFCF9;border:1px solid var(--rule-soft);border-radius:2px;
+  padding:10px 12px;margin:10px 0 4px;font-size:11.5px;line-height:1.6;color:var(--ink-soft);
+}
+.uhelp code{
+  font-family:var(--mono);font-size:11px;background:#EDF0EA;
+  padding:1px 4px;border-radius:2px;color:var(--ink);
+}
+.uhelp b{color:var(--ink)}
+.btn-go{
+  background:var(--mark);border:1px solid var(--mark);color:var(--ink);font-weight:600;
+  padding:7px 14px;border-radius:2px;cursor:pointer;font-size:11.5px;
+  letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+}
+.btn-go:hover{background:#FFE07A}
+.btn-go:disabled{opacity:.5;cursor:default}
 .insp.wide{width:560px;flex:0 0 560px}
 .rkwrap{display:flex;gap:16px;align-items:flex-start}
 .rkcol{flex:0 0 268px}
@@ -342,6 +420,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     </div>
     <div class="grow"></div>
     <span class="savestate" id="saveState"></span>
+    <button class="verbtn" id="btnUpdate" title="Version, changelog, and updates">v0.0.0</button>
     <button class="btn" id="btnOpen">Projects</button>
     <button class="btn" id="btnSave">Save</button>
     <button class="btn" id="btnExport">Export file</button>
@@ -377,6 +456,40 @@ button,input,select,textarea{font:inherit;color:inherit}
   </div>
 </div>
 
+<div class="ovl" id="uovl">
+  <div class="mcard ucard">
+    <div class="mhead">
+      <b>Riser Builder</b>
+      <span style="flex:1"></span>
+      <button class="xbtn" id="uclose" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="ustate">
+      <span class="udot" id="udot"></span>
+      <span class="utxt" id="utxt">Checking for updates</span>
+      <button class="btn-go" id="ugo" style="display:none">Update now</button>
+    </div>
+
+    <div class="urow">
+      <b id="uinstalled">v0.0.0</b>
+      <span id="umode">installed</span>
+      <span class="grow"></span>
+      <button class="mini" id="ucheck">Check again</button>
+      <button class="mini" id="uinstall" style="display:none">Install app</button>
+    </div>
+
+    <div class="ubody">
+      <div id="uhelp"></div>
+      <ul class="clg" id="ulog"></ul>
+    </div>
+
+    <div class="mfoot">
+      <span id="usrc"></span>
+      <span style="flex:1"></span>
+      <a class="mini" id="urepo" href="#" target="_blank" rel="noopener" style="text-decoration:none">Open on GitHub</a>
+    </div>
+  </div>
+</div>
 <div class="ovl" id="ovl">
   <div class="mcard">
     <div class="mhead">
@@ -3092,23 +3205,209 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Boot: small starter so the sheet is never confusing
    ========================================================= */
-const APP_VERSION='1.0.0';
-document.getElementById('ver').textContent='v'+APP_VERSION;
+/* =========================================================
+   Version, changelog, and updates
+   ========================================================= */
+const APP_VERSION='1.1.0';
 
-/* Offline support when this runs as a normal web app, ignored inside Claude. */
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+/* Where released builds live. Change this if the repo ever moves. */
+const HOME='https://wallacematthew1997.github.io/topology-builder/';
+const REPO='https://github.com/wallacematthew1997/topology-builder';
+
+/* Newest first. Keep this in step with CHANGELOG.md and version.json. */
+const CHANGELOG=[
+  {v:'1.1.0', d:'2026-08-19', notes:[
+    'Installs as a real app with its own window, taskbar icon, and offline use.',
+    'Version button in the toolbar with a one click update check.',
+    'Built in changelog so you can see what changed before updating.',
+    'Update now button pulls the new build and reloads, no file swapping.',
+    'Drawings and saved projects survive an update untouched.'
+  ]},
+  {v:'1.0.0', d:'2026-08-11', notes:[
+    'First release.',
+    'Drag to link devices, then place them freely.',
+    'MDF to IDF to device hierarchy with auto numbered tag bubbles.',
+    'Named container boxes and per device quantity counts.',
+    'Rack elevations, device schedule, and cable schedule with CSV export.',
+    'Projects and revisions saved locally, JSON export and import.',
+    'Title block, cover sheet, company branding, and print to PDF.'
+  ]}
+];
+
+const verBtn=document.getElementById('btnUpdate');
+verBtn.textContent='v'+APP_VERSION;
+document.getElementById('ver').textContent='v'+APP_VERSION;
+document.getElementById('uinstalled').textContent='v'+APP_VERSION;
+document.getElementById('urepo').href=REPO;
+
+const served = location.protocol.startsWith('http');
+const standalone = window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone===true;
+document.getElementById('umode').textContent =
+  standalone ? 'installed app' : served ? 'running in browser' : 'local file';
+document.getElementById('usrc').textContent = served ? new URL('.',location.href).href : 'opened from a local file';
+
+/* ---- semver compare, plain numeric, no prerelease games ---- */
+function newer(a,b){
+  const pa=String(a).split('.').map(n=>parseInt(n,10)||0);
+  const pb=String(b).split('.').map(n=>parseInt(n,10)||0);
+  for(let i=0;i<3;i++){ if((pa[i]||0)>(pb[i]||0)) return true; if((pa[i]||0)<(pb[i]||0)) return false; }
+  return false;
+}
+
+let latest=null;              /* {version, date, notes[], file} */
+let deferredInstall=null;
+
+function setState(kind,msg,sub){
+  const dot=document.getElementById('udot');
+  dot.className='udot'+(kind?' '+kind:'');
+  document.getElementById('utxt').innerHTML =
+    msg + (sub? '<small>'+sub+'</small>' : '');
+}
+
+function renderLog(){
+  const merged=CHANGELOG.slice();
+  if(latest && newer(latest.version,APP_VERSION) && !merged.some(c=>c.v===latest.version))
+    merged.unshift({v:latest.version, d:latest.date||'', notes:latest.notes||[]});
+  document.getElementById('ulog').innerHTML = merged.map(c=>{
+    const tag = c.v===APP_VERSION ? '<span class="tagnow">You have this</span>'
+              : newer(c.v,APP_VERSION) ? '<span class="tagnew">New</span>' : '';
+    return '<li><div class="cver"><b>v'+c.v+'</b>'
+      + (c.d?'<time>'+c.d+'</time>':'') + tag + '</div>'
+      + '<ul>'+(c.notes||[]).map(n=>'<li>'+n+'</li>').join('')+'</ul></li>';
+  }).join('');
+}
+
+function setHelp(html){ document.getElementById('uhelp').innerHTML = html||''; }
+
+/* ---- check ---- */
+async function checkUpdate(loud){
+  const url = (served ? 'version.json' : HOME+'version.json') + '?t=' + Date.now();
+  if(loud){ setState('busy','Checking for updates'); verBtn.classList.add('checking'); }
+  document.getElementById('ugo').style.display='none';
+  try{
+    const r = await fetch(url, {cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    latest = await r.json();
+    verBtn.classList.remove('checking');
+    if(newer(latest.version, APP_VERSION)){
+      verBtn.classList.add('new');
+      setState('new','Version '+latest.version+' is available',
+        'You are on '+APP_VERSION+'. Your saved projects are not touched by an update.');
+      const go=document.getElementById('ugo');
+      go.style.display=''; go.disabled=false;
+      go.textContent = served ? 'Update now' : 'Download update';
+      if(!served) setHelp(
+        '<b>Heads up.</b> You opened this from a file on your computer, so it cannot replace itself. '
+        + 'Download will save the new version to your Downloads folder, then you drop it over the old file. '
+        + 'To get true one click updates, open the app from <code>'+HOME+'</code> and install it from there.');
+      else setHelp('');
+      if(!loud) toast('Update available: v'+latest.version);
+    }else{
+      verBtn.classList.remove('new');
+      setState('ok','You are up to date','Version '+APP_VERSION+' is the latest build.');
+      setHelp('');
+    }
+  }catch(err){
+    verBtn.classList.remove('checking');
+    latest=null;
+    if(loud) setState('warn','Could not reach the update server',
+      'No internet, or the release page is not published yet. The app works fine offline, this check just needs a connection.');
+    if(loud) setHelp(
+      '<b>If this keeps failing.</b> Confirm GitHub Pages is turned on for the repo and that '
+      + '<code>'+HOME+'version.json</code> opens in a browser.');
+  }
+  renderLog();
+}
+
+/* ---- apply ---- */
+async function applyUpdate(){
+  const go=document.getElementById('ugo');
+  if(!latest) return;
+
+  /* Local file: cannot self replace, so hand over the new build. */
+  if(!served){
+    const file = latest.file || 'topology-builder.html';
+    setState('busy','Downloading v'+latest.version);
+    try{
+      const r = await fetch(HOME+file+'?t='+Date.now(), {cache:'no-store'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const blob = await r.blob();
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='topology-builder.html';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+      setState('ok','Downloaded v'+latest.version,
+        'Close the app, drop the new file over your old topology-builder.html, then reopen it.');
+    }catch(e){
+      setState('warn','Download failed','Open '+HOME+' in a browser and save the page instead.');
+    }
+    return;
+  }
+
+  /* Served: clear the offline cache, drop the old worker, reload clean. */
+  go.disabled=true;
+  setState('busy','Installing v'+latest.version,'This takes a few seconds.');
+  try{
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    if(window.caches){
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+  }catch(e){}
+  const u = new URL(location.href);
+  u.searchParams.set('u', latest.version);
+  location.replace(u.toString());
+}
+
+/* strip the cache busting param after an update reload */
+if(served && new URL(location.href).searchParams.has('u')){
+  const u=new URL(location.href); u.searchParams.delete('u');
+  history.replaceState({}, '', u.pathname + (u.search||'') + u.hash);
+  setTimeout(()=>toast('Updated to v'+APP_VERSION),400);
+}
+
+/* ---- panel wiring ---- */
+const uovl=document.getElementById('uovl');
+function openUpdate(){ uovl.classList.add('on'); renderLog(); checkUpdate(true); }
+function closeUpdate(){ uovl.classList.remove('on') }
+verBtn.onclick=openUpdate;
+document.getElementById('ver').onclick=openUpdate;
+document.getElementById('uclose').onclick=closeUpdate;
+uovl.addEventListener('mousedown',e=>{ if(e.target===uovl) closeUpdate() });
+document.getElementById('ucheck').onclick=()=>checkUpdate(true);
+document.getElementById('ugo').onclick=applyUpdate;
+
+/* ---- install prompt ---- */
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredInstall=e;
+  document.getElementById('uinstall').style.display='';
+});
+document.getElementById('uinstall').onclick=async()=>{
+  if(!deferredInstall) return;
+  deferredInstall.prompt();
+  try{ await deferredInstall.userChoice }catch(e){}
+  deferredInstall=null;
+  document.getElementById('uinstall').style.display='none';
+};
+window.addEventListener('appinstalled',()=>{
+  document.getElementById('umode').textContent='installed app';
+  toast('Installed. Look for Riser Builder in your apps.');
+});
+
+/* ---- offline worker ---- */
+if('serviceWorker' in navigator && served){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sw.js').then(reg=>{
-      reg.addEventListener('updatefound',()=>{
-        const sw=reg.installing;
-        sw && sw.addEventListener('statechange',()=>{
-          if(sw.state==='installed' && navigator.serviceWorker.controller)
-            toast('Update ready. Reload to get it.');
-        });
-      });
-    }).catch(()=>{});
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
   });
 }
+
+/* quiet check on start so the button badges itself without being asked */
+if(navigator.onLine!==false) setTimeout(()=>checkUpdate(false), 1500);
 
 (function boot(){
   applyView(); render(); loadBrand(); showSaveState(); loadRevs();
