@@ -62,6 +62,14 @@ Around fifty device types across eight families, each with its own color and tag
 
 Links are typed, and each media type draws with its own color, weight, and dash pattern: Cat6, Cat6A, Cat5e, single mode fiber, multimode fiber, RG59 coax, 18/2, 22/4, composite, wireless, SDI, HDMI, XLR, and power.
 
+**Patch schedules for the crew**
+
+Port assignment says what lands on a port. A patch says where the other end of that jumper goes, so the sheet a tech works from names both ends: *switch SFP1 into fiber enclosure 01*, not just "fiber".
+
+Open a rack item's **Ports** and each row gets a target: another item in any rack, and a port on it. **Patch straight through to…** wires a switch into a panel one to one in a single go, which is how most of them get built. A port claimed by two jumpers is flagged in red. The patch is stored once and read from both ends, so opening the far item shows the same jumper rather than letting you type a second copy of it.
+
+Each rack then prints its own **patch schedule** page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off. A run between two racks appears on both pages, since either tech might be the one making it. Turn the pages off in Sheet settings if a job does not need them.
+
 **Rack elevations**
 
 A rack view for laying out MDF and IDF gear by RU, with rack unit presets and fill checking.

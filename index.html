@@ -346,7 +346,35 @@ button,input,select,textarea{font:inherit;color:inherit}
 .rkpart:hover{border-color:var(--ink)}
 .rkpart i{width:4px;height:13px;border-radius:1px;flex:0 0 4px}
 .rkpart em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:9px;color:var(--ink-soft)}
-.pgridwrap{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px;padding:10px 14px}
+.pgridwrap{display:grid;grid-template-columns:1fr;gap:3px;padding:10px 14px}
+#povl .mcard{width:860px}
+.prow2 select{
+  padding:3px 4px;border:1px solid var(--rule-soft);border-radius:2px;
+  font-family:var(--mono);font-size:10.5px;background:#FCFDFB;min-width:0;
+}
+.prow2 select:focus{outline:none;border-color:var(--blue);background:#fff}
+.prow2 .toitem{flex:0 0 210px;width:210px}
+.prow2 .toport{flex:0 0 78px;width:78px}
+.prow2 .mirror{
+  flex:0 0 292px;width:292px;display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+}
+.prow2 .mirror b{font-weight:600;color:var(--ink)}
+.prow2 .mirror button{
+  margin-left:auto;border:1px solid var(--rule-soft);background:none;cursor:pointer;
+  border-radius:2px;color:var(--ink-soft);font:inherit;line-height:1;padding:2px 5px;
+}
+.prow2 .mirror button:hover{border-color:var(--red);color:var(--red)}
+.prow2.clash input,.prow2.clash select{border-color:var(--red)}
+.parrow{color:var(--ink-soft);flex:0 0 auto;font-size:11px}
+.phdr{
+  display:grid;grid-template-columns:1fr;gap:3px;padding:8px 14px 0;
+  font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.phdr>div{display:flex;gap:6px;align-items:center}
+.phdr .h1{width:26px;flex:0 0 26px;text-align:right}
+.phdr .h2,.phdr .h3{flex:1}
+.phdr .h4{flex:0 0 292px;width:292px}
 .prow2{display:flex;align-items:center;gap:6px}
 .prow2>span{font-family:var(--mono);font-size:10px;color:var(--ink-soft);width:26px;flex:0 0 26px;text-align:right}
 .prow2 input{flex:1;min-width:0;padding:3px 6px;border:1px solid var(--rule-soft);border-radius:2px;font-family:var(--mono);font-size:11px;background:#FCFDFB}
@@ -414,6 +442,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ptable.ports{--rowfs:7.6px;--rowpad:1.6px 4px}
 .ptable.ports .pn{color:#5A6A73;width:34px}
 .portsec{margin-top:6px}
+.ptable.patch{--rowfs:8.4px;--rowpad:2.6px 5px}
+.ptable.patch .tick{width:30px;border:1px solid #C9D2CD}
+.pintro{font-family:var(--mono);font-size:8.6px;color:#5A6A73;margin:0 0 7px}
 .pfoot{display:flex;align-items:flex-end;gap:16px}
 .pfoot>span{flex:1}
 .pbrand{display:flex;align-items:center;gap:7px;text-align:right}
@@ -557,11 +588,14 @@ button,input,select,textarea{font:inherit;color:inherit}
   <div class="mcard">
     <div class="mhead"><b id="ptitle">Ports</b>
       <span style="flex:1"></span>
+      <select class="mini" id="pstraight" title="Patch every port straight through to another item"
+        style="max-width:210px"></select>
       <button class="mini" id="pauto">Fill from drawing</button>
       <button class="mini" id="prefresh">Top up</button>
       <button class="mini" id="pclear">Clear</button>
       <button class="xbtn" id="pclose" aria-label="Close">&times;</button>
     </div>
+    <div class="phdr" id="phdr"></div>
     <div class="mlist" id="pgrid"></div>
     <div class="mfoot"><span id="pnote"></span></div>
   </div>
@@ -2334,6 +2368,10 @@ function inspSheet(){
     <option value="1" ${S.settings.rackPages!==false?'selected':''}>Print when a rack is built</option>
     <option value="0" ${S.settings.rackPages===false?'selected':''}>Never print rack pages</option>
   </select></div>
+  <div class="fld"><label>Patch schedule</label><select data-s="patchPages">
+    <option value="1" ${S.settings.patchPages!==false?'selected':''}>Print when ports are patched</option>
+    <option value="0" ${S.settings.patchPages===false?'selected':''}>Never print patch pages</option>
+  </select></div>
   <div class="fld"><label>Pages</label><select data-s="cableSheet">
     <option value="0" ${!s.cableSheet?'selected':''}>2 pages: drawing, then device list</option>
     <option value="1" ${s.cableSheet?'selected':''}>3 pages: add a cable schedule</option>
@@ -2462,7 +2500,7 @@ function wireInspector(){
   body.querySelectorAll('[data-s]').forEach(inp=>{
     inp.onchange=()=>{
       const f=inp.dataset.s;
-      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages') ? inp.value==='1'
+      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages'||f==='patchPages') ? inp.value==='1'
                     : f==='pad' ? parseInt(inp.value,10) : inp.value;
       touch(); render();
     };
@@ -2742,6 +2780,93 @@ function startRackDrag(e, el){
   e.preventDefault();
 }
 
+/* =========================================================
+   Patching, port to port.
+
+   A port assignment says what lands on a port.  A patch says where the other
+   end of that jumper goes, so a tech in front of the rack is told both ends:
+   switch SFP1 into fiber enclosure 01, not just "fiber".  The patch is stored
+   once, on the side it was entered from, and read from either end.
+   ========================================================= */
+function portName(it, p){
+  const total=itemPorts(it);
+  return p<total ? String(p+1).padStart(2,'0') : 'SFP'+(p-total+1);
+}
+function portCount(it){ return itemPorts(it)+(it.sfp||0) }
+function itemName(n, it){
+  const ref = it.ref ? (S.nodes.find(x=>x.id===it.ref)||{}).tag : '';
+  return [ref, it.name].filter(Boolean).join(' · ') || 'Item';
+}
+function itemFullName(n, it){ return n.tag+' · '+itemName(n,it) }
+
+/* Every rack item with ports, for the target picker. */
+function patchTargets(){
+  const out=[];
+  for(const n of S.nodes){
+    if(!isRack(n) || !n.rack) continue;
+    for(const it of n.rack.items) if(portCount(it)) out.push({node:n, item:it});
+  }
+  return out;
+}
+function findRackItem(nodeId, itemId){
+  const n=S.nodes.find(x=>x.id===nodeId);
+  if(!n || !n.rack) return null;
+  const it=n.rack.items.find(x=>x.id===itemId);
+  return it ? {node:n, item:it} : null;
+}
+
+/* Read every patch in the job once, then look ends up against it. */
+function patchList(){
+  const out=[];
+  for(const n of S.nodes){
+    if(!isRack(n) || !n.rack) continue;
+    for(const it of n.rack.items){
+      (it.assign||[]).forEach((a,p)=>{
+        if(!a || !a.to || !a.to.i) return;
+        const far=findRackItem(a.to.n, a.to.i);
+        if(!far || a.to.p==null) return;
+        out.push({ a:{node:n,item:it,port:p}, b:{node:far.node,item:far.item,port:a.to.p},
+                   device:a.tag||'', note:a.label||'' });
+      });
+    }
+  }
+  return out;
+}
+/* What is on the far end of this port, whichever side the patch was typed on. */
+function patchEnd(list, itemId, port){
+  for(const pc of list){
+    if(pc.a.item.id===itemId && pc.a.port===port) return {end:pc.b, own:true,  pc};
+    if(pc.b.item.id===itemId && pc.b.port===port) return {end:pc.a, own:false, pc};
+  }
+  return null;
+}
+/* Ports on the far side that two jumpers both claim. */
+function patchClashes(list){
+  const seen=new Map(), bad=new Set();
+  for(const pc of list){
+    for(const e of [pc.a, pc.b]){
+      const k=e.item.id+'#'+e.port;
+      if(seen.has(k)) { bad.add(k); bad.add(seen.get(k)) } else seen.set(k,k);
+    }
+  }
+  return bad;
+}
+function setPatch(it, port, nodeId, itemId, farPort){
+  it.assign=it.assign||[];
+  const cur=Object.assign({tag:'',label:''}, it.assign[port]);
+  if(!itemId || farPort==null || farPort<0) delete cur.to;
+  else cur.to={n:nodeId, i:itemId, p:farPort};
+  it.assign[port]=cur;
+}
+/* Clear a patch from whichever side holds it. */
+function clearPatch(list, itemId, port){
+  const hit=patchEnd(list, itemId, port);
+  if(!hit) return;
+  const own=hit.pc.a;
+  const a=(own.item.assign||[])[own.port];
+  if(a) delete a.to;
+}
+
 /* ---- port assignment ---- */
 const povl=document.getElementById('povl');
 let portCtx=null;
@@ -2805,42 +2930,119 @@ function renderPorts(){
   if(!portCtx) return;
   const n=S.nodes.find(x=>x.id===portCtx.nodeId);
   const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
-  const total=itemPorts(it);
+  const total=itemPorts(it), all=portCount(it);
   it.assign=it.assign||[];
-  document.getElementById('ptitle').textContent=`${n.tag} \u00b7 ${it.name||'Item'} \u00b7 ${total} ports`;
+  document.getElementById('ptitle').textContent=`${n.tag} · ${it.name||'Item'} · ${total} ports`;
+
+  const list=patchList(), clash=patchClashes(list);
   const filled=it.assign.filter(a=>a&&a.tag).length;
+  const patched=[];
+  for(let i=0;i<all;i++) if(patchEnd(list,it.id,i)) patched.push(i);
   const dr=portDrift(n,it);
   const warn=[];
   if(dr.added)  warn.push(dr.added+' device'+(dr.added>1?'s':'')+' on the drawing not assigned yet');
   if(dr.orphan) warn.push(dr.orphan+' assignment'+(dr.orphan>1?'s':'')+' no longer match a device');
   if(dr.over)   warn.push('more devices than this has ports');
+  const mine=[...clash].filter(k=>k.startsWith(it.id+'#')).length;
+  if(mine) warn.push(mine+' port'+(mine>1?'s':'')+' patched twice');
   document.getElementById('pnote').innerHTML=
-    `${filled} of ${total} assigned. Blank ports print as empty rows for the tech to write in.` +
-    (warn.length? `<b class="pwarn">${esc(warn.join(' \u00b7 '))}</b>` : '');
+    `${filled} of ${total} assigned, ${patched.length} of ${all} patched. Blank ports print as empty rows for the tech to write in.` +
+    (warn.length? `<b class="pwarn">${esc(warn.join(' · '))}</b>` : '');
+
+  document.getElementById('phdr').innerHTML=
+    '<div><span class="h1">#</span><span class="h2">Device</span><span class="h3">Label</span><span class="h4">Patches into</span></div>';
+
+  /* Somewhere to send a jumper: any other item in any rack that has ports. */
+  const targets=patchTargets().filter(t=>t.item.id!==it.id);
+  const targetOpts=(sel)=>['<option value="">—</option>'].concat(
+    targets.map(t=>`<option value="${t.node.id}|${t.item.id}" ${sel===t.node.id+'|'+t.item.id?'selected':''}>${esc(itemFullName(t.node,t.item))}</option>`)
+  ).join('');
+
   let html='<div class="pgridwrap">';
-  for(let i=0;i<total;i++){
+  for(let i=0;i<all;i++){
     const a=it.assign[i]||{};
-    html+=`<div class="prow2"><span>${String(i+1).padStart(2,'0')}</span>
-      <input data-p="${i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="\u2014">
-      <input data-p="${i}" data-pf="label" value="${esc(a.label||'')}" placeholder="label"></div>`;
-  }
-  if(it.sfp){
-    for(let i=0;i<it.sfp;i++){
-      const a=it.assign[total+i]||{};
-      html+=`<div class="prow2 sfp"><span>SFP${i+1}</span>
-        <input data-p="${total+i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="\u2014">
-        <input data-p="${total+i}" data-pf="label" value="${esc(a.label||'')}" placeholder="uplink"></div>`;
+    const hit=patchEnd(list, it.id, i);
+    const isSfp=i>=total;
+    const key=it.id+'#'+i;
+    let tail;
+    if(hit && !hit.own){
+      /* the other item holds this one, so show it rather than offer a second copy */
+      tail=`<div class="mirror" title="Set from the other end">← <b>${esc(itemFullName(hit.end.node,hit.end.item))}</b> ${esc(portName(hit.end.item,hit.end.port))}
+        <button data-punlink="${i}" title="Remove this patch">clear</button></div>`;
+    }else{
+      const cur=hit ? hit.end.node.id+'|'+hit.end.item.id : '';
+      const far=hit ? hit.end.item : null;
+      const pOpts=far
+        ? ['<option value="">—</option>'].concat(
+            Array.from({length:portCount(far)},(_,k)=>`<option value="${k}" ${hit.end.port===k?'selected':''}>${portName(far,k)}</option>`)
+          ).join('')
+        : '<option value="">—</option>';
+      tail=`<span class="parrow">→</span>
+        <select class="toitem" data-p="${i}" data-pt="item">${targetOpts(cur)}</select>
+        <select class="toport" data-p="${i}" data-pt="port" ${far?'':'disabled'}>${pOpts}</select>`;
     }
+    html+=`<div class="prow2 ${isSfp?'sfp':''} ${clash.has(key)?'clash':''}"><span>${portName(it,i)}</span>
+      <input data-p="${i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="—">
+      <input data-p="${i}" data-pf="label" value="${esc(a.label||'')}" placeholder="${isSfp?'uplink':'label'}">
+      ${tail}</div>`;
   }
   document.getElementById('pgrid').innerHTML=html+'</div>';
-  document.getElementById('pgrid').querySelectorAll('[data-p]').forEach(inp=>{
+
+  const grid=document.getElementById('pgrid');
+  grid.querySelectorAll('[data-pf]').forEach(inp=>{
     inp.oninput=()=>{
       const i=parseInt(inp.dataset.p,10);
       it.assign[i]=Object.assign({tag:'',label:''}, it.assign[i], {[inp.dataset.pf]:inp.value});
       touch();
     };
   });
+  grid.querySelectorAll('[data-pt="item"]').forEach(sel=>{
+    sel.onchange=()=>{
+      const i=parseInt(sel.dataset.p,10);
+      if(!sel.value){ clearPatch(patchList(), it.id, i); touch(); renderPorts(); return }
+      const [nid,iid]=sel.value.split('|');
+      const far=findRackItem(nid,iid); if(!far) return;
+      const held=patchEnd(patchList(), it.id, i);
+      const keep = held && held.own && held.end.item.id===iid ? held.end.port : firstFreePort(far.item, patchList());
+      setPatch(it, i, nid, iid, keep==null?0:keep);
+      touch(); renderPorts();
+    };
+  });
+  grid.querySelectorAll('[data-pt="port"]').forEach(sel=>{
+    sel.onchange=()=>{
+      const i=parseInt(sel.dataset.p,10);
+      const cur=(it.assign[i]||{}).to; if(!cur) return;
+      setPatch(it, i, cur.n, cur.i, sel.value===''? null : parseInt(sel.value,10));
+      touch(); renderPorts();
+    };
+  });
+  grid.querySelectorAll('[data-punlink]').forEach(b=>{
+    b.onclick=()=>{ clearPatch(patchList(), it.id, parseInt(b.dataset.punlink,10)); touch(); renderPorts() };
+  });
+
+  /* straight through picker */
+  const st=document.getElementById('pstraight');
+  st.innerHTML='<option value="">Patch straight through to…</option>'+
+    targets.map(t=>`<option value="${t.node.id}|${t.item.id}">${esc(itemFullName(t.node,t.item))}</option>`).join('');
+  st.onchange=()=>{
+    if(!st.value) return;
+    const [nid,iid]=st.value.split('|');
+    const far=findRackItem(nid,iid);
+    st.value='';
+    if(!far) return;
+    const count=Math.min(all, portCount(far.item));
+    for(let i=0;i<count;i++) setPatch(it, i, nid, iid, i);
+    touch(); renderPorts();
+    toast(count+' ports patched one to one into '+itemFullName(far.node,far.item)+'.');
+  };
 }
+
+/* Lowest port on the far item that nothing is patched into yet. */
+function firstFreePort(it, list){
+  for(let k=0;k<portCount(it);k++) if(!patchEnd(list, it.id, k)) return k;
+  return 0;
+}
+
 document.getElementById('pclose').onclick=closePorts;
 povl.addEventListener('click',e=>{ if(e.target===povl) closePorts() });
 document.getElementById('prefresh').onclick=()=>{
@@ -3490,6 +3692,47 @@ function rackPages(m){
   }).join('');
 }
 
+/* One patch schedule per rack, for whoever is standing at it with a bag of
+   jumpers.  Every run that touches this rack, read from both ends. */
+function patchPages(m){
+  if(S.settings.patchPages===false) return '';
+  const list=patchList();
+  if(!list.length) return '';
+  return racksInUse().map(n=>{
+    const mine=[];
+    for(const pc of list){
+      if(pc.a.node.id===n.id) mine.push({near:pc.a, far:pc.b, pc});
+      else if(pc.b.node.id===n.id) mine.push({near:pc.b, far:pc.a, pc});
+    }
+    if(!mine.length) return '';
+    mine.sort((x,y)=>
+      itemName(n,x.near.item).localeCompare(itemName(n,y.near.item)) || x.near.port-y.near.port);
+    const rows=mine.map((r,i)=>{
+      const farRack = r.far.node.id===n.id ? '' : r.far.node.tag+' · ';
+      return `<tr>
+        <td class="pn">${String(i+1).padStart(2,'0')}</td>
+        <td>${esc(itemName(n,r.near.item))}</td>
+        <td class="pn">${esc(portName(r.near.item, r.near.port))}</td>
+        <td>${esc(farRack+itemName(r.far.node, r.far.item))}</td>
+        <td class="pn">${esc(portName(r.far.item, r.far.port))}</td>
+        <td>${esc(r.pc.device||'')}</td>
+        <td>${esc(r.pc.note||'')}</td>
+        <td class="tick"></td></tr>`;
+    }).join('');
+    return `<section class="psheet"><div class="pframe flow">
+      <div class="phead"><div class="ptitle">${esc(n.tag)} patch schedule</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; ${mine.length} jumper${mine.length===1?'':'s'}</div></div>
+      <p class="pintro">Work down the list. Each row is one jumper: the port on the left goes to the port on the right. Tick it off as you go.</p>
+      <table class="ptable patch">
+        <colgroup><col style="width:26px"><col style="width:19%"><col style="width:44px">
+          <col style="width:23%"><col style="width:44px"><col style="width:12%"><col><col style="width:34px"></colgroup>
+        <thead><tr><th>#</th><th>From</th><th>Port</th><th>To</th><th>Port</th><th>Carries</th><th>Note</th><th>Done</th></tr></thead>
+        <tbody>${rows}</tbody></table>
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; ${esc(n.tag)} patch schedule</span>${brandBlock()}</div>
+    </div></section>`;
+  }).join('');
+}
+
 function buildPrint(){
   const keep=sel;
   if(keep){ sel=null; renderGroups(); renderLinks(); renderNodes() }
@@ -3582,6 +3825,7 @@ function buildPrint(){
     </div></section>
     ${photoPage(m)}
     ${rackPages(m)}
+    ${patchPages(m)}
     ${S.settings.cableSheet && cabRows ? `<section class="psheet"><div class="pframe flow">
       <div class="phead"><div class="ptitle">Cable schedule</div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; REV ${esc(m.rev||'')}</div></div>
