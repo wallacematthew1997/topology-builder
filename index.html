@@ -361,7 +361,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .rkcopyfoot .hint{flex:1;margin:0}
 .ptray{padding:8px 14px;border-bottom:1px solid var(--rule-soft);background:#F6F8F5}
 .ptray .zhead{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-soft);margin-bottom:6px}
+  color:var(--ink-soft);margin-bottom:6px;display:flex;align-items:baseline;gap:10px}
+.tsum{text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink)}
 .tgrp{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;flex-wrap:wrap}
 .tgh{display:flex;align-items:center;gap:7px;cursor:grab;background:#fff;
   border:1px solid var(--rule);border-radius:2px;padding:3px 8px;font:inherit;font-size:11px;
@@ -827,8 +828,49 @@ function numMode(k){
   return set || DEFAULT_NUMBERING[k] || 'continuous';
 }
 /* Restart tags are derived from the drawing, so they follow when a device is re-homed. */
+/* Everything that lands in one closet numbered as a single run, I02-01 up,
+   laid out in blocks by kind so the data drops, then the APs, then the
+   cameras each sit together.  Device kind order comes from the catalog, not
+   from the sidebar, so the numbers do not change from one machine to the next.
+   Anything that does not reach a closet keeps the tag it has. */
+function syncClosetTags(){
+  const order=new Map(DEV.map((d,i)=>[d.k,i]));
+  const byLoc={};
+  for(const n of S.nodes){
+    if(n.tagLock) continue;
+    const d=DEVBY[n.type]; if(!d || d.f==='infra') continue;
+    const loc=locCode(n); if(!loc) continue;
+    (byLoc[loc]=byLoc[loc]||[]).push(n);
+  }
+  for(const [loc,list] of Object.entries(byLoc)){
+    list.sort((a,b)=> (order.get(a.type)-order.get(b.type)) || (a.y-b.y) || (a.x-b.x));
+    let i=1;
+    for(const n of list){
+      n.tag = loc+'-'+String(i).padStart(S.settings.pad,'0');
+      i += qtyOf(n);
+    }
+  }
+}
+
+/* Tags by device kind, top to bottom then left to right.  Kinds numbered off
+   the drawing are left to syncAutoTags.  Used by Renumber all tags, and when
+   closet numbering is switched off, so nothing keeps a closet tag it is no
+   longer entitled to. */
+function retagByKind(){
+  const c={};
+  [...S.nodes].sort((a,b)=> (a.y-b.y) || (a.x-b.x)).forEach(n=>{
+    if(n.tagLock) return;
+    if(numMode(n.type)==='restart') return;
+    const d=DEVBY[n.type]; if(!d) return;
+    const start=(c[d.k]||0)+1;
+    n.tag=tagFor(d, start);
+    c[d.k]=start+qtyOf(n)-1;
+  });
+}
+
 function syncAutoTags(){
   clearLocCache();
+  if(S.settings.closetSeq){ syncClosetTags(); return }
   const byType={};
   for(const n of S.nodes){
     if(n.tagLock) continue;
@@ -2512,6 +2554,10 @@ function inspSheet(){
 
   <div class="sec">Tag format</div>
   <div class="row2">
+    <div class="fld"><label>Numbering</label><select data-s="closetSeq">
+      <option value="0" ${!s.closetSeq?'selected':''}>Per kind: C01, AP01</option>
+      <option value="1" ${s.closetSeq?'selected':''}>One run per closet: I02-01</option>
+    </select></div>
     <div class="fld"><label>Style</label><select data-s="tagStyle">
       <option value="plain" ${s.tagStyle==='plain'?'selected':''}>C01</option>
       <option value="dash" ${s.tagStyle==='dash'?'selected':''}>C-01</option>
@@ -2671,9 +2717,12 @@ function wireInspector(){
   body.querySelectorAll('[data-s]').forEach(inp=>{
     inp.onchange=()=>{
       const f=inp.dataset.s;
-      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages'||f==='patchPages') ? inp.value==='1'
+      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages'||f==='patchPages'||f==='closetSeq')
+                    ? inp.value==='1'
                     : f==='pad' ? parseInt(inp.value,10) : inp.value;
-      touch(); render();
+      if(f==='closetSeq' && !S.settings.closetSeq) retagByKind();
+      if(f==='closetSeq'||f==='pad') syncAutoTags();
+      touch(); render(); renderInspector();
     };
   });
   const gr=body.querySelector('#gorack'); if(gr) gr.onclick=()=>{ rackCtx.nodeId=sel.id; showTab('rack') };
@@ -2915,15 +2964,8 @@ function wireInspector(){
   };
   const retag=body.querySelector('#retag'); if(retag) retag.onclick=()=>{
     pushUndo();
-    const c={};
-    [...S.nodes].sort((a,b)=> (a.y-b.y) || (a.x-b.x)).forEach(n=>{
-      n.tagLock=false;
-      if(numMode(n.type)==='restart') return;      // handled by the drawing
-      const d=DEVBY[n.type];
-      const start=(c[d.k]||0)+1;
-      n.tag=tagFor(d, start);
-      c[d.k]=start+qtyOf(n)-1;
-    });
+    S.nodes.forEach(n=>n.tagLock=false);
+    retagByKind();
     syncAutoTags();
     touch(); render(); toast('Renumbered top to bottom, left to right.');
   };
@@ -3359,7 +3401,12 @@ function renderTray(n, it){
     host.innerHTML='<div class="zempty">Nothing on the drawing feeds this yet. Link it on the sheet and the devices show up here to drag in.</div>';
     return;
   }
-  host.innerHTML='<div class="zhead">From the drawing</div>'+groups.map(g=>{
+  const total=groups.reduce((a,g)=>a+g.items.length,0);
+  const left=groups.reduce((a,g)=>a+g.left,0);
+  host.innerHTML='<div class="zhead">From the drawing'
+    + `<span class="tsum">${total} device${total===1?'':'s'} land in this rack`
+    + (left? `, ${left} still to place` : ', all placed') + '</span></div>'
+    + groups.map(g=>{
     const tags=g.items.map(x=>x.tag);
     const span=tags.length>1 ? tags[0]+'–'+tags[tags.length-1] : tags[0];
     return `<div class="tgrp">

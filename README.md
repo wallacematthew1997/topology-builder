@@ -70,6 +70,16 @@ To build them in the first place, **Copy this build to other racks** takes the o
 
 Ports and jumpers always print per rack, never typical, because they are what differs.
 
+**Closet numbering**
+
+Two ways to number field devices, set under Sheet.
+
+*Per kind* is the default: cameras come out C01, C02, APs come out AP01, each family counting on its own.
+
+*One run per closet* follows the closet instead. Everything landing in IDF2 is numbered `I02-01` upward as a single run, laid out in blocks by kind, so twenty devices in that closet read I02-01 through I02-20 with the APs together, then the data drops, then the cameras, then the doors and sirens. The closet code is read off the cabling, so re-homing a device to another IDF renumbers it into that closet on its own. Block order comes from the device catalog rather than your sidebar order, so the same drawing numbers the same way on any machine.
+
+Switching back to per kind clears the closet tags rather than leaving them stranded.
+
 **Dragging devices in from the drawing**
 
 The ports panel opens with a tray of whatever feeds that rack, grouped by kind and carrying the tags and labels the drawing already worked out: `Wireless AP  8  AP01–AP08`. Drag the group onto a port and the whole run lays in from there, so eight APs land on panel ports 09 to 16 in one go. Drag onto a zone instead and it fills that zone. Drag a single chip to peel one device off onto one port.
