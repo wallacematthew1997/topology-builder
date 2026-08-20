@@ -62,6 +62,20 @@ Around fifty device types across eight families, each with its own color and tag
 
 Links are typed, and each media type draws with its own color, weight, and dash pattern: Cat6, Cat6A, Cat5e, single mode fiber, multimode fiber, RG59 coax, 18/2, 22/4, composite, wireless, SDI, HDMI, XLR, and power.
 
+**Typical racks**
+
+Thirteen IDFs built the same do not want thirteen identical elevation pages. Racks are matched on the gear itself, ignoring what each one links to on the drawing, and identical ones print once as a typical elevation headed `IDF1–IDF6, IDF8–IDF13`. Add one extra part to IDF7 and it drops out of the group onto its own page without anyone having to say so. The Rack tab tells you which racks the open one matches, and a tick box forces it onto its own page regardless.
+
+To build them in the first place, **Copy this build to other racks** takes the open rack's gear, and any jumpers that stay inside it, into as many racks as you tick. Device links, port assignments and uplinks to another rack stay behind, since those are different in every rack that gets the copy.
+
+Ports and jumpers always print per rack, never typical, because they are what differs.
+
+**Port zones**
+
+A run of ports can be set aside for something. If four of the switches push 2.5G and the APs want them, zone ports 1 to 8 as `2.5G, APs only`, restrict them to Wireless AP, and add a note for the installer. Panels take zones the same way, so `01–12 Dock side` and `13–24 Aisle side` show where things land.
+
+Zones colour the port list, print as a legend on the rack page, and get their own column on the patch schedule so the tech sees the reservation next to the jumper. Assign a camera to an AP-only run and the port turns red and the panel says what went wrong.
+
 **Patch schedules for the crew**
 
 Port assignment says what lands on a port. A patch says where the other end of that jumper goes, so the sheet a tech works from names both ends: *switch SFP1 into fiber enclosure 01*, not just "fiber".
