@@ -2,6 +2,15 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.9.0
+
+2026-08-20
+
+* Copper now terminates on a patch panel and fibre in an enclosure. A rack with a panel no longer offers copper devices straight onto its switch.
+* Route from the drawing, on the Rack tab, lands a whole rack at once: copper on the panels, fibre in the enclosures, then a jumper from every terminated port into the switch.
+* Devices land in a zone that asks for their kind where there is one, and never in a zone reserved for something else.
+* Ports already filled and jumpers already run are left alone, so routing again after adding devices disturbs nothing.
+
 ## v1.8.1
 
 2026-08-20
