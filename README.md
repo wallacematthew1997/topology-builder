@@ -105,16 +105,27 @@ Projects are stored in the browser using IndexedDB, under the database `riser-bu
 
 ### Backup folder
 
-Browser storage alone is not somewhere to keep work you care about, so open **Projects** and hit **Choose a backup folder**. Pick a real folder once, on your machine or on a network drive, and from then on every save also writes a plain `<project>.topology.json` into it. Linking the folder writes every project you already have, not just the open one.
+Browser storage alone is not somewhere to keep work you care about, so open **Projects** and hit **Choose where to keep them**. Pick a spot once, on your machine or a network drive, and the app makes its own folder there and looks after it:
 
-That file is the record copy. It is the same format **Import** reads, so recovering a drawing is opening the app and importing the file, on any machine.
+```
+Documents/                        wherever you pointed it
+  Riser Builder/
+    read me.txt                   what these files are, and how to restore one
+    Saves/
+      acme_warehouse.topology.json
+      riverside_clinic.topology.json
+```
+
+From then on every save rewrites that project's file in `Saves`. Linking the folder writes every project you already have, not just the open one. Pick the `Riser Builder` folder itself later and it uses it as is rather than nesting a second one inside.
+
+Those files are the record copy. They are the same format **Import** reads, so recovering a drawing is opening the app and importing the file, on any machine. They are plain text, so copying `Riser Builder` to a backup drive is enough.
 
 Two things worth knowing about how browsers handle this:
 
 * Folder permission does not always survive closing the browser. When it does not, the Projects panel says so and a **Reconnect folder** button puts it back. Nothing is written until you do, and the app tells you rather than failing quietly.
 * On start the app asks the browser to mark its storage permanent, which stops the browser quietly clearing projects when the disk gets tight. Whether that is granted is shown in the same panel.
 
-Until a folder is linked, the toolbar carries a **no copy on this computer** marker that opens the panel. **Export file** still works for a one off copy.
+Until it is set up, the toolbar carries a **no copy on this computer** marker that opens the panel. **Export file** still works for a one off copy.
 
 Chrome and Edge support writing to a folder. If the browser cannot, the app says so and leaves you with **Export file**.
 

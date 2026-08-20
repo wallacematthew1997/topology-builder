@@ -3034,9 +3034,53 @@ async function saveAsCopy(){
    without anyone having to remember to export.
    ========================================================= */
 const BKKEY='topo:backupdir';
-let bkDir=null;          /* FileSystemDirectoryHandle */
+const APPDIR='Riser Builder';
+const SAVEDIR='Saves';
+let bkDir=null;          /* the folder the user picked */
+let bkApp=null, bkSaves=null;   /* Riser Builder, and Saves inside it */
 let bkState='off';       /* off | ready | needs-permission | unsupported */
 let bkLast=0, persisted=null;
+
+/* The picked folder is somewhere to put our own folder, not somewhere to
+   scatter files.  Everything lands in <picked>/Riser Builder/Saves, made on
+   demand.  Picking the app folder itself is treated as picking its parent, so
+   choosing it twice does not nest. */
+async function bkDirs(){
+  if(bkSaves) return bkSaves;
+  if(!bkDir) throw new Error('no folder');
+  bkApp = bkDir.name===APPDIR ? bkDir : await bkDir.getDirectoryHandle(APPDIR,{create:true});
+  bkSaves = await bkApp.getDirectoryHandle(SAVEDIR,{create:true});
+  return bkSaves;
+}
+function bkClearDirs(){ bkApp=null; bkSaves=null }
+function bkPath(){
+  if(!bkDir) return '';
+  return bkDir.name===APPDIR ? bkDir.name+'/'+SAVEDIR
+                             : bkDir.name+'/'+APPDIR+'/'+SAVEDIR;
+}
+
+/* A note for whoever finds the folder later, including you in two years. */
+const BKREADME = [
+  'Riser Builder',
+  '',
+  'Saves holds one .json per project, rewritten every time that project is',
+  'saved in the app. They are the record copy of your drawings.',
+  '',
+  'To get a drawing back: open Riser Builder, click Import, and pick the file.',
+  'That works on any machine, and does not need this folder to be linked.',
+  '',
+  'These files are plain text. Copying them onto a backup drive or into a job',
+  'folder is enough, there is nothing else to keep.'
+].join('\n')+'\n';
+
+async function bkReadme(){
+  try{
+    await bkDirs();
+    const fh=await bkApp.getFileHandle('read me.txt',{create:true});
+    const w=await fh.createWritable();
+    await w.write(BKREADME); await w.close();
+  }catch{}
+}
 
 const fsOK = () => typeof window.showDirectoryPicker==='function';
 
@@ -3057,7 +3101,7 @@ async function bkLoad(){
   try{
     const h=await idb.get(BKKEY);
     if(!h){ bkState='off'; renderBackupBar(); return }
-    bkDir=h;
+    bkDir=h; bkClearDirs();
     const perm=await h.queryPermission({mode:'readwrite'});
     bkState = perm==='granted' ? 'ready' : 'needs-permission';
   }catch{ bkDir=null; bkState='off' }
@@ -3070,9 +3114,10 @@ async function bkPick(){
   try{
     const h=await window.showDirectoryPicker({id:'topo-backup', mode:'readwrite', startIn:'documents'});
     if((await h.requestPermission({mode:'readwrite'}))!=='granted'){ toast('That folder was not allowed.'); return }
-    bkDir=h; bkState='ready';
+    bkDir=h; bkClearDirs(); bkState='ready';
     try{ await idb.set(BKKEY,h) }catch{}
     renderBackupBar();
+    await bkReadme();
     await bkAll();
   }catch(e){
     if(e && e.name==='AbortError') return;
@@ -3085,14 +3130,15 @@ async function bkReconnect(){
   try{
     const perm=await bkDir.requestPermission({mode:'readwrite'});
     bkState = perm==='granted' ? 'ready' : 'needs-permission';
+    bkClearDirs();
     renderBackupBar();
-    if(bkState==='ready'){ await bkWrite(false) }
+    if(bkState==='ready'){ await bkReadme(); await bkWrite(false) }
     else toast('Still waiting on permission for that folder.');
   }catch{ toast('Could not reconnect that folder.') }
 }
 
 async function bkForget(){
-  bkDir=null; bkState='off'; bkLast=0;
+  bkDir=null; bkClearDirs(); bkState='off'; bkLast=0;
   try{ await idb.del(BKKEY) }catch{}
   renderBackupBar();
   toast('Backup folder unlinked. Saves stay in this browser only.');
@@ -3101,7 +3147,8 @@ async function bkForget(){
 const bkName = st => slug(st.meta && st.meta.project) + '.topology.json';
 
 async function bkWriteState(st){
-  const fh=await bkDir.getFileHandle(bkName(st), {create:true});
+  const dir=await bkDirs();
+  const fh=await dir.getFileHandle(bkName(st), {create:true});
   const w=await fh.createWritable();
   await w.write(JSON.stringify(st,null,2));
   await w.close();
@@ -3114,10 +3161,10 @@ async function bkWrite(quiet){
     S.view=view;
     await bkWriteState(S);
     bkLast=Date.now(); renderBackupBar();
-    if(!quiet) toast('Copy written to '+bkDir.name+'.');
+    if(!quiet) toast('Copy written to '+bkPath()+'.');
     return true;
   }catch(e){
-    if(e && (e.name==='NotAllowedError' || e.name==='SecurityError')) bkState='needs-permission';
+    if(e && (e.name==='NotAllowedError' || e.name==='SecurityError')){ bkState='needs-permission'; bkClearDirs() }
     renderBackupBar();
     if(!quiet) toast('Could not write the backup copy.');
     return false;
@@ -3138,7 +3185,7 @@ async function bkAll(){
     }catch{ bad++ }
   }
   bkLast=Date.now(); renderBackupBar();
-  toast(n+' project'+(n===1?'':'s')+' written to '+bkDir.name+(bad?', '+bad+' could not be read':'')+'.');
+  toast(n+' project'+(n===1?'':'s')+' written to '+bkPath()+(bad?', '+bad+' could not be read':'')+'.');
   return n;
 }
 
@@ -3153,17 +3200,18 @@ function renderBackupBar(){
   if(bkState==='unsupported'){
     line='<b>No automatic copy on this computer.</b> This browser cannot write to a folder on its own, so use <b>Export file</b> when you finish a drawing. Chrome and Edge can do it automatically.';
   }else if(bkState==='off'){
-    line='<b>Your projects live in this browser only.</b> Clearing browsing data would take them with it. Point the app at a folder and every save also writes a plain .json copy there.';
-    btns='<button class="mini" id="bkpick">Choose a backup folder</button>';
+    line='<b>Your projects live in this browser only.</b> Clearing browsing data would take them with it. Pick somewhere to keep them and the app makes itself a <b>'
+      + APPDIR + '</b> folder there, with a <b>' + SAVEDIR + '</b> folder inside that gets a plain .json copy of every project as you save it.';
+    btns='<button class="mini" id="bkpick">Choose where to keep them</button>';
   }else if(bkState==='needs-permission'){
     line='<b>Backup folder needs permission again.</b> Browsers drop folder access between sessions, so nothing has been written to '
-      + esc(bkDir?bkDir.name:'the folder') + ' yet this time.';
+      + esc(bkPath()||'the folder') + ' yet this time.';
     btns='<button class="mini" id="bkfix">Reconnect folder</button><button class="mini" id="bkoff">Unlink</button>';
   }else{
-    line='Every save also writes a copy into <b>'+esc(bkDir.name)+'</b>'
+    line='Every save also writes a copy into <b>'+esc(bkPath())+'</b>'
       + (bkLast? ', last written '+ago(bkLast) : '') + '.';
     btns='<button class="mini" id="bknow">Back up all projects now</button>'
-      + '<button class="mini" id="bkpick">Change folder</button>'
+      + '<button class="mini" id="bkpick">Move it</button>'
       + '<button class="mini" id="bkoff">Unlink</button>';
   }
   showSaveState();
