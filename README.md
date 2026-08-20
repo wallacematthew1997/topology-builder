@@ -82,7 +82,9 @@ Switching back to per kind clears the closet tags rather than leaving them stran
 
 **Dragging devices in from the drawing**
 
-The ports panel opens with a tray of whatever feeds that rack, grouped by kind and carrying the tags and labels the drawing already worked out: `Wireless AP  8  AP01–AP08`. Drag the group onto a port and the whole run lays in from there, so eight APs land on panel ports 09 to 16 in one go. Drag onto a zone instead and it fills that zone. Drag a single chip to peel one device off onto one port.
+The ports panel opens with a tray of everything that lands in that closet, grouped by kind and carrying the tags and labels the drawing already worked out: `Wireless AP  8  AP01–AP08`. Drag the group onto a port and the whole run lays in from there, so eight APs land on panel ports 09 to 16 in one go. Drag onto a zone instead and it fills that zone. Drag a single chip to peel one device off onto one port.
+
+It reads the cabling rather than one hop of it, so a camera that reaches IDF2 through a switch is still listed for IDF2's patch panel, and data, APs and cameras all show up for the same panel. Gear standing in the rack itself is left out, since that is the thing with the ports rather than something waiting for one.
 
 Nothing is retyped, so the port list says what the drawing says. Rename a device on the sheet and drag it in again and the new name comes with it. Chips grey out once placed, so what is left to do is obvious, and a jumper already patched to a port stays put when a device is dropped on it.
 
@@ -154,7 +156,7 @@ Documents/                        wherever you pointed it
       riverside_clinic.topology.json
 ```
 
-From then on every save rewrites that project's file in `Saves`. Linking the folder writes every project you already have, not just the open one. Pick the `Riser Builder` folder itself later and it uses it as is rather than nesting a second one inside.
+From then on every save rewrites that project's file in `Saves`. One file per project, for the life of the project: rename the job and the file is renamed with it rather than a second copy appearing, so nothing in that folder is ever a stale version of something still live. Two projects that happen to share a name get separate files. Linking the folder writes every project you already have, not just the open one. Pick the `Riser Builder` folder itself later and it uses it as is rather than nesting a second one inside.
 
 Those files are the record copy. They are the same format **Import** reads, so recovering a drawing is opening the app and importing the file, on any machine. They are plain text, so copying `Riser Builder` to a backup drive is enough.
 

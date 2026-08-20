@@ -3155,24 +3155,48 @@ function clearPatch(list, itemId, port){
 const povl=document.getElementById('povl');
 let portCtx=null;
 
+/* What can land on this item's ports.
+
+   Two ways in.  Anything cabled straight to the rack, or to the device this
+   item stands for, and anything the drawing says lands in this closet at all,
+   however many hops away it sits.  A camera reaching IDF2 through a switch is
+   still a camera that needs a port in IDF2, and a patch panel takes data, APs
+   and cameras all at once, so nothing here filters by kind. */
 function portSources(rackNode, item){
   const anchor = item.ref ? S.nodes.find(x=>x.id===item.ref) : rackNode;
-  if(!anchor) return [];
+  const wantInfra = item.kind==='fiber';
+  /* Gear already standing in this rack is the thing with the ports, not
+     something waiting for one. */
+  const mounted=new Set(rackOf(rackNode).items.map(x=>x.ref).filter(Boolean));
   const seen=new Set(), out=[];
-  for(const l of S.links){
-    if(l.from!==anchor.id && l.to!==anchor.id) continue;
-    const o=ent(l.from===anchor.id? l.to : l.from);
-    if(!o || o.w || seen.has(o.id)) continue;
-    const d=DEVBY[o.type]; if(!d) continue;
-    const wantInfra = item.kind==='fiber';
-    if(d.f==='infra' && !wantInfra) continue;
+  const take=o=>{
+    if(!o || o.w || seen.has(o.id) || mounted.has(o.id)) return;
+    const d=DEVBY[o.type]; if(!d) return;
+    if(d.f==='infra' && !wantInfra) return;
     seen.add(o.id);
     for(let i=0;i<qtyOf(o);i++){
       const t=unitTagAt(o,i);
       const u=(o.units||[])[i];
       out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t), type:o.type, node:o.id });
     }
+  };
+
+  if(anchor){
+    for(const l of S.links){
+      if(l.from!==anchor.id && l.to!==anchor.id) continue;
+      take(ent(l.from===anchor.id ? l.to : l.from));
+    }
   }
+
+  /* Everything the cabling says ends up in this closet. */
+  const home = codeOfNode(rackNode);
+  if(home){
+    for(const n of S.nodes){
+      if(n.id===rackNode.id) continue;
+      if(locCode(n)===home) take(n);
+    }
+  }
+
   return out.sort((a,b)=>a.tag.localeCompare(b.tag,undefined,{numeric:true}));
 }
 function portDrift(n, it){
@@ -3819,14 +3843,61 @@ async function bkForget(){
   toast('Backup folder unlinked. Saves stay in this browser only.');
 }
 
-const bkName = st => slug(st.meta && st.meta.project) + '.topology.json';
+/* One file per project, for the life of the project.  Renaming the job renames
+   its file rather than leaving the old one behind to be picked up months later
+   as if it were still current. */
+const BKFILES='topo:bkfiles';
+let bkFiles=null;
+const bkWantName = st => slug(st.meta && st.meta.project) + '.topology.json';
 
+async function bkFileMap(){
+  if(bkFiles) return bkFiles;
+  try{ bkFiles=(await idb.get(BKFILES)) || {} }catch{ bkFiles={} }
+  if(!bkFiles || typeof bkFiles!=='object') bkFiles={};
+  return bkFiles;
+}
+async function bkSaveFileMap(){ try{ await idb.set(BKFILES, bkFiles||{}) }catch{} }
+/* Two projects called the same thing must not share one file. */
+function bkFreeName(map, id, want){
+  const taken=new Set(Object.keys(map).filter(k=>k!==id).map(k=>map[k]));
+  if(!taken.has(want)) return want;
+  const base=want.replace(/\.topology\.json$/,'');
+  for(let i=2;i<200;i++){
+    const c=base+'-'+i+'.topology.json';
+    if(!taken.has(c)) return c;
+  }
+  return base+'-'+Date.now()+'.topology.json';
+}
+async function bkPut(dir, name, text){
+  const fh=await dir.getFileHandle(name,{create:true});
+  const w=await fh.createWritable();
+  await w.write(text);
+  await w.close();
+  return fh;
+}
 async function bkWriteState(st){
   const dir=await bkDirs();
-  const fh=await dir.getFileHandle(bkName(st), {create:true});
-  const w=await fh.createWritable();
-  await w.write(JSON.stringify(st,null,2));
-  await w.close();
+  const map=await bkFileMap();
+  const text=JSON.stringify(st,null,2);
+  const had=map[st.id];
+  const want=bkFreeName(map, st.id, bkWantName(st));
+
+  if(!had){
+    await bkPut(dir, want, text);
+    map[st.id]=want; await bkSaveFileMap();
+    return;
+  }
+  if(had===want){ await bkPut(dir, had, text); return }
+
+  /* the job was renamed: carry the file over, then drop the old one */
+  const fh=await bkPut(dir, had, text);
+  let moved=false;
+  try{ if(typeof fh.move==='function'){ await fh.move(want); moved=true } }catch{}
+  if(!moved){
+    await bkPut(dir, want, text);
+    try{ await dir.removeEntry(had) }catch{}
+  }
+  map[st.id]=want; await bkSaveFileMap();
 }
 
 /* The open project, on every save. */
