@@ -350,6 +350,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .rktyp{margin:8px 0 10px;padding:8px 10px;background:#F6F8F5;border:1px solid var(--rule-soft);
   border-radius:2px;font-size:11.5px;line-height:1.45}
 .rktyp b{font-weight:600}
+.rkacts{display:flex;align-items:flex-start;gap:10px;margin-top:8px}
+.rkacts .hint{flex:1;margin:0}
 .rkown{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:pointer}
 .rkown input{margin:0}
 .rktyp .mini{margin-top:6px}
@@ -2322,6 +2324,80 @@ function freeAt(r, u, h, skipId){
   return null;
 }
 
+/* Land everything the drawing sends here, then run the jumpers.
+
+   Copper onto the patch panels, glass into the enclosures, each device into a
+   zone that asks for its kind where one exists, and never into a zone reserved
+   for something else.  Then one jumper per terminated port into the switch,
+   data to data ports and fibre to the SFP cage.  Anything already placed or
+   already patched is left exactly as it is. */
+function autoRouteRack(n){
+  const rack=rackOf(n);
+  const byKind=k=>rack.items.filter(x=>x.kind===k).sort((a,b)=>b.u-a.u);
+  const panels=byKind('patch'), fibs=byKind('fiber'), switches=byKind('switch');
+  let landed=0, jumpers=0, over=0;
+
+  const freePort=(it,p)=>{ const a=(it.assign||[])[p]; return !(a && a.tag) };
+  const slotFor=(it, r)=>{
+    const mine=(it.zones||[]).find(z=>z.want && z.want===r.type);
+    if(mine) for(let p=mine.a; p<=mine.b && p<portCount(it); p++) if(freePort(it,p)) return p;
+    for(let p=0;p<portCount(it);p++){
+      if(!freePort(it,p)) continue;
+      const z=zoneAt(it,p);
+      if(z && z.want && z.want!==r.type) continue;
+      return p;
+    }
+    return -1;
+  };
+
+  const land=(items, fiber)=>{
+    if(!items.length) return;
+    const src=portSources(n, items[0]).filter(x=>isFiberMedia(x.media)===fiber);
+    const done=new Set();
+    for(const it of rack.items) (it.assign||[]).forEach(a=>{ if(a&&a.tag) done.add(a.tag) });
+    for(const r of src){
+      if(done.has(r.tag)) continue;
+      let put=false;
+      for(const it of items){
+        it.assign=it.assign||[];
+        const p=slotFor(it, r);
+        if(p<0) continue;
+        it.assign[p]=Object.assign({tag:'',label:''}, it.assign[p], {tag:r.tag, label:r.label||''});
+        done.add(r.tag); landed++; put=true; break;
+      }
+      if(!put) over++;
+    }
+  };
+  land(panels,false);
+  land(fibs,true);
+
+  const sw=switches[0];
+  if(sw){
+    const used=new Set();
+    for(const pc of patchList()){
+      used.add(pc.a.item.id+'#'+pc.a.port);
+      used.add(pc.b.item.id+'#'+pc.b.port);
+    }
+    const nextFree=(from,to)=>{ for(let p=from;p<to;p++) if(!used.has(sw.id+'#'+p)) return p; return -1 };
+    const run=(items, from, to)=>{
+      for(const it of items){
+        (it.assign||[]).forEach((a,p)=>{
+          if(!a || !a.tag) return;
+          if(used.has(it.id+'#'+p)) return;
+          const q=nextFree(from,to);
+          if(q<0){ over++; return }
+          setPatch(it, p, n.id, sw.id, q);
+          used.add(it.id+'#'+p); used.add(sw.id+'#'+q);
+          jumpers++;
+        });
+      }
+    };
+    run(panels, 0, itemPorts(sw));
+    run(fibs, itemPorts(sw), portCount(sw));
+  }
+  return {landed, jumpers, over, sw:!!sw};
+}
+
 /* What this rack shares with the others, and how to spread it around. */
 function rackTypicalBlock(n){
   const twins=rackTwins(n);
@@ -2337,6 +2413,8 @@ function rackTypicalBlock(n){
           : 'The only rack with anything in it so far.');
   return `<div class="rktyp">
     <div>${line}</div>
+    <div class="rkacts"><button class="mini" id="rkRoute">Route from the drawing</button>
+      <span class="hint">Copper onto the patch panels, fibre into the enclosures, then a jumper from each into the switch. Anything already placed stays put.</span></div>
     <label class="rkown"><input type="checkbox" id="rkOwn" ${own?'checked':''}> Always give this rack its own page</label>
     ${others.length? `<button class="mini" id="rkCopyOpen">Copy this build to other racks</button>
       <div class="rkcopy" id="rkCopy" hidden>
@@ -2728,6 +2806,16 @@ function wireInspector(){
   const gr=body.querySelector('#gorack'); if(gr) gr.onclick=()=>{ rackCtx.nodeId=sel.id; showTab('rack') };
   const rkPick=body.querySelector('#rkPick'); if(rkPick) rkPick.onchange=()=>{
     rackCtx.nodeId=rkPick.value; rackCtx.itemId=null; renderInspector();
+  };
+  const rkRoute=body.querySelector('#rkRoute'); if(rkRoute) rkRoute.onclick=()=>{
+    const n=currentRack(); if(!n) return;
+    pushUndo();
+    const r=autoRouteRack(n);
+    touch(); render(); renderInspector();
+    toast(!r.landed && !r.jumpers
+      ? (r.sw? 'Nothing left to route here.' : 'Nothing to route. Put a patch panel or enclosure in the rack first.')
+      : r.landed+' terminated, '+r.jumpers+' jumper'+(r.jumpers===1?'':'s')
+        + (r.over? ', '+r.over+' would not fit' : ''));
   };
   const rkOwn=body.querySelector('#rkOwn'); if(rkOwn) rkOwn.onchange=()=>{
     const n=currentRack(); if(!n) return;
@@ -3155,6 +3243,30 @@ function clearPatch(list, itemId, port){
 const povl=document.getElementById('povl');
 let portCtx=null;
 
+/* Copper lands on a patch panel, glass lands in an enclosure.  Nothing is
+   punched straight onto a switch when the rack has somewhere proper to
+   terminate it, which is the way the rack actually gets built. */
+const FIBER_MEDIA = new Set(['smf','mmf']);
+function isFiberMedia(m){ return FIBER_MEDIA.has(m) }
+/* The run that homes a device tells us which it is. */
+function deviceMedia(o){
+  for(const l of S.links) if(l.from===o.id || l.to===o.id) return l.media||'cat6';
+  return 'cat6';
+}
+function landingKind(media){ return isFiberMedia(media) ? 'fiber' : 'patch' }
+function rackHasKind(rackNode, kind){
+  return rackOf(rackNode).items.some(x=>x.kind===kind);
+}
+/* Only what belongs on this item.  With no panel in the rack at all, a run has
+   nowhere else to go, so it stays offered wherever it is. */
+function sourcesFor(rackNode, item){
+  return portSources(rackNode, item).filter(x=>{
+    const want=landingKind(x.media);
+    if(item.kind===want) return true;
+    return !rackHasKind(rackNode, want);
+  });
+}
+
 /* What can land on this item's ports.
 
    Two ways in.  Anything cabled straight to the rack, or to the device this
@@ -3177,7 +3289,8 @@ function portSources(rackNode, item){
     for(let i=0;i<qtyOf(o);i++){
       const t=unitTagAt(o,i);
       const u=(o.units||[])[i];
-      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t), type:o.type, node:o.id });
+      const media=deviceMedia(o);
+      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t), type:o.type, node:o.id, media });
     }
   };
 
@@ -3200,7 +3313,7 @@ function portSources(rackNode, item){
   return out.sort((a,b)=>a.tag.localeCompare(b.tag,undefined,{numeric:true}));
 }
 function portDrift(n, it){
-  const src=portSources(n,it);
+  const src=sourcesFor(n,it);
   const srcTags=new Set(src.map(x=>x.tag));
   const assigned=(it.assign||[]).filter(a=>a&&a.tag);
   const aTags=new Set(assigned.map(a=>a.tag));
@@ -3392,7 +3505,7 @@ function renderPorts(){
    says.
    ========================================================= */
 function sourceGroups(n, it){
-  const src=portSources(n, it);
+  const src=sourcesFor(n, it);
   const placed=new Set((it.assign||[]).filter(a=>a&&a.tag).map(a=>a.tag));
   const byType=new Map();
   for(const x of src){
@@ -3553,8 +3666,14 @@ document.getElementById('pauto').onclick=()=>{
   if(!portCtx) return;
   const n=S.nodes.find(x=>x.id===portCtx.nodeId);
   const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
-  const src=portSources(n,it);
-  if(!src.length){ toast('Nothing feeds this yet. Link it on the drawing first.'); return }
+  const src=sourcesFor(n,it);
+  if(!src.length){
+    const other=rackHasKind(n,'patch')||rackHasKind(n,'fiber');
+    toast(other && (it.kind==='switch')
+      ? 'Copper lands on the patch panel and fibre in the enclosure. Fill those, then patch across.'
+      : 'Nothing feeds this yet. Link it on the drawing first.');
+    return;
+  }
   it.assign=src.slice(0, itemPorts(it)).map(x=>({tag:x.tag, label:x.label}));
   touch(); renderPorts();
   toast(Math.min(src.length,itemPorts(it))+' ports filled');

@@ -84,7 +84,11 @@ Switching back to per kind clears the closet tags rather than leaving them stran
 
 The ports panel opens with a tray of everything that lands in that closet, grouped by kind and carrying the tags and labels the drawing already worked out: `Wireless AP  8  AP01–AP08`. Drag the group onto a port and the whole run lays in from there, so eight APs land on panel ports 09 to 16 in one go. Drag onto a zone instead and it fills that zone. Drag a single chip to peel one device off onto one port.
 
-It reads the cabling rather than one hop of it, so a camera that reaches IDF2 through a switch is still listed for IDF2's patch panel, and data, APs and cameras all show up for the same panel. Gear standing in the rack itself is left out, since that is the thing with the ports rather than something waiting for one.
+Copper terminates on a patch panel and fibre in an enclosure, so a rack with a panel does not offer its switch copper devices to punch straight down: they land on the panel, and a jumper carries them across. A rack with no panel at all still offers everything to the switch, since the run has nowhere else to go.
+
+**Route from the drawing**, on the Rack tab, does a whole rack in one go. Copper onto the patch panels, fibre into the enclosures, each device into a zone that asks for its kind where one exists and never into a zone reserved for something else, then one jumper per terminated port into the switch, data to the data ports and fibre to the SFP cage. Anything already placed or already patched is left exactly as it is, so it is safe to run again after adding devices.
+
+The tray reads the cabling rather than one hop of it, so a camera that reaches IDF2 through a switch is still listed for IDF2's patch panel, and data, APs and cameras all show up for the same panel. Gear standing in the rack itself is left out, since that is the thing with the ports rather than something waiting for one.
 
 Nothing is retyped, so the port list says what the drawing says. Rename a device on the sheet and drag it in again and the new name comes with it. Chips grey out once placed, so what is left to do is obvious, and a jumper already patched to a port stays put when a device is dropped on it.
 
