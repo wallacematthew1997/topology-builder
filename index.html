@@ -359,6 +359,27 @@ button,input,select,textarea{font:inherit;color:inherit}
 .rkcopylist i{color:var(--ink-soft);font-style:normal}
 .rkcopyfoot{display:flex;align-items:flex-end;gap:10px;margin-top:8px}
 .rkcopyfoot .hint{flex:1;margin:0}
+.ptray{padding:8px 14px;border-bottom:1px solid var(--rule-soft);background:#F6F8F5}
+.ptray .zhead{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:6px}
+.tgrp{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.tgh{display:flex;align-items:center;gap:7px;cursor:grab;background:#fff;
+  border:1px solid var(--rule);border-radius:2px;padding:3px 8px;font:inherit;font-size:11px;
+  flex:0 0 auto;text-align:left}
+.tgh:hover{border-color:var(--ink)}
+.tgh:active{cursor:grabbing}
+.tgn{font-weight:600}
+.tgc{font-family:var(--mono);font-size:9.5px;background:var(--ink);color:#fff;
+  border-radius:8px;padding:1px 6px}
+.tgr{font-family:var(--mono);font-size:10px;color:var(--ink-soft)}
+.tgdone{font-size:9.5px;color:var(--ink-soft);font-style:italic}
+.tchips{display:flex;flex-wrap:wrap;gap:3px;flex:1 1 200px}
+.tchip{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:2px;cursor:grab;
+  border:1px solid var(--rule-soft);background:#fff}
+.tchip:hover{border-color:var(--blue)}
+.tchip.placed{opacity:.45;background:#EEF1ED}
+.prow2.dropon{outline:2px solid var(--blue);outline-offset:1px;background:#EAF1F7}
+.zrow.dropon{outline:2px solid var(--blue);outline-offset:1px}
 .zbar{padding:8px 14px;border-bottom:1px solid var(--rule-soft);background:#FBFCFA}
 .zbar .zhead{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
@@ -630,6 +651,7 @@ button,input,select,textarea{font:inherit;color:inherit}
       <button class="mini" id="pclear">Clear</button>
       <button class="xbtn" id="pclose" aria-label="Close">&times;</button>
     </div>
+    <div class="ptray" id="ptray"></div>
     <div class="zbar" id="pzones"></div>
     <div class="phdr" id="phdr"></div>
     <div class="mlist" id="pgrid"></div>
@@ -3106,7 +3128,7 @@ function portSources(rackNode, item){
     for(let i=0;i<qtyOf(o);i++){
       const t=unitTagAt(o,i);
       const u=(o.units||[])[i];
-      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t) });
+      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t), type:o.type, node:o.id });
     }
   }
   return out.sort((a,b)=>a.tag.localeCompare(b.tag,undefined,{numeric:true}));
@@ -3158,6 +3180,7 @@ function renderPorts(){
   const tags=tagIndex(), wrong=zoneMismatch(it, tags);
   const wrongPorts=new Set(wrong.map(w=>w.port));
   renderZones(it, all);
+  renderTray(n, it);
   const filled=it.assign.filter(a=>a&&a.tag).length;
   const patched=[];
   for(let i=0;i<all;i++) if(patchEnd(list,it.id,i)) patched.push(i);
@@ -3219,6 +3242,32 @@ function renderPorts(){
   document.getElementById('pgrid').innerHTML=html+'</div>';
 
   const grid=document.getElementById('pgrid');
+  /* Rows take a drop from the tray and lay the run in from there. */
+  const readDrop=e=>{
+    const raw=e.dataTransfer.getData('text/plain')||'';
+    if(!raw.startsWith('ports:')) return null;
+    try{ return JSON.parse(raw.slice(6)) }catch{ return null }
+  };
+  grid.querySelectorAll('.prow2').forEach(row=>{
+    const at=parseInt(row.querySelector('[data-pf="tag"]').dataset.p,10);
+    row.ondragover=e=>{
+      if(!(e.dataTransfer.types||[]).includes('text/plain')) return;
+      e.preventDefault(); e.dataTransfer.dropEffect='copy';
+      row.classList.add('dropon');
+    };
+    row.ondragleave=()=>row.classList.remove('dropon');
+    row.ondrop=e=>{
+      row.classList.remove('dropon');
+      const rows=readDrop(e); if(!rows || !rows.length) return;
+      e.preventDefault();
+      pushUndo();
+      const n2=dropSources(it, at, rows);
+      touch(); renderPorts();
+      toast(n2+' device'+(n2===1?'':'s')+' laid in from '+portName(it,at)
+        + (n2<rows.length? ', '+(rows.length-n2)+' would not fit' : ''));
+    };
+  });
+
   grid.querySelectorAll('[data-pf]').forEach(inp=>{
     inp.oninput=()=>{
       const i=parseInt(inp.dataset.p,10);
@@ -3267,6 +3316,85 @@ function renderPorts(){
   };
 }
 
+/* =========================================================
+   The device tray.
+
+   Whatever feeds this rack on the drawing, grouped by kind and carrying the
+   tags and labels already worked out there.  Drag a whole group onto a port
+   and it lays the run in from that port down; drag one chip to peel a single
+   device off.  Nothing is retyped, so the port list says what the drawing
+   says.
+   ========================================================= */
+function sourceGroups(n, it){
+  const src=portSources(n, it);
+  const placed=new Set((it.assign||[]).filter(a=>a&&a.tag).map(a=>a.tag));
+  const byType=new Map();
+  for(const x of src){
+    if(!byType.has(x.type)) byType.set(x.type, []);
+    byType.get(x.type).push(Object.assign({placed:placed.has(x.tag)}, x));
+  }
+  return [...byType.entries()].map(([type,items])=>({
+    type, items,
+    name:(DEVBY[type]||{}).n || 'Device',
+    left:items.filter(x=>!x.placed).length
+  })).sort((a,b)=>a.name.localeCompare(b.name));
+}
+/* Lay a run of devices in, starting at a port. */
+function dropSources(it, start, rows){
+  const all=portCount(it);
+  let p=start, n=0;
+  for(const r of rows){
+    if(p>=all) break;
+    const cur=Object.assign({tag:'',label:''}, it.assign[p]);
+    cur.tag=r.tag; cur.label=r.label||'';
+    it.assign[p]=cur;                       /* any jumper on this port stays put */
+    p++; n++;
+  }
+  return n;
+}
+function renderTray(n, it){
+  const host=document.getElementById('ptray'); if(!host) return;
+  const groups=sourceGroups(n, it);
+  if(!groups.length){
+    host.innerHTML='<div class="zempty">Nothing on the drawing feeds this yet. Link it on the sheet and the devices show up here to drag in.</div>';
+    return;
+  }
+  host.innerHTML='<div class="zhead">From the drawing</div>'+groups.map(g=>{
+    const tags=g.items.map(x=>x.tag);
+    const span=tags.length>1 ? tags[0]+'–'+tags[tags.length-1] : tags[0];
+    return `<div class="tgrp">
+      <button class="tgh" draggable="true" data-tgrp="${esc(g.type)}"
+        title="Drag onto a port to lay all of these in from there">
+        <span class="tgn">${esc(g.name)}</span>
+        <span class="tgc">${g.items.length}</span>
+        <span class="tgr">${esc(span)}</span>
+        ${g.left? '' : '<span class="tgdone">all placed</span>'}
+      </button>
+      <div class="tchips">${g.items.map(x=>
+        `<span class="tchip ${x.placed?'placed':''}" draggable="true" data-tchip="${esc(x.tag)}"
+           title="${esc(x.label||'')}">${esc(x.tag)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+
+  const payload=rows=>JSON.stringify(rows.map(r=>({tag:r.tag,label:r.label})));
+  host.querySelectorAll('[data-tgrp]').forEach(el=>{
+    el.ondragstart=e=>{
+      const g=groups.find(x=>x.type===el.dataset.tgrp); if(!g) return;
+      e.dataTransfer.setData('text/plain','ports:'+payload(g.items));
+      e.dataTransfer.effectAllowed='copy';
+    };
+  });
+  host.querySelectorAll('[data-tchip]').forEach(el=>{
+    el.ondragstart=e=>{
+      for(const g of groups){
+        const hit=g.items.find(x=>x.tag===el.dataset.tchip);
+        if(hit){ e.dataTransfer.setData('text/plain','ports:'+payload([hit])); break }
+      }
+      e.dataTransfer.effectAllowed='copy';
+    };
+  });
+}
+
 /* The zone strip above the port list. */
 function renderZones(it, all){
   const host=document.getElementById('pzones'); if(!host) return;
@@ -3299,6 +3427,25 @@ function renderZones(it, all){
   });
   host.querySelectorAll('.zrow').forEach(row=>{
     const z=zonesOf(it).find(x=>x.id===row.dataset.z); if(!z) return;
+    row.ondragover=e=>{
+      if(!(e.dataTransfer.types||[]).includes('text/plain')) return;
+      e.preventDefault(); e.dataTransfer.dropEffect='copy'; row.classList.add('dropon');
+    };
+    row.ondragleave=()=>row.classList.remove('dropon');
+    row.ondrop=e=>{
+      row.classList.remove('dropon');
+      const raw=e.dataTransfer.getData('text/plain')||'';
+      if(!raw.startsWith('ports:')) return;
+      let rows; try{ rows=JSON.parse(raw.slice(6)) }catch{ return }
+      if(!rows || !rows.length) return;
+      e.preventDefault();
+      pushUndo();
+      const room=z.b-z.a+1;
+      const n2=dropSources(it, z.a, rows.slice(0, room));
+      touch(); renderPorts();
+      toast(n2+' laid into '+(z.name||zoneSpan(it,z))
+        + (rows.length>room? ', '+(rows.length-room)+' did not fit the zone' : ''));
+    };
     row.querySelectorAll('[data-zf]').forEach(inp=>{
       const f=inp.dataset.zf;
       const set=()=>{

@@ -70,6 +70,12 @@ To build them in the first place, **Copy this build to other racks** takes the o
 
 Ports and jumpers always print per rack, never typical, because they are what differs.
 
+**Dragging devices in from the drawing**
+
+The ports panel opens with a tray of whatever feeds that rack, grouped by kind and carrying the tags and labels the drawing already worked out: `Wireless AP  8  AP01–AP08`. Drag the group onto a port and the whole run lays in from there, so eight APs land on panel ports 09 to 16 in one go. Drag onto a zone instead and it fills that zone. Drag a single chip to peel one device off onto one port.
+
+Nothing is retyped, so the port list says what the drawing says. Rename a device on the sheet and drag it in again and the new name comes with it. Chips grey out once placed, so what is left to do is obvious, and a jumper already patched to a port stays put when a device is dropped on it.
+
 **Port zones**
 
 A run of ports can be set aside for something. If four of the switches push 2.5G and the APs want them, zone ports 1 to 8 as `2.5G, APs only`, restrict them to Wireless AP, and add a note for the installer. Panels take zones the same way, so `01–12 Dock side` and `13–24 Aisle side` show where things land.
