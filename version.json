@@ -1,11 +1,11 @@
 {
-  "version": "1.5.0",
+  "version": "1.6.0",
   "date": "2026-08-20",
   "file": "index.html",
   "notes": [
-    "Patch schedules. A port can now say where the other end of its jumper goes, another rack item and a port on it, so the sheet names both ends instead of just what lands on the port.",
-    "Patch straight through to... wires a switch into a patch panel one to one in a single go.",
-    "Each rack prints its own patch schedule page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off.",
-    "A port claimed by two jumpers is flagged, and a patch shows from both ends without being stored twice."
+    "Typical rack elevations. Racks built the same now print once, headed IDF1-IDF6, IDF8-IDF13, and the odd rack with an extra part gets its own page on its own.",
+    "Copy this build to other racks clones the gear and the jumpers inside a rack into as many racks as you tick.",
+    "Port zones. Set aside a run of ports with a name, a note and the device type it is reserved for, so the 2.5G ports say APs only and anything else landing there is flagged.",
+    "Zones print as a legend on the rack page and get their own column on the patch schedule."
   ]
 }

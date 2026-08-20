@@ -2,6 +2,15 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.6.0
+
+2026-08-20
+
+* Typical rack elevations. Racks built the same now print once, headed IDF1-IDF6, IDF8-IDF13, and the odd rack with an extra part gets its own page on its own.
+* Copy this build to other racks clones the gear and the jumpers inside a rack into as many racks as you tick.
+* Port zones. Set aside a run of ports with a name, a note and the device type it is reserved for, so the 2.5G ports say APs only and anything else landing there is flagged.
+* Zones print as a legend on the rack page and get their own column on the patch schedule.
+
 ## v1.5.0
 
 2026-08-20
