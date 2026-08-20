@@ -2,6 +2,14 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.8.1
+
+2026-08-20
+
+* Patch panels now list everything that lands in the closet, not only what is cabled one hop from the rack, so devices reaching the rack through a switch show up.
+* Data, APs and cameras can all be assigned to the same patch panel.
+* The backup folder keeps one file per project. Renaming a job renames its file instead of leaving a second copy behind.
+
 ## v1.8.0
 
 2026-08-20

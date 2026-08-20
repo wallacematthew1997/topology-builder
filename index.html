@@ -4445,7 +4445,7 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Version, changelog, and updates
    ========================================================= */
-const APP_VERSION='1.8.0';
+const APP_VERSION='1.8.1';
 
 /* Where released builds live. Change this if the repo ever moves. */
 const HOME='https://wallacematthew1997.github.io/topology-builder/';
@@ -4453,6 +4453,11 @@ const REPO='https://github.com/wallacematthew1997/topology-builder';
 
 /* Newest first. Keep this in step with CHANGELOG.md and version.json. */
 const CHANGELOG=[
+  {v:'1.8.1', d:'2026-08-20', notes:[
+    "Patch panels now list everything that lands in the closet, not only what is cabled one hop from the rack, so devices reaching the rack through a switch show up.",
+    "Data, APs and cameras can all be assigned to the same patch panel.",
+    "The backup folder keeps one file per project. Renaming a job renames its file instead of leaving a second copy behind."
+  ]},
   {v:'1.8.0', d:'2026-08-20', notes:[
     "Closet numbering. Sheet can now number every field device as one run per closet, so everything landing in IDF2 reads I02-01 upward, in blocks by kind.",
     "The closet code is read off the cabling, so moving a device to another IDF renumbers it into that closet on its own.",
