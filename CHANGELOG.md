@@ -2,6 +2,57 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.9.0
+
+2026-08-20
+
+* Copper now terminates on a patch panel and fibre in an enclosure. A rack with a panel no longer offers copper devices straight onto its switch.
+* Route from the drawing, on the Rack tab, lands a whole rack at once: copper on the panels, fibre in the enclosures, then a jumper from every terminated port into the switch.
+* Devices land in a zone that asks for their kind where there is one, and never in a zone reserved for something else.
+* Ports already filled and jumpers already run are left alone, so routing again after adding devices disturbs nothing.
+
+## v1.8.1
+
+2026-08-20
+
+* Patch panels now list everything that lands in the closet, not only what is cabled one hop from the rack, so devices reaching the rack through a switch show up.
+* Data, APs and cameras can all be assigned to the same patch panel.
+* The backup folder keeps one file per project. Renaming a job renames its file instead of leaving a second copy behind.
+
+## v1.8.0
+
+2026-08-20
+
+* Closet numbering. Sheet can now number every field device as one run per closet, so everything landing in IDF2 reads I02-01 upward, in blocks by kind.
+* The closet code is read off the cabling, so moving a device to another IDF renumbers it into that closet on its own.
+* The ports tray says how many devices land in the rack and shows each kind's block of the run.
+
+## v1.7.0
+
+2026-08-20
+
+* The ports panel now has a tray of the devices feeding that rack, grouped by kind, taking the tags and labels straight from the drawing.
+* Drag a whole group onto a port to lay the run in from there, drag it onto a zone to fill the zone, or drag a single chip to peel one device off.
+* Labels come from the naming on the drawing, so nothing gets retyped and the installer schedule matches the sheet.
+
+## v1.6.0
+
+2026-08-20
+
+* Typical rack elevations. Racks built the same now print once, headed IDF1-IDF6, IDF8-IDF13, and the odd rack with an extra part gets its own page on its own.
+* Copy this build to other racks clones the gear and the jumpers inside a rack into as many racks as you tick.
+* Port zones. Set aside a run of ports with a name, a note and the device type it is reserved for, so the 2.5G ports say APs only and anything else landing there is flagged.
+* Zones print as a legend on the rack page and get their own column on the patch schedule.
+
+## v1.5.0
+
+2026-08-20
+
+* Patch schedules. A port can now say where the other end of its jumper goes, another rack item and a port on it, so the sheet names both ends instead of just what lands on the port.
+* Patch straight through to... wires a switch into a patch panel one to one in a single go.
+* Each rack prints its own patch schedule page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off.
+* A port claimed by two jumpers is flagged, and a patch shows from both ends without being stored twice.
+
 ## v1.4.0
 
 2026-08-20

@@ -62,6 +62,50 @@ Around fifty device types across eight families, each with its own color and tag
 
 Links are typed, and each media type draws with its own color, weight, and dash pattern: Cat6, Cat6A, Cat5e, single mode fiber, multimode fiber, RG59 coax, 18/2, 22/4, composite, wireless, SDI, HDMI, XLR, and power.
 
+**Typical racks**
+
+Thirteen IDFs built the same do not want thirteen identical elevation pages. Racks are matched on the gear itself, ignoring what each one links to on the drawing, and identical ones print once as a typical elevation headed `IDF1–IDF6, IDF8–IDF13`. Add one extra part to IDF7 and it drops out of the group onto its own page without anyone having to say so. The Rack tab tells you which racks the open one matches, and a tick box forces it onto its own page regardless.
+
+To build them in the first place, **Copy this build to other racks** takes the open rack's gear, and any jumpers that stay inside it, into as many racks as you tick. Device links, port assignments and uplinks to another rack stay behind, since those are different in every rack that gets the copy.
+
+Ports and jumpers always print per rack, never typical, because they are what differs.
+
+**Closet numbering**
+
+Two ways to number field devices, set under Sheet.
+
+*Per kind* is the default: cameras come out C01, C02, APs come out AP01, each family counting on its own.
+
+*One run per closet* follows the closet instead. Everything landing in IDF2 is numbered `I02-01` upward as a single run, laid out in blocks by kind, so twenty devices in that closet read I02-01 through I02-20 with the APs together, then the data drops, then the cameras, then the doors and sirens. The closet code is read off the cabling, so re-homing a device to another IDF renumbers it into that closet on its own. Block order comes from the device catalog rather than your sidebar order, so the same drawing numbers the same way on any machine.
+
+Switching back to per kind clears the closet tags rather than leaving them stranded.
+
+**Dragging devices in from the drawing**
+
+The ports panel opens with a tray of everything that lands in that closet, grouped by kind and carrying the tags and labels the drawing already worked out: `Wireless AP  8  AP01–AP08`. Drag the group onto a port and the whole run lays in from there, so eight APs land on panel ports 09 to 16 in one go. Drag onto a zone instead and it fills that zone. Drag a single chip to peel one device off onto one port.
+
+Copper terminates on a patch panel and fibre in an enclosure, so a rack with a panel does not offer its switch copper devices to punch straight down: they land on the panel, and a jumper carries them across. A rack with no panel at all still offers everything to the switch, since the run has nowhere else to go.
+
+**Route from the drawing**, on the Rack tab, does a whole rack in one go. Copper onto the patch panels, fibre into the enclosures, each device into a zone that asks for its kind where one exists and never into a zone reserved for something else, then one jumper per terminated port into the switch, data to the data ports and fibre to the SFP cage. Anything already placed or already patched is left exactly as it is, so it is safe to run again after adding devices.
+
+The tray reads the cabling rather than one hop of it, so a camera that reaches IDF2 through a switch is still listed for IDF2's patch panel, and data, APs and cameras all show up for the same panel. Gear standing in the rack itself is left out, since that is the thing with the ports rather than something waiting for one.
+
+Nothing is retyped, so the port list says what the drawing says. Rename a device on the sheet and drag it in again and the new name comes with it. Chips grey out once placed, so what is left to do is obvious, and a jumper already patched to a port stays put when a device is dropped on it.
+
+**Port zones**
+
+A run of ports can be set aside for something. If four of the switches push 2.5G and the APs want them, zone ports 1 to 8 as `2.5G, APs only`, restrict them to Wireless AP, and add a note for the installer. Panels take zones the same way, so `01–12 Dock side` and `13–24 Aisle side` show where things land.
+
+Zones colour the port list, print as a legend on the rack page, and get their own column on the patch schedule so the tech sees the reservation next to the jumper. Assign a camera to an AP-only run and the port turns red and the panel says what went wrong.
+
+**Patch schedules for the crew**
+
+Port assignment says what lands on a port. A patch says where the other end of that jumper goes, so the sheet a tech works from names both ends: *switch SFP1 into fiber enclosure 01*, not just "fiber".
+
+Open a rack item's **Ports** and each row gets a target: another item in any rack, and a port on it. **Patch straight through to…** wires a switch into a panel one to one in a single go, which is how most of them get built. A port claimed by two jumpers is flagged in red. The patch is stored once and read from both ends, so opening the far item shows the same jumper rather than letting you type a second copy of it.
+
+Each rack then prints its own **patch schedule** page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off. A run between two racks appears on both pages, since either tech might be the one making it. Turn the pages off in Sheet settings if a job does not need them.
+
 **Rack elevations**
 
 A rack view for laying out MDF and IDF gear by RU, with rack unit presets and fill checking.
@@ -116,7 +160,7 @@ Documents/                        wherever you pointed it
       riverside_clinic.topology.json
 ```
 
-From then on every save rewrites that project's file in `Saves`. Linking the folder writes every project you already have, not just the open one. Pick the `Riser Builder` folder itself later and it uses it as is rather than nesting a second one inside.
+From then on every save rewrites that project's file in `Saves`. One file per project, for the life of the project: rename the job and the file is renamed with it rather than a second copy appearing, so nothing in that folder is ever a stale version of something still live. Two projects that happen to share a name get separate files. Linking the folder writes every project you already have, not just the open one. Pick the `Riser Builder` folder itself later and it uses it as is rather than nesting a second one inside.
 
 Those files are the record copy. They are the same format **Import** reads, so recovering a drawing is opening the app and importing the file, on any machine. They are plain text, so copying `Riser Builder` to a backup drive is enough.
 

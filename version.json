@@ -1,10 +1,11 @@
 {
-  "version": "1.4.0",
+  "version": "1.9.0",
   "date": "2026-08-20",
   "file": "index.html",
   "notes": [
-    "The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.",
-    "A read me goes in beside it explaining what the files are and how to load one back.",
-    "Pointing it at the Riser Builder folder itself no longer nests a second one inside."
+    "Copper now terminates on a patch panel and fibre in an enclosure. A rack with a panel no longer offers copper devices straight onto its switch.",
+    "Route from the drawing, on the Rack tab, lands a whole rack at once: copper on the panels, fibre in the enclosures, then a jumper from every terminated port into the switch.",
+    "Devices land in a zone that asks for their kind where there is one, and never in a zone reserved for something else.",
+    "Ports already filled and jumpers already run are left alone, so routing again after adding devices disturbs nothing."
   ]
 }

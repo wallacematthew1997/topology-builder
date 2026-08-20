@@ -346,7 +346,94 @@ button,input,select,textarea{font:inherit;color:inherit}
 .rkpart:hover{border-color:var(--ink)}
 .rkpart i{width:4px;height:13px;border-radius:1px;flex:0 0 4px}
 .rkpart em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:9px;color:var(--ink-soft)}
-.pgridwrap{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px;padding:10px 14px}
+.pgridwrap{display:grid;grid-template-columns:1fr;gap:3px;padding:10px 14px}
+.rktyp{margin:8px 0 10px;padding:8px 10px;background:#F6F8F5;border:1px solid var(--rule-soft);
+  border-radius:2px;font-size:11.5px;line-height:1.45}
+.rktyp b{font-weight:600}
+.rkacts{display:flex;align-items:flex-start;gap:10px;margin-top:8px}
+.rkacts .hint{flex:1;margin:0}
+.rkown{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:pointer}
+.rkown input{margin:0}
+.rktyp .mini{margin-top:6px}
+.rkcopy{margin-top:8px;border-top:1px solid var(--rule-soft);padding-top:8px}
+.rkcopylist{max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:3px}
+.rkcopylist label{display:flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--mono);font-size:10.5px}
+.rkcopylist i{color:var(--ink-soft);font-style:normal}
+.rkcopyfoot{display:flex;align-items:flex-end;gap:10px;margin-top:8px}
+.rkcopyfoot .hint{flex:1;margin:0}
+.ptray{padding:8px 14px;border-bottom:1px solid var(--rule-soft);background:#F6F8F5}
+.ptray .zhead{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:6px;display:flex;align-items:baseline;gap:10px}
+.tsum{text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink)}
+.tgrp{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.tgh{display:flex;align-items:center;gap:7px;cursor:grab;background:#fff;
+  border:1px solid var(--rule);border-radius:2px;padding:3px 8px;font:inherit;font-size:11px;
+  flex:0 0 auto;text-align:left}
+.tgh:hover{border-color:var(--ink)}
+.tgh:active{cursor:grabbing}
+.tgn{font-weight:600}
+.tgc{font-family:var(--mono);font-size:9.5px;background:var(--ink);color:#fff;
+  border-radius:8px;padding:1px 6px}
+.tgr{font-family:var(--mono);font-size:10px;color:var(--ink-soft)}
+.tgdone{font-size:9.5px;color:var(--ink-soft);font-style:italic}
+.tchips{display:flex;flex-wrap:wrap;gap:3px;flex:1 1 200px}
+.tchip{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:2px;cursor:grab;
+  border:1px solid var(--rule-soft);background:#fff}
+.tchip:hover{border-color:var(--blue)}
+.tchip.placed{opacity:.45;background:#EEF1ED}
+.prow2.dropon{outline:2px solid var(--blue);outline-offset:1px;background:#EAF1F7}
+.zrow.dropon{outline:2px solid var(--blue);outline-offset:1px}
+.zbar{padding:8px 14px;border-bottom:1px solid var(--rule-soft);background:#FBFCFA}
+.zbar .zhead{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.zbar .zhead button{margin-left:auto}
+.zrow{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.zrow .zdot{width:4px;height:20px;border-radius:1px;flex:0 0 4px}
+.zrow select,.zrow input{padding:3px 5px;border:1px solid var(--rule-soft);border-radius:2px;
+  font-family:var(--mono);font-size:10.5px;background:#fff;min-width:0}
+.zrow .zp{flex:0 0 66px;width:66px}
+.zrow .zn{flex:1 1 130px}
+.zrow .zw{flex:0 0 150px;width:150px}
+.zrow .znote{flex:1 1 130px}
+.zrow .zx{border:1px solid var(--rule-soft);background:none;cursor:pointer;color:var(--ink-soft);
+  border-radius:2px;padding:3px 6px;font:inherit;line-height:1}
+.zrow .zx:hover{border-color:var(--red);color:var(--red)}
+.zbar .zempty{font-size:11px;color:var(--ink-soft)}
+.prow2 .zt{flex:0 0 4px;width:4px;height:20px;border-radius:1px;background:transparent}
+.prow2.zwarn input[data-pf="tag"]{border-color:var(--red);background:#FFF4F4}
+.zlegend{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:7.6px;
+  color:#5A6A73;margin-bottom:4px}
+.zlegend b{color:#12222C}
+.zblk{margin-bottom:6px;break-inside:avoid}
+.ptable.ports .zc{color:#5A6A73}
+#povl .mcard{width:860px}
+.prow2 select{
+  padding:3px 4px;border:1px solid var(--rule-soft);border-radius:2px;
+  font-family:var(--mono);font-size:10.5px;background:#FCFDFB;min-width:0;
+}
+.prow2 select:focus{outline:none;border-color:var(--blue);background:#fff}
+.prow2 .toitem{flex:0 0 210px;width:210px}
+.prow2 .toport{flex:0 0 78px;width:78px}
+.prow2 .mirror{
+  flex:0 0 292px;width:292px;display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+}
+.prow2 .mirror b{font-weight:600;color:var(--ink)}
+.prow2 .mirror button{
+  margin-left:auto;border:1px solid var(--rule-soft);background:none;cursor:pointer;
+  border-radius:2px;color:var(--ink-soft);font:inherit;line-height:1;padding:2px 5px;
+}
+.prow2 .mirror button:hover{border-color:var(--red);color:var(--red)}
+.prow2.clash input,.prow2.clash select{border-color:var(--red)}
+.parrow{color:var(--ink-soft);flex:0 0 auto;font-size:11px}
+.phdr{
+  display:grid;grid-template-columns:1fr;gap:3px;padding:8px 14px 0;
+  font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.phdr>div{display:flex;gap:6px;align-items:center}
+.phdr .h1{width:26px;flex:0 0 26px;text-align:right}
+.phdr .h2,.phdr .h3{flex:1}
+.phdr .h4{flex:0 0 292px;width:292px}
 .prow2{display:flex;align-items:center;gap:6px}
 .prow2>span{font-family:var(--mono);font-size:10px;color:var(--ink-soft);width:26px;flex:0 0 26px;text-align:right}
 .prow2 input{flex:1;min-width:0;padding:3px 6px;border:1px solid var(--rule-soft);border-radius:2px;font-family:var(--mono);font-size:11px;background:#FCFDFB}
@@ -414,6 +501,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ptable.ports{--rowfs:7.6px;--rowpad:1.6px 4px}
 .ptable.ports .pn{color:#5A6A73;width:34px}
 .portsec{margin-top:6px}
+.ptable.patch{--rowfs:8.4px;--rowpad:2.6px 5px}
+.ptable.patch .tick{width:30px;border:1px solid #C9D2CD}
+.pintro{font-family:var(--mono);font-size:8.6px;color:#5A6A73;margin:0 0 7px}
 .pfoot{display:flex;align-items:flex-end;gap:16px}
 .pfoot>span{flex:1}
 .pbrand{display:flex;align-items:center;gap:7px;text-align:right}
@@ -557,11 +647,16 @@ button,input,select,textarea{font:inherit;color:inherit}
   <div class="mcard">
     <div class="mhead"><b id="ptitle">Ports</b>
       <span style="flex:1"></span>
+      <select class="mini" id="pstraight" title="Patch every port straight through to another item"
+        style="max-width:210px"></select>
       <button class="mini" id="pauto">Fill from drawing</button>
       <button class="mini" id="prefresh">Top up</button>
       <button class="mini" id="pclear">Clear</button>
       <button class="xbtn" id="pclose" aria-label="Close">&times;</button>
     </div>
+    <div class="ptray" id="ptray"></div>
+    <div class="zbar" id="pzones"></div>
+    <div class="phdr" id="phdr"></div>
     <div class="mlist" id="pgrid"></div>
     <div class="mfoot"><span id="pnote"></span></div>
   </div>
@@ -735,8 +830,49 @@ function numMode(k){
   return set || DEFAULT_NUMBERING[k] || 'continuous';
 }
 /* Restart tags are derived from the drawing, so they follow when a device is re-homed. */
+/* Everything that lands in one closet numbered as a single run, I02-01 up,
+   laid out in blocks by kind so the data drops, then the APs, then the
+   cameras each sit together.  Device kind order comes from the catalog, not
+   from the sidebar, so the numbers do not change from one machine to the next.
+   Anything that does not reach a closet keeps the tag it has. */
+function syncClosetTags(){
+  const order=new Map(DEV.map((d,i)=>[d.k,i]));
+  const byLoc={};
+  for(const n of S.nodes){
+    if(n.tagLock) continue;
+    const d=DEVBY[n.type]; if(!d || d.f==='infra') continue;
+    const loc=locCode(n); if(!loc) continue;
+    (byLoc[loc]=byLoc[loc]||[]).push(n);
+  }
+  for(const [loc,list] of Object.entries(byLoc)){
+    list.sort((a,b)=> (order.get(a.type)-order.get(b.type)) || (a.y-b.y) || (a.x-b.x));
+    let i=1;
+    for(const n of list){
+      n.tag = loc+'-'+String(i).padStart(S.settings.pad,'0');
+      i += qtyOf(n);
+    }
+  }
+}
+
+/* Tags by device kind, top to bottom then left to right.  Kinds numbered off
+   the drawing are left to syncAutoTags.  Used by Renumber all tags, and when
+   closet numbering is switched off, so nothing keeps a closet tag it is no
+   longer entitled to. */
+function retagByKind(){
+  const c={};
+  [...S.nodes].sort((a,b)=> (a.y-b.y) || (a.x-b.x)).forEach(n=>{
+    if(n.tagLock) return;
+    if(numMode(n.type)==='restart') return;
+    const d=DEVBY[n.type]; if(!d) return;
+    const start=(c[d.k]||0)+1;
+    n.tag=tagFor(d, start);
+    c[d.k]=start+qtyOf(n)-1;
+  });
+}
+
 function syncAutoTags(){
   clearLocCache();
+  if(S.settings.closetSeq){ syncClosetTags(); return }
   const byType={};
   for(const n of S.nodes){
     if(n.tagLock) continue;
@@ -907,6 +1043,89 @@ function rackOf(n){
   return n.rack;
 }
 function racksInUse(){ return S.nodes.filter(n=>isRack(n) && n.rack && n.rack.items.length) }
+
+/* =========================================================
+   Typical racks.
+
+   Thirteen IDFs built the same do not want thirteen identical elevation
+   pages.  Racks are matched on the gear itself, ignoring what each one is
+   linked to on the drawing, so the odd rack with one extra part falls out on
+   its own without anyone having to say so.
+   ========================================================= */
+function rackSig(n){
+  const r=rackOf(n);
+  const parts=[...r.items]
+    .map(it=>[it.u, it.h||1, it.kind||'', it.name||'', it.model||'', itemPorts(it), it.sfp||0].join('~'))
+    .sort();
+  return r.ru+'|'+parts.join('|');
+}
+function rackGroups(){
+  const map=new Map(), out=[];
+  for(const n of racksInUse()){
+    const solo = n.rack.ownPage===true;
+    const k = solo ? 'solo:'+n.id : rackSig(n);
+    if(!map.has(k)){ const g={key:k, nodes:[], solo}; map.set(k,g); out.push(g) }
+    map.get(k).nodes.push(n);
+  }
+  return out;
+}
+/* Which other racks share this one's build. */
+function rackTwins(n){
+  if(!isRack(n) || !n.rack || !n.rack.items.length || n.rack.ownPage) return [];
+  const sig=rackSig(n);
+  return racksInUse().filter(x=>x.id!==n.id && !x.rack.ownPage && rackSig(x)===sig);
+}
+/* IDF1, IDF2 … IDF6, IDF8 … reads better as IDF1–IDF6, IDF8. */
+function compressTags(tags){
+  const rows=tags.map(t=>{ const m=/^(.*?)(\d+)$/.exec(t); return m? {p:m[1], n:+m[2]} : {p:t, n:null} });
+  const byPrefix=new Map();
+  for(const r of rows){ if(!byPrefix.has(r.p)) byPrefix.set(r.p,[]); byPrefix.get(r.p).push(r) }
+  const out=[];
+  for(const [prefix,arr] of byPrefix){
+    const plain=arr.filter(r=>r.n==null);
+    const nums=[...new Set(arr.filter(r=>r.n!=null).map(r=>r.n))].sort((a,b)=>a-b);
+    for(let i=0;i<nums.length;){
+      let j=i;
+      while(j+1<nums.length && nums[j+1]===nums[j]+1) j++;
+      out.push(j>i ? prefix+nums[i]+'–'+prefix+nums[j] : prefix+nums[i]);
+      i=j+1;
+    }
+    for(const r of plain) out.push(r.p);
+  }
+  return out.join(', ');
+}
+function groupLabel(g){ return compressTags(g.nodes.map(n=>n.tag||'?')) }
+
+/* Copy one rack's build onto others.  Gear and the patching that stays inside
+   the rack travel; what is tied to this rack alone does not, since a device
+   link, a port assignment and an uplink to the MDF are all different in every
+   rack that gets the copy. */
+function copyRackBuild(src, targets){
+  const r=rackOf(src);
+  let n=0;
+  for(const t of targets){
+    if(!t || t.id===src.id) continue;
+    const tr=rackOf(t);
+    const idMap=new Map();
+    const items=r.items.map(it=>{
+      const copy=Object.assign({}, it, {id:uid(), ref:'', assign:[]});
+      idMap.set(it.id, copy.id);
+      return copy;
+    });
+    /* rebuild only the jumpers whose far end is inside this same rack */
+    r.items.forEach((it,i)=>{
+      (it.assign||[]).forEach((a,port)=>{
+        if(!a || !a.to || !a.to.i) return;
+        if(a.to.n!==src.id || !idMap.has(a.to.i)) return;
+        items[i].assign[port]={tag:'', label:'', to:{n:t.id, i:idMap.get(a.to.i), p:a.to.p}};
+      });
+    });
+    tr.ru=r.ru;
+    tr.items=items;
+    n++;
+  }
+  return n;
+}
 function itemPorts(it){ return Math.max(0, parseInt(it.ports||0,10)||0) }
 /* Highest free U, counting from the top down. */
 function nextFreeU(r, h){
@@ -2105,6 +2324,111 @@ function freeAt(r, u, h, skipId){
   return null;
 }
 
+/* Land everything the drawing sends here, then run the jumpers.
+
+   Copper onto the patch panels, glass into the enclosures, each device into a
+   zone that asks for its kind where one exists, and never into a zone reserved
+   for something else.  Then one jumper per terminated port into the switch,
+   data to data ports and fibre to the SFP cage.  Anything already placed or
+   already patched is left exactly as it is. */
+function autoRouteRack(n){
+  const rack=rackOf(n);
+  const byKind=k=>rack.items.filter(x=>x.kind===k).sort((a,b)=>b.u-a.u);
+  const panels=byKind('patch'), fibs=byKind('fiber'), switches=byKind('switch');
+  let landed=0, jumpers=0, over=0;
+
+  const freePort=(it,p)=>{ const a=(it.assign||[])[p]; return !(a && a.tag) };
+  const slotFor=(it, r)=>{
+    const mine=(it.zones||[]).find(z=>z.want && z.want===r.type);
+    if(mine) for(let p=mine.a; p<=mine.b && p<portCount(it); p++) if(freePort(it,p)) return p;
+    for(let p=0;p<portCount(it);p++){
+      if(!freePort(it,p)) continue;
+      const z=zoneAt(it,p);
+      if(z && z.want && z.want!==r.type) continue;
+      return p;
+    }
+    return -1;
+  };
+
+  const land=(items, fiber)=>{
+    if(!items.length) return;
+    const src=portSources(n, items[0]).filter(x=>isFiberMedia(x.media)===fiber);
+    const done=new Set();
+    for(const it of rack.items) (it.assign||[]).forEach(a=>{ if(a&&a.tag) done.add(a.tag) });
+    for(const r of src){
+      if(done.has(r.tag)) continue;
+      let put=false;
+      for(const it of items){
+        it.assign=it.assign||[];
+        const p=slotFor(it, r);
+        if(p<0) continue;
+        it.assign[p]=Object.assign({tag:'',label:''}, it.assign[p], {tag:r.tag, label:r.label||''});
+        done.add(r.tag); landed++; put=true; break;
+      }
+      if(!put) over++;
+    }
+  };
+  land(panels,false);
+  land(fibs,true);
+
+  const sw=switches[0];
+  if(sw){
+    const used=new Set();
+    for(const pc of patchList()){
+      used.add(pc.a.item.id+'#'+pc.a.port);
+      used.add(pc.b.item.id+'#'+pc.b.port);
+    }
+    const nextFree=(from,to)=>{ for(let p=from;p<to;p++) if(!used.has(sw.id+'#'+p)) return p; return -1 };
+    const run=(items, from, to)=>{
+      for(const it of items){
+        (it.assign||[]).forEach((a,p)=>{
+          if(!a || !a.tag) return;
+          if(used.has(it.id+'#'+p)) return;
+          const q=nextFree(from,to);
+          if(q<0){ over++; return }
+          setPatch(it, p, n.id, sw.id, q);
+          used.add(it.id+'#'+p); used.add(sw.id+'#'+q);
+          jumpers++;
+        });
+      }
+    };
+    run(panels, 0, itemPorts(sw));
+    run(fibs, itemPorts(sw), portCount(sw));
+  }
+  return {landed, jumpers, over, sw:!!sw};
+}
+
+/* What this rack shares with the others, and how to spread it around. */
+function rackTypicalBlock(n){
+  const twins=rackTwins(n);
+  const others=racksInUse().filter(x=>x.id!==n.id);
+  const own=!!(n.rack && n.rack.ownPage);
+  const line = own
+    ? 'Set to print on its own page, even if another rack matches it.'
+    : twins.length
+      ? '<b>Same build as '+esc(compressTags(twins.map(x=>x.tag)))+'.</b> These '
+        + (twins.length+1) + ' racks print as one typical elevation. Ports and jumpers still print per rack.'
+      : (racksInUse().length>1
+          ? 'Nothing else is built quite like this one, so it gets its own elevation page.'
+          : 'The only rack with anything in it so far.');
+  return `<div class="rktyp">
+    <div>${line}</div>
+    <div class="rkacts"><button class="mini" id="rkRoute">Route from the drawing</button>
+      <span class="hint">Copper onto the patch panels, fibre into the enclosures, then a jumper from each into the switch. Anything already placed stays put.</span></div>
+    <label class="rkown"><input type="checkbox" id="rkOwn" ${own?'checked':''}> Always give this rack its own page</label>
+    ${others.length? `<button class="mini" id="rkCopyOpen">Copy this build to other racks</button>
+      <div class="rkcopy" id="rkCopy" hidden>
+        <div class="rkcopylist">${others.map(x=>
+          `<label><input type="checkbox" data-rkto="${x.id}"> ${esc(x.tag)} ${esc(clip(x.name||'',14))}${x.rack&&x.rack.items.length?' <i>('+x.rack.items.length+' items, will be replaced)</i>':''}</label>`
+        ).join('')}</div>
+        <div class="rkcopyfoot">
+          <span class="hint">Gear and any jumpers that stay inside the rack travel. Device links, port assignments and uplinks to another rack do not, since those differ in every rack.</span>
+          <button class="mini" id="rkCopyGo">Copy</button>
+        </div>
+      </div>`:''}
+  </div>`;
+}
+
 function inspRack(){
   const list=rackTargets();
   if(!list.length) return `<p class="hint">No racks on the drawing yet. Drop an MDF, IDF or rack from the library and it shows up here.</p>`;
@@ -2137,6 +2461,7 @@ function inspRack(){
           ${[6,9,12,18,24,27,36,42,45,48].map(u=>`<option value="${u}" ${r.ru==u?'selected':''}>${u}U</option>`).join('')}
         </select></div>
       </div>
+      ${rackTypicalBlock(n)}
       <div class="rk" id="rkFrame" style="height:${r.ru*uh}px" data-uh="${uh}">
         ${rows.join('')}${items}
       </div>
@@ -2307,6 +2632,10 @@ function inspSheet(){
 
   <div class="sec">Tag format</div>
   <div class="row2">
+    <div class="fld"><label>Numbering</label><select data-s="closetSeq">
+      <option value="0" ${!s.closetSeq?'selected':''}>Per kind: C01, AP01</option>
+      <option value="1" ${s.closetSeq?'selected':''}>One run per closet: I02-01</option>
+    </select></div>
     <div class="fld"><label>Style</label><select data-s="tagStyle">
       <option value="plain" ${s.tagStyle==='plain'?'selected':''}>C01</option>
       <option value="dash" ${s.tagStyle==='dash'?'selected':''}>C-01</option>
@@ -2333,6 +2662,10 @@ function inspSheet(){
   <div class="fld"><label>Rack pages</label><select data-s="rackPages">
     <option value="1" ${S.settings.rackPages!==false?'selected':''}>Print when a rack is built</option>
     <option value="0" ${S.settings.rackPages===false?'selected':''}>Never print rack pages</option>
+  </select></div>
+  <div class="fld"><label>Patch schedule</label><select data-s="patchPages">
+    <option value="1" ${S.settings.patchPages!==false?'selected':''}>Print when ports are patched</option>
+    <option value="0" ${S.settings.patchPages===false?'selected':''}>Never print patch pages</option>
   </select></div>
   <div class="fld"><label>Pages</label><select data-s="cableSheet">
     <option value="0" ${!s.cableSheet?'selected':''}>2 pages: drawing, then device list</option>
@@ -2462,14 +2795,44 @@ function wireInspector(){
   body.querySelectorAll('[data-s]').forEach(inp=>{
     inp.onchange=()=>{
       const f=inp.dataset.s;
-      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages') ? inp.value==='1'
+      S.settings[f] = (f==='snap'||f==='cableSheet'||f==='rackPages'||f==='patchPages'||f==='closetSeq')
+                    ? inp.value==='1'
                     : f==='pad' ? parseInt(inp.value,10) : inp.value;
-      touch(); render();
+      if(f==='closetSeq' && !S.settings.closetSeq) retagByKind();
+      if(f==='closetSeq'||f==='pad') syncAutoTags();
+      touch(); render(); renderInspector();
     };
   });
   const gr=body.querySelector('#gorack'); if(gr) gr.onclick=()=>{ rackCtx.nodeId=sel.id; showTab('rack') };
   const rkPick=body.querySelector('#rkPick'); if(rkPick) rkPick.onchange=()=>{
     rackCtx.nodeId=rkPick.value; rackCtx.itemId=null; renderInspector();
+  };
+  const rkRoute=body.querySelector('#rkRoute'); if(rkRoute) rkRoute.onclick=()=>{
+    const n=currentRack(); if(!n) return;
+    pushUndo();
+    const r=autoRouteRack(n);
+    touch(); render(); renderInspector();
+    toast(!r.landed && !r.jumpers
+      ? (r.sw? 'Nothing left to route here.' : 'Nothing to route. Put a patch panel or enclosure in the rack first.')
+      : r.landed+' terminated, '+r.jumpers+' jumper'+(r.jumpers===1?'':'s')
+        + (r.over? ', '+r.over+' would not fit' : ''));
+  };
+  const rkOwn=body.querySelector('#rkOwn'); if(rkOwn) rkOwn.onchange=()=>{
+    const n=currentRack(); if(!n) return;
+    pushUndo(); rackOf(n).ownPage=rkOwn.checked; touch(); renderInspector();
+  };
+  const rkOpen=body.querySelector('#rkCopyOpen'); if(rkOpen) rkOpen.onclick=()=>{
+    const box=body.querySelector('#rkCopy'); if(box) box.hidden=!box.hidden;
+  };
+  const rkGo=body.querySelector('#rkCopyGo'); if(rkGo) rkGo.onclick=()=>{
+    const n=currentRack(); if(!n) return;
+    const picked=[...body.querySelectorAll('[data-rkto]:checked')]
+      .map(c=>S.nodes.find(x=>x.id===c.dataset.rkto)).filter(Boolean);
+    if(!picked.length){ toast('Tick the racks to copy this build into.'); return }
+    pushUndo();
+    const n2=copyRackBuild(n, picked);
+    touch(); render(); renderInspector();
+    toast('Build copied into '+n2+' rack'+(n2===1?'':'s')+'.');
   };
   body.querySelectorAll('[data-rkadd]').forEach(b=>{
     b.onclick=()=>{
@@ -2689,15 +3052,8 @@ function wireInspector(){
   };
   const retag=body.querySelector('#retag'); if(retag) retag.onclick=()=>{
     pushUndo();
-    const c={};
-    [...S.nodes].sort((a,b)=> (a.y-b.y) || (a.x-b.x)).forEach(n=>{
-      n.tagLock=false;
-      if(numMode(n.type)==='restart') return;      // handled by the drawing
-      const d=DEVBY[n.type];
-      const start=(c[d.k]||0)+1;
-      n.tag=tagFor(d, start);
-      c[d.k]=start+qtyOf(n)-1;
-    });
+    S.nodes.forEach(n=>n.tagLock=false);
+    retagByKind();
     syncAutoTags();
     touch(); render(); toast('Renumbered top to bottom, left to right.');
   };
@@ -2742,32 +3098,222 @@ function startRackDrag(e, el){
   e.preventDefault();
 }
 
+/* =========================================================
+   Patching, port to port.
+
+   A port assignment says what lands on a port.  A patch says where the other
+   end of that jumper goes, so a tech in front of the rack is told both ends:
+   switch SFP1 into fiber enclosure 01, not just "fiber".  The patch is stored
+   once, on the side it was entered from, and read from either end.
+   ========================================================= */
+/* =========================================================
+   Port zones.
+
+   A run of ports set aside for something, with a note the installer reads.
+   Four of the switches push 2.5G and the APs want them, so those ports get
+   named and reserved, and anything else landing there is flagged rather than
+   quietly accepted.
+   ========================================================= */
+const ZONE_TINT = ['#1B4F72','#0F766E','#8A5A00','#8E2F63','#5B3E7A','#A32B2B'];
+function zonesOf(it){ if(!Array.isArray(it.zones)) it.zones=[]; return it.zones }
+function zoneAt(it, port){
+  for(const z of (it.zones||[])) if(port>=z.a && port<=z.b) return z;
+  return null;
+}
+function zoneIdx(it, z){ return (it.zones||[]).indexOf(z) }
+function zoneTint(it, z){ return ZONE_TINT[Math.max(0,zoneIdx(it,z))%ZONE_TINT.length] }
+function zoneSpan(it, z){ return portName(it,z.a) + (z.b>z.a ? '–'+portName(it,z.b) : '') }
+function zoneTitle(it, z){
+  const want=z.want? (DEVBY[z.want]||{}).n : '';
+  return [z.name||'', want? want+' only':'', z.note||''].filter(Boolean).join(' · ');
+}
+function zoneLegend(it){
+  const zs=[...(it.zones||[])].sort((a,b)=>a.a-b.a);
+  if(!zs.length) return '';
+  return '<div class="zlegend">'+zs.map(z=>
+    `<span><b>${esc(zoneSpan(it,z))}</b> ${esc(zoneTitle(it,z))}</span>`).join('')+'</div>';
+}
+/* Tag to device, so a reserved run can tell what actually landed on it. */
+function tagIndex(){
+  const m=new Map();
+  for(const n of S.nodes){
+    const q=qtyOf(n);
+    for(let i=0;i<q;i++){ const t=unitTagAt(n,i); if(t) m.set(t,n) }
+    if(n.tag) m.set(n.tag,n);
+  }
+  return m;
+}
+function zoneMismatch(it, idx){
+  const out=[];
+  (it.assign||[]).forEach((a,port)=>{
+    if(!a || !a.tag) return;
+    const z=zoneAt(it,port); if(!z || !z.want) return;
+    const node=idx.get(a.tag);
+    if(node && node.type!==z.want) out.push({port, zone:z, node});
+  });
+  return out;
+}
+function addZone(it){
+  const zs=zonesOf(it);
+  const last=zs.length? Math.max(...zs.map(z=>z.b)) : -1;
+  const a=Math.min(last+1, portCount(it)-1);
+  zs.push({id:uid(), a:Math.max(0,a), b:Math.max(0,a), name:'', note:'', want:''});
+}
+
+function portName(it, p){
+  const total=itemPorts(it);
+  return p<total ? String(p+1).padStart(2,'0') : 'SFP'+(p-total+1);
+}
+function portCount(it){ return itemPorts(it)+(it.sfp||0) }
+function itemName(n, it){
+  const ref = it.ref ? (S.nodes.find(x=>x.id===it.ref)||{}).tag : '';
+  return [ref, it.name].filter(Boolean).join(' · ') || 'Item';
+}
+function itemFullName(n, it){ return n.tag+' · '+itemName(n,it) }
+
+/* Every rack item with ports, for the target picker. */
+function patchTargets(){
+  const out=[];
+  for(const n of S.nodes){
+    if(!isRack(n) || !n.rack) continue;
+    for(const it of n.rack.items) if(portCount(it)) out.push({node:n, item:it});
+  }
+  return out;
+}
+function findRackItem(nodeId, itemId){
+  const n=S.nodes.find(x=>x.id===nodeId);
+  if(!n || !n.rack) return null;
+  const it=n.rack.items.find(x=>x.id===itemId);
+  return it ? {node:n, item:it} : null;
+}
+
+/* Read every patch in the job once, then look ends up against it. */
+function patchList(){
+  const out=[];
+  for(const n of S.nodes){
+    if(!isRack(n) || !n.rack) continue;
+    for(const it of n.rack.items){
+      (it.assign||[]).forEach((a,p)=>{
+        if(!a || !a.to || !a.to.i) return;
+        const far=findRackItem(a.to.n, a.to.i);
+        if(!far || a.to.p==null) return;
+        out.push({ a:{node:n,item:it,port:p}, b:{node:far.node,item:far.item,port:a.to.p},
+                   device:a.tag||'', note:a.label||'' });
+      });
+    }
+  }
+  return out;
+}
+/* What is on the far end of this port, whichever side the patch was typed on. */
+function patchEnd(list, itemId, port){
+  for(const pc of list){
+    if(pc.a.item.id===itemId && pc.a.port===port) return {end:pc.b, own:true,  pc};
+    if(pc.b.item.id===itemId && pc.b.port===port) return {end:pc.a, own:false, pc};
+  }
+  return null;
+}
+/* Ports on the far side that two jumpers both claim. */
+function patchClashes(list){
+  const seen=new Map(), bad=new Set();
+  for(const pc of list){
+    for(const e of [pc.a, pc.b]){
+      const k=e.item.id+'#'+e.port;
+      if(seen.has(k)) { bad.add(k); bad.add(seen.get(k)) } else seen.set(k,k);
+    }
+  }
+  return bad;
+}
+function setPatch(it, port, nodeId, itemId, farPort){
+  it.assign=it.assign||[];
+  const cur=Object.assign({tag:'',label:''}, it.assign[port]);
+  if(!itemId || farPort==null || farPort<0) delete cur.to;
+  else cur.to={n:nodeId, i:itemId, p:farPort};
+  it.assign[port]=cur;
+}
+/* Clear a patch from whichever side holds it. */
+function clearPatch(list, itemId, port){
+  const hit=patchEnd(list, itemId, port);
+  if(!hit) return;
+  const own=hit.pc.a;
+  const a=(own.item.assign||[])[own.port];
+  if(a) delete a.to;
+}
+
 /* ---- port assignment ---- */
 const povl=document.getElementById('povl');
 let portCtx=null;
 
+/* Copper lands on a patch panel, glass lands in an enclosure.  Nothing is
+   punched straight onto a switch when the rack has somewhere proper to
+   terminate it, which is the way the rack actually gets built. */
+const FIBER_MEDIA = new Set(['smf','mmf']);
+function isFiberMedia(m){ return FIBER_MEDIA.has(m) }
+/* The run that homes a device tells us which it is. */
+function deviceMedia(o){
+  for(const l of S.links) if(l.from===o.id || l.to===o.id) return l.media||'cat6';
+  return 'cat6';
+}
+function landingKind(media){ return isFiberMedia(media) ? 'fiber' : 'patch' }
+function rackHasKind(rackNode, kind){
+  return rackOf(rackNode).items.some(x=>x.kind===kind);
+}
+/* Only what belongs on this item.  With no panel in the rack at all, a run has
+   nowhere else to go, so it stays offered wherever it is. */
+function sourcesFor(rackNode, item){
+  return portSources(rackNode, item).filter(x=>{
+    const want=landingKind(x.media);
+    if(item.kind===want) return true;
+    return !rackHasKind(rackNode, want);
+  });
+}
+
+/* What can land on this item's ports.
+
+   Two ways in.  Anything cabled straight to the rack, or to the device this
+   item stands for, and anything the drawing says lands in this closet at all,
+   however many hops away it sits.  A camera reaching IDF2 through a switch is
+   still a camera that needs a port in IDF2, and a patch panel takes data, APs
+   and cameras all at once, so nothing here filters by kind. */
 function portSources(rackNode, item){
   const anchor = item.ref ? S.nodes.find(x=>x.id===item.ref) : rackNode;
-  if(!anchor) return [];
+  const wantInfra = item.kind==='fiber';
+  /* Gear already standing in this rack is the thing with the ports, not
+     something waiting for one. */
+  const mounted=new Set(rackOf(rackNode).items.map(x=>x.ref).filter(Boolean));
   const seen=new Set(), out=[];
-  for(const l of S.links){
-    if(l.from!==anchor.id && l.to!==anchor.id) continue;
-    const o=ent(l.from===anchor.id? l.to : l.from);
-    if(!o || o.w || seen.has(o.id)) continue;
-    const d=DEVBY[o.type]; if(!d) continue;
-    const wantInfra = item.kind==='fiber';
-    if(d.f==='infra' && !wantInfra) continue;
+  const take=o=>{
+    if(!o || o.w || seen.has(o.id) || mounted.has(o.id)) return;
+    const d=DEVBY[o.type]; if(!d) return;
+    if(d.f==='infra' && !wantInfra) return;
     seen.add(o.id);
     for(let i=0;i<qtyOf(o);i++){
       const t=unitTagAt(o,i);
       const u=(o.units||[])[i];
-      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t) });
+      const media=deviceMedia(o);
+      out.push({ tag:t, label:(u&&u.label)||autoLabel(o,t), type:o.type, node:o.id, media });
+    }
+  };
+
+  if(anchor){
+    for(const l of S.links){
+      if(l.from!==anchor.id && l.to!==anchor.id) continue;
+      take(ent(l.from===anchor.id ? l.to : l.from));
     }
   }
+
+  /* Everything the cabling says ends up in this closet. */
+  const home = codeOfNode(rackNode);
+  if(home){
+    for(const n of S.nodes){
+      if(n.id===rackNode.id) continue;
+      if(locCode(n)===home) take(n);
+    }
+  }
+
   return out.sort((a,b)=>a.tag.localeCompare(b.tag,undefined,{numeric:true}));
 }
 function portDrift(n, it){
-  const src=portSources(n,it);
+  const src=sourcesFor(n,it);
   const srcTags=new Set(src.map(x=>x.tag));
   const assigned=(it.assign||[]).filter(a=>a&&a.tag);
   const aTags=new Set(assigned.map(a=>a.tag));
@@ -2805,42 +3351,308 @@ function renderPorts(){
   if(!portCtx) return;
   const n=S.nodes.find(x=>x.id===portCtx.nodeId);
   const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
-  const total=itemPorts(it);
+  const total=itemPorts(it), all=portCount(it);
   it.assign=it.assign||[];
-  document.getElementById('ptitle').textContent=`${n.tag} \u00b7 ${it.name||'Item'} \u00b7 ${total} ports`;
+  document.getElementById('ptitle').textContent=`${n.tag} · ${it.name||'Item'} · ${total} ports`;
+
+  const list=patchList(), clash=patchClashes(list);
+  const tags=tagIndex(), wrong=zoneMismatch(it, tags);
+  const wrongPorts=new Set(wrong.map(w=>w.port));
+  renderZones(it, all);
+  renderTray(n, it);
   const filled=it.assign.filter(a=>a&&a.tag).length;
+  const patched=[];
+  for(let i=0;i<all;i++) if(patchEnd(list,it.id,i)) patched.push(i);
   const dr=portDrift(n,it);
   const warn=[];
   if(dr.added)  warn.push(dr.added+' device'+(dr.added>1?'s':'')+' on the drawing not assigned yet');
   if(dr.orphan) warn.push(dr.orphan+' assignment'+(dr.orphan>1?'s':'')+' no longer match a device');
   if(dr.over)   warn.push('more devices than this has ports');
+  const mine=[...clash].filter(k=>k.startsWith(it.id+'#')).length;
+  if(mine) warn.push(mine+' port'+(mine>1?'s':'')+' patched twice');
+  if(wrong.length) warn.push(wrong.map(w=>
+    portName(it,w.port)+' is '+((DEVBY[w.node.type]||{}).n||'something else')+' in a '+
+    ((DEVBY[w.zone.want]||{}).n||'reserved')+' zone').join(' · '));
   document.getElementById('pnote').innerHTML=
-    `${filled} of ${total} assigned. Blank ports print as empty rows for the tech to write in.` +
-    (warn.length? `<b class="pwarn">${esc(warn.join(' \u00b7 '))}</b>` : '');
+    `${filled} of ${total} assigned, ${patched.length} of ${all} patched. Blank ports print as empty rows for the tech to write in.` +
+    (warn.length? `<b class="pwarn">${esc(warn.join(' · '))}</b>` : '');
+
+  document.getElementById('phdr').innerHTML=
+    '<div><span class="h1">#</span><span class="h2">Device</span><span class="h3">Label</span><span class="h4">Patches into</span></div>';
+
+  /* Somewhere to send a jumper: any other item in any rack that has ports. */
+  const targets=patchTargets().filter(t=>t.item.id!==it.id);
+  const targetOpts=(sel)=>['<option value="">—</option>'].concat(
+    targets.map(t=>`<option value="${t.node.id}|${t.item.id}" ${sel===t.node.id+'|'+t.item.id?'selected':''}>${esc(itemFullName(t.node,t.item))}</option>`)
+  ).join('');
+
   let html='<div class="pgridwrap">';
-  for(let i=0;i<total;i++){
+  for(let i=0;i<all;i++){
     const a=it.assign[i]||{};
-    html+=`<div class="prow2"><span>${String(i+1).padStart(2,'0')}</span>
-      <input data-p="${i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="\u2014">
-      <input data-p="${i}" data-pf="label" value="${esc(a.label||'')}" placeholder="label"></div>`;
-  }
-  if(it.sfp){
-    for(let i=0;i<it.sfp;i++){
-      const a=it.assign[total+i]||{};
-      html+=`<div class="prow2 sfp"><span>SFP${i+1}</span>
-        <input data-p="${total+i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="\u2014">
-        <input data-p="${total+i}" data-pf="label" value="${esc(a.label||'')}" placeholder="uplink"></div>`;
+    const hit=patchEnd(list, it.id, i);
+    const isSfp=i>=total;
+    const key=it.id+'#'+i;
+    let tail;
+    if(hit && !hit.own){
+      /* the other item holds this one, so show it rather than offer a second copy */
+      tail=`<div class="mirror" title="Set from the other end">← <b>${esc(itemFullName(hit.end.node,hit.end.item))}</b> ${esc(portName(hit.end.item,hit.end.port))}
+        <button data-punlink="${i}" title="Remove this patch">clear</button></div>`;
+    }else{
+      const cur=hit ? hit.end.node.id+'|'+hit.end.item.id : '';
+      const far=hit ? hit.end.item : null;
+      const pOpts=far
+        ? ['<option value="">—</option>'].concat(
+            Array.from({length:portCount(far)},(_,k)=>`<option value="${k}" ${hit.end.port===k?'selected':''}>${portName(far,k)}</option>`)
+          ).join('')
+        : '<option value="">—</option>';
+      tail=`<span class="parrow">→</span>
+        <select class="toitem" data-p="${i}" data-pt="item">${targetOpts(cur)}</select>
+        <select class="toport" data-p="${i}" data-pt="port" ${far?'':'disabled'}>${pOpts}</select>`;
     }
+    const z=zoneAt(it,i);
+    html+=`<div class="prow2 ${isSfp?'sfp':''} ${clash.has(key)?'clash':''} ${wrongPorts.has(i)?'zwarn':''}"
+      title="${z?esc(zoneSpan(it,z)+'  '+zoneTitle(it,z)):''}">
+      <span class="zt" style="background:${z?zoneTint(it,z):'transparent'}"></span>
+      <span>${portName(it,i)}</span>
+      <input data-p="${i}" data-pf="tag" value="${esc(a.tag||'')}" placeholder="—">
+      <input data-p="${i}" data-pf="label" value="${esc(a.label||'')}" placeholder="${isSfp?'uplink':'label'}">
+      ${tail}</div>`;
   }
   document.getElementById('pgrid').innerHTML=html+'</div>';
-  document.getElementById('pgrid').querySelectorAll('[data-p]').forEach(inp=>{
+
+  const grid=document.getElementById('pgrid');
+  /* Rows take a drop from the tray and lay the run in from there. */
+  const readDrop=e=>{
+    const raw=e.dataTransfer.getData('text/plain')||'';
+    if(!raw.startsWith('ports:')) return null;
+    try{ return JSON.parse(raw.slice(6)) }catch{ return null }
+  };
+  grid.querySelectorAll('.prow2').forEach(row=>{
+    const at=parseInt(row.querySelector('[data-pf="tag"]').dataset.p,10);
+    row.ondragover=e=>{
+      if(!(e.dataTransfer.types||[]).includes('text/plain')) return;
+      e.preventDefault(); e.dataTransfer.dropEffect='copy';
+      row.classList.add('dropon');
+    };
+    row.ondragleave=()=>row.classList.remove('dropon');
+    row.ondrop=e=>{
+      row.classList.remove('dropon');
+      const rows=readDrop(e); if(!rows || !rows.length) return;
+      e.preventDefault();
+      pushUndo();
+      const n2=dropSources(it, at, rows);
+      touch(); renderPorts();
+      toast(n2+' device'+(n2===1?'':'s')+' laid in from '+portName(it,at)
+        + (n2<rows.length? ', '+(rows.length-n2)+' would not fit' : ''));
+    };
+  });
+
+  grid.querySelectorAll('[data-pf]').forEach(inp=>{
     inp.oninput=()=>{
       const i=parseInt(inp.dataset.p,10);
       it.assign[i]=Object.assign({tag:'',label:''}, it.assign[i], {[inp.dataset.pf]:inp.value});
       touch();
     };
   });
+  grid.querySelectorAll('[data-pt="item"]').forEach(sel=>{
+    sel.onchange=()=>{
+      const i=parseInt(sel.dataset.p,10);
+      if(!sel.value){ clearPatch(patchList(), it.id, i); touch(); renderPorts(); return }
+      const [nid,iid]=sel.value.split('|');
+      const far=findRackItem(nid,iid); if(!far) return;
+      const held=patchEnd(patchList(), it.id, i);
+      const keep = held && held.own && held.end.item.id===iid ? held.end.port : firstFreePort(far.item, patchList());
+      setPatch(it, i, nid, iid, keep==null?0:keep);
+      touch(); renderPorts();
+    };
+  });
+  grid.querySelectorAll('[data-pt="port"]').forEach(sel=>{
+    sel.onchange=()=>{
+      const i=parseInt(sel.dataset.p,10);
+      const cur=(it.assign[i]||{}).to; if(!cur) return;
+      setPatch(it, i, cur.n, cur.i, sel.value===''? null : parseInt(sel.value,10));
+      touch(); renderPorts();
+    };
+  });
+  grid.querySelectorAll('[data-punlink]').forEach(b=>{
+    b.onclick=()=>{ clearPatch(patchList(), it.id, parseInt(b.dataset.punlink,10)); touch(); renderPorts() };
+  });
+
+  /* straight through picker */
+  const st=document.getElementById('pstraight');
+  st.innerHTML='<option value="">Patch straight through to…</option>'+
+    targets.map(t=>`<option value="${t.node.id}|${t.item.id}">${esc(itemFullName(t.node,t.item))}</option>`).join('');
+  st.onchange=()=>{
+    if(!st.value) return;
+    const [nid,iid]=st.value.split('|');
+    const far=findRackItem(nid,iid);
+    st.value='';
+    if(!far) return;
+    const count=Math.min(all, portCount(far.item));
+    for(let i=0;i<count;i++) setPatch(it, i, nid, iid, i);
+    touch(); renderPorts();
+    toast(count+' ports patched one to one into '+itemFullName(far.node,far.item)+'.');
+  };
 }
+
+/* =========================================================
+   The device tray.
+
+   Whatever feeds this rack on the drawing, grouped by kind and carrying the
+   tags and labels already worked out there.  Drag a whole group onto a port
+   and it lays the run in from that port down; drag one chip to peel a single
+   device off.  Nothing is retyped, so the port list says what the drawing
+   says.
+   ========================================================= */
+function sourceGroups(n, it){
+  const src=sourcesFor(n, it);
+  const placed=new Set((it.assign||[]).filter(a=>a&&a.tag).map(a=>a.tag));
+  const byType=new Map();
+  for(const x of src){
+    if(!byType.has(x.type)) byType.set(x.type, []);
+    byType.get(x.type).push(Object.assign({placed:placed.has(x.tag)}, x));
+  }
+  return [...byType.entries()].map(([type,items])=>({
+    type, items,
+    name:(DEVBY[type]||{}).n || 'Device',
+    left:items.filter(x=>!x.placed).length
+  })).sort((a,b)=>a.name.localeCompare(b.name));
+}
+/* Lay a run of devices in, starting at a port. */
+function dropSources(it, start, rows){
+  const all=portCount(it);
+  let p=start, n=0;
+  for(const r of rows){
+    if(p>=all) break;
+    const cur=Object.assign({tag:'',label:''}, it.assign[p]);
+    cur.tag=r.tag; cur.label=r.label||'';
+    it.assign[p]=cur;                       /* any jumper on this port stays put */
+    p++; n++;
+  }
+  return n;
+}
+function renderTray(n, it){
+  const host=document.getElementById('ptray'); if(!host) return;
+  const groups=sourceGroups(n, it);
+  if(!groups.length){
+    host.innerHTML='<div class="zempty">Nothing on the drawing feeds this yet. Link it on the sheet and the devices show up here to drag in.</div>';
+    return;
+  }
+  const total=groups.reduce((a,g)=>a+g.items.length,0);
+  const left=groups.reduce((a,g)=>a+g.left,0);
+  host.innerHTML='<div class="zhead">From the drawing'
+    + `<span class="tsum">${total} device${total===1?'':'s'} land in this rack`
+    + (left? `, ${left} still to place` : ', all placed') + '</span></div>'
+    + groups.map(g=>{
+    const tags=g.items.map(x=>x.tag);
+    const span=tags.length>1 ? tags[0]+'–'+tags[tags.length-1] : tags[0];
+    return `<div class="tgrp">
+      <button class="tgh" draggable="true" data-tgrp="${esc(g.type)}"
+        title="Drag onto a port to lay all of these in from there">
+        <span class="tgn">${esc(g.name)}</span>
+        <span class="tgc">${g.items.length}</span>
+        <span class="tgr">${esc(span)}</span>
+        ${g.left? '' : '<span class="tgdone">all placed</span>'}
+      </button>
+      <div class="tchips">${g.items.map(x=>
+        `<span class="tchip ${x.placed?'placed':''}" draggable="true" data-tchip="${esc(x.tag)}"
+           title="${esc(x.label||'')}">${esc(x.tag)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+
+  const payload=rows=>JSON.stringify(rows.map(r=>({tag:r.tag,label:r.label})));
+  host.querySelectorAll('[data-tgrp]').forEach(el=>{
+    el.ondragstart=e=>{
+      const g=groups.find(x=>x.type===el.dataset.tgrp); if(!g) return;
+      e.dataTransfer.setData('text/plain','ports:'+payload(g.items));
+      e.dataTransfer.effectAllowed='copy';
+    };
+  });
+  host.querySelectorAll('[data-tchip]').forEach(el=>{
+    el.ondragstart=e=>{
+      for(const g of groups){
+        const hit=g.items.find(x=>x.tag===el.dataset.tchip);
+        if(hit){ e.dataTransfer.setData('text/plain','ports:'+payload([hit])); break }
+      }
+      e.dataTransfer.effectAllowed='copy';
+    };
+  });
+}
+
+/* The zone strip above the port list. */
+function renderZones(it, all){
+  const host=document.getElementById('pzones'); if(!host) return;
+  const zs=zonesOf(it);
+  const opts=(sel)=>Array.from({length:all},(_,k)=>
+    `<option value="${k}" ${sel===k?'selected':''}>${portName(it,k)}</option>`).join('');
+  const wantOpts=(sel)=>['<option value="">any device</option>'].concat(
+    Object.entries(FAM).map(([fk,f])=>
+      `<optgroup label="${esc(f.label)}">`+
+      DEV.filter(d=>d.f===fk).map(d=>`<option value="${d.k}" ${sel===d.k?'selected':''}>${esc(d.n)} only</option>`).join('')+
+      `</optgroup>`)
+  ).join('');
+  host.innerHTML=
+    `<div class="zhead">Port zones<button class="mini" id="zadd">Add a zone</button></div>`+
+    (zs.length
+      ? zs.map((z,i)=>`<div class="zrow" data-z="${z.id}">
+          <span class="zdot" style="background:${zoneTint(it,z)}"></span>
+          <select class="zp" data-zf="a">${opts(z.a)}</select>
+          <select class="zp" data-zf="b">${opts(z.b)}</select>
+          <input class="zn" data-zf="name" value="${esc(z.name||'')}" placeholder="what this run is for">
+          <select class="zw" data-zf="want">${wantOpts(z.want||'')}</select>
+          <input class="znote" data-zf="note" value="${esc(z.note||'')}" placeholder="note for the installer">
+          <button class="zx" data-zdel="${z.id}" title="Remove this zone">&times;</button>
+        </div>`).join('')
+      : `<div class="zempty">No zones. Set one to reserve a run of ports, say 2.5G ports for the APs, and the installer sheet says so.</div>`);
+
+  host.querySelector('#zadd').onclick=()=>{ pushUndo(); addZone(it); touch(); renderPorts() };
+  host.querySelectorAll('[data-zdel]').forEach(b=>{
+    b.onclick=()=>{ pushUndo(); it.zones=zonesOf(it).filter(z=>z.id!==b.dataset.zdel); touch(); renderPorts() };
+  });
+  host.querySelectorAll('.zrow').forEach(row=>{
+    const z=zonesOf(it).find(x=>x.id===row.dataset.z); if(!z) return;
+    row.ondragover=e=>{
+      if(!(e.dataTransfer.types||[]).includes('text/plain')) return;
+      e.preventDefault(); e.dataTransfer.dropEffect='copy'; row.classList.add('dropon');
+    };
+    row.ondragleave=()=>row.classList.remove('dropon');
+    row.ondrop=e=>{
+      row.classList.remove('dropon');
+      const raw=e.dataTransfer.getData('text/plain')||'';
+      if(!raw.startsWith('ports:')) return;
+      let rows; try{ rows=JSON.parse(raw.slice(6)) }catch{ return }
+      if(!rows || !rows.length) return;
+      e.preventDefault();
+      pushUndo();
+      const room=z.b-z.a+1;
+      const n2=dropSources(it, z.a, rows.slice(0, room));
+      touch(); renderPorts();
+      toast(n2+' laid into '+(z.name||zoneSpan(it,z))
+        + (rows.length>room? ', '+(rows.length-room)+' did not fit the zone' : ''));
+    };
+    row.querySelectorAll('[data-zf]').forEach(inp=>{
+      const f=inp.dataset.zf;
+      const set=()=>{
+        if(f==='a'||f==='b'){
+          z[f]=parseInt(inp.value,10)||0;
+          if(z.b<z.a){ const t=z.a; z.a=z.b; z.b=t }
+          touch(); renderPorts(); return;
+        }
+        z[f]=inp.value; touch();
+        if(f==='want') renderPorts();
+      };
+      inp.onchange=set;
+      if(f==='name'||f==='note') inp.oninput=()=>{ z[f]=inp.value; touch() };
+    });
+  });
+}
+
+/* Lowest port on the far item that nothing is patched into yet. */
+function firstFreePort(it, list){
+  for(let k=0;k<portCount(it);k++) if(!patchEnd(list, it.id, k)) return k;
+  return 0;
+}
+
 document.getElementById('pclose').onclick=closePorts;
 povl.addEventListener('click',e=>{ if(e.target===povl) closePorts() });
 document.getElementById('prefresh').onclick=()=>{
@@ -2854,8 +3666,14 @@ document.getElementById('pauto').onclick=()=>{
   if(!portCtx) return;
   const n=S.nodes.find(x=>x.id===portCtx.nodeId);
   const it=rackOf(n).items.find(x=>x.id===portCtx.itemId);
-  const src=portSources(n,it);
-  if(!src.length){ toast('Nothing feeds this yet. Link it on the drawing first.'); return }
+  const src=sourcesFor(n,it);
+  if(!src.length){
+    const other=rackHasKind(n,'patch')||rackHasKind(n,'fiber');
+    toast(other && (it.kind==='switch')
+      ? 'Copper lands on the patch panel and fibre in the enclosure. Fill those, then patch across.'
+      : 'Nothing feeds this yet. Link it on the drawing first.');
+    return;
+  }
   it.assign=src.slice(0, itemPorts(it)).map(x=>({tag:x.tag, label:x.label}));
   touch(); renderPorts();
   toast(Math.min(src.length,itemPorts(it))+' ports filled');
@@ -3144,14 +3962,61 @@ async function bkForget(){
   toast('Backup folder unlinked. Saves stay in this browser only.');
 }
 
-const bkName = st => slug(st.meta && st.meta.project) + '.topology.json';
+/* One file per project, for the life of the project.  Renaming the job renames
+   its file rather than leaving the old one behind to be picked up months later
+   as if it were still current. */
+const BKFILES='topo:bkfiles';
+let bkFiles=null;
+const bkWantName = st => slug(st.meta && st.meta.project) + '.topology.json';
 
+async function bkFileMap(){
+  if(bkFiles) return bkFiles;
+  try{ bkFiles=(await idb.get(BKFILES)) || {} }catch{ bkFiles={} }
+  if(!bkFiles || typeof bkFiles!=='object') bkFiles={};
+  return bkFiles;
+}
+async function bkSaveFileMap(){ try{ await idb.set(BKFILES, bkFiles||{}) }catch{} }
+/* Two projects called the same thing must not share one file. */
+function bkFreeName(map, id, want){
+  const taken=new Set(Object.keys(map).filter(k=>k!==id).map(k=>map[k]));
+  if(!taken.has(want)) return want;
+  const base=want.replace(/\.topology\.json$/,'');
+  for(let i=2;i<200;i++){
+    const c=base+'-'+i+'.topology.json';
+    if(!taken.has(c)) return c;
+  }
+  return base+'-'+Date.now()+'.topology.json';
+}
+async function bkPut(dir, name, text){
+  const fh=await dir.getFileHandle(name,{create:true});
+  const w=await fh.createWritable();
+  await w.write(text);
+  await w.close();
+  return fh;
+}
 async function bkWriteState(st){
   const dir=await bkDirs();
-  const fh=await dir.getFileHandle(bkName(st), {create:true});
-  const w=await fh.createWritable();
-  await w.write(JSON.stringify(st,null,2));
-  await w.close();
+  const map=await bkFileMap();
+  const text=JSON.stringify(st,null,2);
+  const had=map[st.id];
+  const want=bkFreeName(map, st.id, bkWantName(st));
+
+  if(!had){
+    await bkPut(dir, want, text);
+    map[st.id]=want; await bkSaveFileMap();
+    return;
+  }
+  if(had===want){ await bkPut(dir, had, text); return }
+
+  /* the job was renamed: carry the file over, then drop the old one */
+  const fh=await bkPut(dir, had, text);
+  let moved=false;
+  try{ if(typeof fh.move==='function'){ await fh.move(want); moved=true } }catch{}
+  if(!moved){
+    await bkPut(dir, want, text);
+    try{ await dir.removeEntry(had) }catch{}
+  }
+  map[st.id]=want; await bkSaveFileMap();
 }
 
 /* The open project, on every save. */
@@ -3448,44 +4313,97 @@ function photoPage(m){
 
 function rackPages(m){
   if(S.settings.rackPages===false) return '';
-  const racks=racksInUse();
-  if(!racks.length) return '';
-  return racks.map(n=>{
-    const r=rackOf(n);
-    const withPorts=r.items.filter(it=>itemPorts(it) && (it.assign||[]).some(a=>a&&a.tag));
+  const groups=rackGroups();
+  if(!groups.length) return '';
+  return groups.map(g=>{
+    const n=g.nodes[0], r=rackOf(n), many=g.nodes.length>1;
+    const label=groupLabel(g);
+    /* Port assignment is per rack, so it only belongs on a page that speaks
+       for one rack.  A typical page points at the patch schedules instead. */
+    const withPorts = many ? [] : r.items.filter(it=>itemPorts(it) && (it.assign||[]).some(a=>a&&a.tag));
     const tables=withPorts.map(it=>{
       const total=itemPorts(it), sfp=it.sfp||0;
       const rows=[];
       for(let i=0;i<total+sfp;i++){
         const a=(it.assign||[])[i]||{};
         const num=i<total? String(i+1).padStart(2,'0') : 'SFP'+(i-total+1);
-        rows.push(`<tr><td class="pn">${num}</td><td>${esc(a.tag||'')}</td><td>${esc(a.label||'')}</td></tr>`);
+        const z=zoneAt(it,i);
+        rows.push(`<tr><td class="pn">${num}</td><td>${esc(a.tag||'')}</td><td>${esc(a.label||'')}</td><td class="zc">${esc(z?z.name||'':'')}</td></tr>`);
       }
       const half=Math.ceil(rows.length/2);
-      const col=x=>`<table class="ptable ports"><thead><tr><th>Port</th><th>Device</th><th>Label</th></tr></thead><tbody>${x.join('')}</tbody></table>`;
+      const col=x=>`<table class="ptable ports"><thead><tr><th>Port</th><th>Device</th><th>Label</th><th>Zone</th></tr></thead><tbody>${x.join('')}</tbody></table>`;
       return `<div class="portblk">
-        <div class="portname">${esc([it.ref?(S.nodes.find(x=>x.id===it.ref)||{}).tag:'', it.name].filter(Boolean).join(' \u00b7 '))}${it.model?' \u00b7 '+esc(it.model):''}</div>
+        <div class="portname">${esc([it.ref?(S.nodes.find(x=>x.id===it.ref)||{}).tag:'', it.name].filter(Boolean).join(' · '))}${it.model?' · '+esc(it.model):''}</div>
+        ${zoneLegend(it)}
         <div class="portcols">${col(rows.slice(0,half))}${col(rows.slice(half))}</div>
       </div>`;
     }).join('');
+    const zoneNotes = many ? r.items.map(it=>{
+      const lg=zoneLegend(it);
+      return lg? `<div class="zblk"><div class="portname">${esc(it.name||'Item')}</div>${lg}</div>` : '';
+    }).join('') : '';
     return `<section class="psheet"><div class="pframe flow">
-      <div class="phead"><div class="ptitle">${esc(n.tag)} rack elevation</div>
+      <div class="phead"><div class="ptitle">${esc(label)} ${many?'typical rack elevation':'rack elevation'}</div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; ${r.ru}U &nbsp; ${r.items.length} items</div></div>
+      ${many? `<p class="pintro">One elevation for ${g.nodes.length} racks built the same: ${esc(g.nodes.map(x=>x.tag).join(', '))}. Ports and jumpers are listed per rack on the patch schedules.</p>`:''}
       <div class="rackwrap">
         <div class="rackelev">${rackElevation(n, 620)}</div>
         <table class="ptable rackbom" style="--rowfs:8.5px;--rowpad:3px 5px">
           <thead><tr><th>U</th><th>Item</th><th>Model</th><th>Ports</th></tr></thead>
           <tbody>${[...r.items].sort((a,b)=>b.u-a.u).map(it=>{
-            const ref=it.ref? (S.nodes.find(x=>x.id===it.ref)||{}).tag : '';
-            return `<tr><td>${it.u}${(it.h||1)>1?'\u2013'+(it.u+(it.h||1)-1):''}</td>
-              <td>${esc([ref,it.name].filter(Boolean).join(' \u00b7 '))}</td>
+            const ref=(!many && it.ref)? (S.nodes.find(x=>x.id===it.ref)||{}).tag : '';
+            return `<tr><td>${it.u}${(it.h||1)>1?'–'+(it.u+(it.h||1)-1):''}</td>
+              <td>${esc([ref,it.name].filter(Boolean).join(' · '))}</td>
               <td>${esc(it.model||'')}</td>
               <td>${itemPorts(it)?itemPorts(it)+(it.sfp?' +'+it.sfp+' SFP':''):''}</td></tr>`;
           }).join('')}</tbody>
         </table>
       </div>
+      ${zoneNotes? `<div class="portsec"><div class="ptitle" style="font-size:11px;margin:10px 0 6px">Port zones</div>${zoneNotes}</div>`:''}
       ${tables? `<div class="portsec"><div class="ptitle" style="font-size:11px;margin:10px 0 6px">Port assignment</div>${tables}</div>`:''}
-      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; ${esc(n.tag)} elevation</span>${brandBlock()}</div>
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; ${esc(label)} elevation</span>${brandBlock()}</div>
+    </div></section>`;
+  }).join('');
+}
+
+/* One patch schedule per rack, for whoever is standing at it with a bag of
+   jumpers.  Every run that touches this rack, read from both ends. */
+function patchPages(m){
+  if(S.settings.patchPages===false) return '';
+  const list=patchList();
+  if(!list.length) return '';
+  return racksInUse().map(n=>{
+    const mine=[];
+    for(const pc of list){
+      if(pc.a.node.id===n.id) mine.push({near:pc.a, far:pc.b, pc});
+      else if(pc.b.node.id===n.id) mine.push({near:pc.b, far:pc.a, pc});
+    }
+    if(!mine.length) return '';
+    mine.sort((x,y)=>
+      itemName(n,x.near.item).localeCompare(itemName(n,y.near.item)) || x.near.port-y.near.port);
+    const rows=mine.map((r,i)=>{
+      const farRack = r.far.node.id===n.id ? '' : r.far.node.tag+' · ';
+      return `<tr>
+        <td class="pn">${String(i+1).padStart(2,'0')}</td>
+        <td>${esc(itemName(n,r.near.item))}</td>
+        <td class="pn">${esc(portName(r.near.item, r.near.port))}</td>
+        <td class="zc">${esc((()=>{ const z=zoneAt(r.near.item, r.near.port); return z? zoneTitle(r.near.item,z)||zoneSpan(r.near.item,z) : '' })())}</td>
+        <td>${esc(farRack+itemName(r.far.node, r.far.item))}</td>
+        <td class="pn">${esc(portName(r.far.item, r.far.port))}</td>
+        <td>${esc(r.pc.device||'')}</td>
+        <td>${esc(r.pc.note||'')}</td>
+        <td class="tick"></td></tr>`;
+    }).join('');
+    return `<section class="psheet"><div class="pframe flow">
+      <div class="phead"><div class="ptitle">${esc(n.tag)} patch schedule</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; ${mine.length} jumper${mine.length===1?'':'s'}</div></div>
+      <p class="pintro">Work down the list. Each row is one jumper: the port on the left goes to the port on the right. Tick it off as you go.</p>
+      <table class="ptable patch">
+        <colgroup><col style="width:24px"><col style="width:16%"><col style="width:40px"><col style="width:15%">
+          <col style="width:19%"><col style="width:40px"><col style="width:11%"><col><col style="width:32px"></colgroup>
+        <thead><tr><th>#</th><th>From</th><th>Port</th><th>Zone</th><th>To</th><th>Port</th><th>Carries</th><th>Note</th><th>Done</th></tr></thead>
+        <tbody>${rows}</tbody></table>
+      <div class="pfoot"><span>${esc(m.drawnBy||'')} &nbsp; ${esc(m.date||'')} &nbsp; ${esc(n.tag)} patch schedule</span>${brandBlock()}</div>
     </div></section>`;
   }).join('');
 }
@@ -3582,6 +4500,7 @@ function buildPrint(){
     </div></section>
     ${photoPage(m)}
     ${rackPages(m)}
+    ${patchPages(m)}
     ${S.settings.cableSheet && cabRows ? `<section class="psheet"><div class="pframe flow">
       <div class="phead"><div class="ptitle">Cable schedule</div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px">${esc(m.project||'')} &nbsp; REV ${esc(m.rev||'')}</div></div>
@@ -3645,7 +4564,7 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Version, changelog, and updates
    ========================================================= */
-const APP_VERSION='1.4.0';
+const APP_VERSION='1.9.0';
 
 /* Where released builds live. Change this if the repo ever moves. */
 const HOME='https://wallacematthew1997.github.io/topology-builder/';
@@ -3653,6 +4572,39 @@ const REPO='https://github.com/wallacematthew1997/topology-builder';
 
 /* Newest first. Keep this in step with CHANGELOG.md and version.json. */
 const CHANGELOG=[
+  {v:'1.9.0', d:'2026-08-20', notes:[
+    "Copper now terminates on a patch panel and fibre in an enclosure. A rack with a panel no longer offers copper devices straight onto its switch.",
+    "Route from the drawing, on the Rack tab, lands a whole rack at once: copper on the panels, fibre in the enclosures, then a jumper from every terminated port into the switch.",
+    "Devices land in a zone that asks for their kind where there is one, and never in a zone reserved for something else.",
+    "Ports already filled and jumpers already run are left alone, so routing again after adding devices disturbs nothing."
+  ]},
+  {v:'1.8.1', d:'2026-08-20', notes:[
+    "Patch panels now list everything that lands in the closet, not only what is cabled one hop from the rack, so devices reaching the rack through a switch show up.",
+    "Data, APs and cameras can all be assigned to the same patch panel.",
+    "The backup folder keeps one file per project. Renaming a job renames its file instead of leaving a second copy behind."
+  ]},
+  {v:'1.8.0', d:'2026-08-20', notes:[
+    "Closet numbering. Sheet can now number every field device as one run per closet, so everything landing in IDF2 reads I02-01 upward, in blocks by kind.",
+    "The closet code is read off the cabling, so moving a device to another IDF renumbers it into that closet on its own.",
+    "The ports tray says how many devices land in the rack and shows each kind's block of the run."
+  ]},
+  {v:'1.7.0', d:'2026-08-20', notes:[
+    "The ports panel now has a tray of the devices feeding that rack, grouped by kind, taking the tags and labels straight from the drawing.",
+    "Drag a whole group onto a port to lay the run in from there, drag it onto a zone to fill the zone, or drag a single chip to peel one device off.",
+    "Labels come from the naming on the drawing, so nothing gets retyped and the installer schedule matches the sheet."
+  ]},
+  {v:'1.6.0', d:'2026-08-20', notes:[
+    "Typical rack elevations. Racks built the same now print once, headed IDF1-IDF6, IDF8-IDF13, and the odd rack with an extra part gets its own page on its own.",
+    "Copy this build to other racks clones the gear and the jumpers inside a rack into as many racks as you tick.",
+    "Port zones. Set aside a run of ports with a name, a note and the device type it is reserved for, so the 2.5G ports say APs only and anything else landing there is flagged.",
+    "Zones print as a legend on the rack page and get their own column on the patch schedule."
+  ]},
+  {v:'1.5.0', d:'2026-08-20', notes:[
+    "Patch schedules. A port can now say where the other end of its jumper goes, another rack item and a port on it, so the sheet names both ends instead of just what lands on the port.",
+    "Patch straight through to... wires a switch into a patch panel one to one in a single go.",
+    "Each rack prints its own patch schedule page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off.",
+    "A port claimed by two jumpers is flagged, and a patch shows from both ends without being stored twice."
+  ]},
   {v:'1.4.0', d:'2026-08-20', notes:[
     "The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.",
     "A read me goes in beside it explaining what the files are and how to load one back.",
