@@ -1,10 +1,11 @@
 {
-  "version": "1.4.0",
+  "version": "1.5.0",
   "date": "2026-08-20",
   "file": "index.html",
   "notes": [
-    "The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.",
-    "A read me goes in beside it explaining what the files are and how to load one back.",
-    "Pointing it at the Riser Builder folder itself no longer nests a second one inside."
+    "Patch schedules. A port can now say where the other end of its jumper goes, another rack item and a port on it, so the sheet names both ends instead of just what lands on the port.",
+    "Patch straight through to... wires a switch into a patch panel one to one in a single go.",
+    "Each rack prints its own patch schedule page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off.",
+    "A port claimed by two jumpers is flagged, and a patch shows from both ends without being stored twice."
   ]
 }

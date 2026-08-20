@@ -2,6 +2,15 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.5.0
+
+2026-08-20
+
+* Patch schedules. A port can now say where the other end of its jumper goes, another rack item and a port on it, so the sheet names both ends instead of just what lands on the port.
+* Patch straight through to... wires a switch into a patch panel one to one in a single go.
+* Each rack prints its own patch schedule page: every jumper touching that rack, both ends with port numbers, what it carries, and a box to tick off.
+* A port claimed by two jumpers is flagged, and a patch shows from both ends without being stored twice.
+
 ## v1.4.0
 
 2026-08-20
