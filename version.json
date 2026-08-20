@@ -1,10 +1,10 @@
 {
-  "version": "1.7.0",
+  "version": "1.8.0",
   "date": "2026-08-20",
   "file": "index.html",
   "notes": [
-    "The ports panel now has a tray of the devices feeding that rack, grouped by kind, taking the tags and labels straight from the drawing.",
-    "Drag a whole group onto a port to lay the run in from there, drag it onto a zone to fill the zone, or drag a single chip to peel one device off.",
-    "Labels come from the naming on the drawing, so nothing gets retyped and the installer schedule matches the sheet."
+    "Closet numbering. Sheet can now number every field device as one run per closet, so everything landing in IDF2 reads I02-01 upward, in blocks by kind.",
+    "The closet code is read off the cabling, so moving a device to another IDF renumbers it into that closet on its own.",
+    "The ports tray says how many devices land in the rack and shows each kind's block of the run."
   ]
 }

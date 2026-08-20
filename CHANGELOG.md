@@ -2,6 +2,14 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.8.0
+
+2026-08-20
+
+* Closet numbering. Sheet can now number every field device as one run per closet, so everything landing in IDF2 reads I02-01 upward, in blocks by kind.
+* The closet code is read off the cabling, so moving a device to another IDF renumbers it into that closet on its own.
+* The ports tray says how many devices land in the rack and shows each kind's block of the run.
+
 ## v1.7.0
 
 2026-08-20
