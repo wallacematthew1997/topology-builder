@@ -1,12 +1,10 @@
 {
-  "version": "1.3.0",
-  "date": "2026-08-19",
+  "version": "1.4.0",
+  "date": "2026-08-20",
   "file": "index.html",
   "notes": [
-    "Backup folder: pick a folder once in Projects and every save also writes a plain .json copy of the project there, so your work is not trapped in browser storage.",
-    "Linking a folder writes every project you already have, not just the open one.",
-    "The toolbar says when there is no copy on the computer yet, and Projects says when the folder needs permission again.",
-    "The app now asks the browser to keep its storage permanently, so projects are not cleared when the disk gets tight.",
-    "Autosave no longer waits for a first manual save, so a new drawing cannot be lost by closing the tab."
+    "The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.",
+    "A read me goes in beside it explaining what the files are and how to load one back.",
+    "Pointing it at the Riser Builder folder itself no longer nests a second one inside."
   ]
 }

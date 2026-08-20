@@ -2,6 +2,14 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.4.0
+
+2026-08-20
+
+* The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.
+* A read me goes in beside it explaining what the files are and how to load one back.
+* Pointing it at the Riser Builder folder itself no longer nests a second one inside.
+
 ## v1.3.0
 
 2026-08-19

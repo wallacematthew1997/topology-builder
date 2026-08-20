@@ -1,6 +1,6 @@
 /* Riser Builder offline worker.
    Bump CACHE on every release so old files never linger. */
-const VERSION = '1.3.0';
+const VERSION = '1.4.0';
 const CACHE   = 'riser-' + VERSION;
 
 const SHELL = [

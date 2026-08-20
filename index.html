@@ -3645,7 +3645,7 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Version, changelog, and updates
    ========================================================= */
-const APP_VERSION='1.3.0';
+const APP_VERSION='1.4.0';
 
 /* Where released builds live. Change this if the repo ever moves. */
 const HOME='https://wallacematthew1997.github.io/topology-builder/';
@@ -3653,6 +3653,11 @@ const REPO='https://github.com/wallacematthew1997/topology-builder';
 
 /* Newest first. Keep this in step with CHANGELOG.md and version.json. */
 const CHANGELOG=[
+  {v:'1.4.0', d:'2026-08-20', notes:[
+    "The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.",
+    "A read me goes in beside it explaining what the files are and how to load one back.",
+    "Pointing it at the Riser Builder folder itself no longer nests a second one inside."
+  ]},
   {v:'1.3.0', d:'2026-08-19', notes:[
     "Backup folder: pick a folder once in Projects and every save also writes a plain .json copy of the project there, so your work is not trapped in browser storage.",
     "Linking a folder writes every project you already have, not just the open one.",
