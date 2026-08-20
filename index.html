@@ -4327,7 +4327,7 @@ window.addEventListener('beforeunload', e=>{ if(dirty){ e.preventDefault(); e.re
 /* =========================================================
    Version, changelog, and updates
    ========================================================= */
-const APP_VERSION='1.6.0';
+const APP_VERSION='1.7.0';
 
 /* Where released builds live. Change this if the repo ever moves. */
 const HOME='https://wallacematthew1997.github.io/topology-builder/';
@@ -4335,6 +4335,11 @@ const REPO='https://github.com/wallacematthew1997/topology-builder';
 
 /* Newest first. Keep this in step with CHANGELOG.md and version.json. */
 const CHANGELOG=[
+  {v:'1.7.0', d:'2026-08-20', notes:[
+    "The ports panel now has a tray of the devices feeding that rack, grouped by kind, taking the tags and labels straight from the drawing.",
+    "Drag a whole group onto a port to lay the run in from there, drag it onto a zone to fill the zone, or drag a single chip to peel one device off.",
+    "Labels come from the naming on the drawing, so nothing gets retyped and the installer schedule matches the sheet."
+  ]},
   {v:'1.6.0', d:'2026-08-20', notes:[
     "Typical rack elevations. Racks built the same now print once, headed IDF1-IDF6, IDF8-IDF13, and the odd rack with an extra part gets its own page on its own.",
     "Copy this build to other racks clones the gear and the jumpers inside a rack into as many racks as you tick.",

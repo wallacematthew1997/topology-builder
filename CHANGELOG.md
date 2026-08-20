@@ -2,6 +2,14 @@
 
 Newest first. The app reads the same list from `version.json` and shows it under the version button, so keep the three in step: `version.json`, this file, and the `CHANGELOG` array inside `index.html`. The `release.sh` script does all three for you.
 
+## v1.7.0
+
+2026-08-20
+
+* The ports panel now has a tray of the devices feeding that rack, grouped by kind, taking the tags and labels straight from the drawing.
+* Drag a whole group onto a port to lay the run in from there, drag it onto a zone to fill the zone, or drag a single chip to peel one device off.
+* Labels come from the naming on the drawing, so nothing gets retyped and the installer schedule matches the sheet.
+
 ## v1.6.0
 
 2026-08-20
