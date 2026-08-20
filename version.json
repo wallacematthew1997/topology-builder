@@ -1,8 +1,10 @@
 {
-  "version": "1.1.1",
-  "date": "2026-08-19",
+  "version": "1.4.0",
+  "date": "2026-08-20",
   "file": "index.html",
   "notes": [
-    "Removed the device and cable run totals from the top of the riser diagram page in the PDF."
+    "The backup now gets its own folder. Pick where to keep it once and the app makes a Riser Builder folder there, with a Saves folder inside holding one .json per project.",
+    "A read me goes in beside it explaining what the files are and how to load one back.",
+    "Pointing it at the Riser Builder folder itself no longer nests a second one inside."
   ]
 }

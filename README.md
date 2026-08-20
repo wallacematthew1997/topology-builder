@@ -34,6 +34,7 @@ Full history is in [CHANGELOG.md](CHANGELOG.md).
 **Diagram**
 
 * Drag from a device to another device to create a link, then place the boxes wherever you want. Linking and layout are separate steps, so the drawing does not fight you.
+* Pick a cable run and both ends grow a white dot. Drag a dot anywhere around the outside of its device to say exactly where that end lands, one end at a time. Double click a dot to hand that end back to automatic, or use **Reset ends** in the panel to release both.
 * Devices carry a quantity, so seven APs in one IDF is one box with a count on it rather than seven boxes to drag around.
 * Named container boxes group related gear. A box called "Door 1" can hold the card reader, the strike, and the REX together.
 * Tag bubbles on every device, auto numbered by family. Cameras come out C01, C02, C03. There is a **Renumber all tags** action when the job changes.
@@ -43,7 +44,8 @@ Full history is in [CHANGELOG.md](CHANGELOG.md).
 
 **Device library**
 
-Around fifty device types across eight families, each with its own color and tag prefix:
+Around fifty device types across eight families, each with its own color and tag prefix. The arrows button beside **Devices** at the top of the sidebar turns on reordering: drag a row to move it inside its section, drag a section heading to move the whole section, and put the gear you sell most at the top. The order is remembered on that machine and applies to every project, so it is a preference rather than something that travels with a drawing. **Reset order** puts the list back the way it shipped.
+
 
 | Family | Examples |
 | --- | --- |
@@ -97,10 +99,35 @@ JSON export and import for the full project, so a drawing travels between machin
 Projects are stored in the browser using IndexedDB, under the database `riser-builder`. That means:
 
 * Data stays on the machine that made it. Nothing is uploaded anywhere.
+* Company branding and your sidebar order live here too, alongside the projects. They are per machine settings, so they do not ride along in an export.
 * Clearing site data or browser storage for the file wipes saved projects.
 * A different browser, a different computer, or an incognito window will not see your projects.
 
-So for anything you care about, use **Export file** to drop a JSON copy into the job folder. Treat IndexedDB as the working copy and the JSON as the record copy.
+### Backup folder
+
+Browser storage alone is not somewhere to keep work you care about, so open **Projects** and hit **Choose where to keep them**. Pick a spot once, on your machine or a network drive, and the app makes its own folder there and looks after it:
+
+```
+Documents/                        wherever you pointed it
+  Riser Builder/
+    read me.txt                   what these files are, and how to restore one
+    Saves/
+      acme_warehouse.topology.json
+      riverside_clinic.topology.json
+```
+
+From then on every save rewrites that project's file in `Saves`. Linking the folder writes every project you already have, not just the open one. Pick the `Riser Builder` folder itself later and it uses it as is rather than nesting a second one inside.
+
+Those files are the record copy. They are the same format **Import** reads, so recovering a drawing is opening the app and importing the file, on any machine. They are plain text, so copying `Riser Builder` to a backup drive is enough.
+
+Two things worth knowing about how browsers handle this:
+
+* Folder permission does not always survive closing the browser. When it does not, the Projects panel says so and a **Reconnect folder** button puts it back. Nothing is written until you do, and the app tells you rather than failing quietly.
+* On start the app asks the browser to mark its storage permanent, which stops the browser quietly clearing projects when the disk gets tight. Whether that is granted is shown in the same panel.
+
+Until it is set up, the toolbar carries a **no copy on this computer** marker that opens the panel. **Export file** still works for a one off copy.
+
+Chrome and Edge support writing to a folder. If the browser cannot, the app says so and leaves you with **Export file**.
 
 ## Browser support
 
