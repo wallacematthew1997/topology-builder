@@ -1,0 +1,1480 @@
+APOIKIA: HAITI - VOICE RECORDING SCRIPT (665 lines)
+
+HOW TO RECORD
+- One voice per sitting: do a whole character's lines in a row.
+- Quiet room, phone or mic about a hand's width from your mouth, a little off to the side.
+- Leave half a second of silence before and after; I trim them.
+- Any format works (.ogg .wav .mp3, even a phone's .m4a: send it and I convert). Name it exactly as the file column says.
+- Say lines in Kreyol as written; the part in brackets is the subtitle, not to read.
+- The man_* folders are six different men (deep, rough, young, tired, loud, quiet): one voice each, short lines.
+
+
+============================================================
+TOTO  (152 lines)
+Toto. Daft, warm Haitian local, understandable accent, always cheerful even when it is a disaster. Fast, sing-song, laughs at his own jokes. The voice that has to land.
+============================================================
+   1. Almost. Almost!
+      [toto/almost_almost_45e2d4.ogg]  the opening, the tunnel
+   2. And I already found you work. Three jobs, on the board by the door. No army yet, so just you. They pay.
+      [toto/and_i_already_found_you_work_a5d449.ogg]  the first morning
+   3. Bird inbound! Dustoff, dustoff! Get to the yard!
+      [toto/bird_inbound_dustoff_dustoff_get_to_5cea01.ogg]  tortuga_battle.gd
+   4. Boss is down! Somebody get to him!
+      [toto/boss_is_down_somebody_get_to_9f9e98.ogg]  tortuga_mission.gd
+   5. Boss! The laser! Paint those trucks, bring the jets in on them!
+      [toto/boss_the_laser_paint_those_trucks_3becbf.ogg]  the opening, radio
+   6. But you! You are alive. So now you owe Toto. Ha!
+      [toto/but_you_you_are_alive_so_88980a.ogg]  the first morning
+   7. Contact! East side, coming in!
+      [toto/contact_east_side_coming_in_f74ffe.ogg]  tortuga_battle.gd
+   8. Contact! North side, coming in!
+      [toto/contact_north_side_coming_in_163800.ogg]  tortuga_battle.gd
+   9. Contact! South side, coming in!
+      [toto/contact_south_side_coming_in_1e73ca.ogg]  tortuga_battle.gd
+  10. Contact! West side, coming in!
+      [toto/contact_west_side_coming_in_a4a781.ogg]  tortuga_battle.gd
+  11. Did you SEE that?!
+      [toto/did_you_see_that_3e8b0b.ogg]  the opening, after the strike
+  12. Down, down! Dyab dug this one to steal from themself. Ha!
+      [toto/down_down_dyab_dug_this_one_e35576.ogg]  the opening, the escape
+  13. Go! With the wave, the seal's up in the courthouse!
+      [toto/go_with_the_wave_the_seal_fa1ab0.ogg]  tortuga_mission.gd
+  14. Got a charge? Out to the pipe, boss. Plant it and run.
+      [toto/got_a_charge_out_to_the_f35375.ogg]  tortuga_battle.gd
+  15. He's up!
+      [toto/he_s_up_7f331d.ogg]  tortuga_mission.gd
+  16. Here they come! Everyone to the walls!
+      [toto/here_they_come_everyone_to_the_8a4a6f.ogg]  tortuga_finale.gd
+  17. Hey! Hey, you're awake! Pretty crazy, right?
+      [toto/hey_hey_you_re_awake_pretty_28e538.ogg]  the first morning
+  18. ...Holy hell.
+      [toto/holy_hell_078bf0.ogg]  the opening, after the strike
+  19. How many of them ARE there?!
+      [toto/how_many_of_them_are_there_c62b84.ogg]  the opening, radio
+  20. I made coffee. I put up the board. There is a lot to do here.
+      [toto/i_made_coffee_i_put_up_8820e0.ogg]  the first morning
+  21. I've got it, boss, I'm calling it in on the trucks!
+      [toto/i_ve_got_it_boss_i_b913a0.ogg]  the opening, radio
+  22. If the Mules ever find this, Tortuga is finished.
+      [toto/if_the_mules_ever_find_this_65dab4.ogg]  the opening, the tunnel
+  23. In! In the hole!
+      [toto/in_in_the_hole_63ffa8.ogg]  the opening, the escape
+  24. Mind your head. Dyab are short people.
+      [toto/mind_your_head_dyab_are_short_0c9cda.ogg]  the opening, the tunnel
+  25. North side, north side! Keep firing!
+      [toto/north_side_north_side_keep_firing_ae8105.ogg]  the opening, radio
+  26. Psst! Hey! Hey, you! Blan! Follow me! Quick quick!
+      [toto/psst_hey_hey_you_blan_follow_f3cd41.ogg]  the opening, the Mules attack
+  27. Run! Run run run!
+      [toto/run_run_run_run_0b9709.ogg]  the opening, outside the wall
+  28. Second wave! North wall again! There's too many of them!
+      [toto/second_wave_north_wall_again_there_884d26.ogg]  the opening, radio
+  29. Stay low! They are busy, not blind!
+      [toto/stay_low_they_are_busy_not_b22a27.ogg]  the opening, the escape
+  30. That's theirs, boss.
+      [toto/that_s_theirs_boss_5e3d80.ogg]  tortuga_mission.gd
+  31. The bosses are down! Finish it!
+      [toto/the_bosses_are_down_finish_it_5cfbaf.ogg]  tortuga_finale.gd
+  32. The old metro! Dyab sealed it up. Mostly.
+      [toto/the_old_metro_dyab_sealed_it_fe0a31.ogg]  the opening, the tunnel
+  33. They got you. You're back with the next wave.
+      [toto/they_got_you_you_re_back_3879f6.ogg]  tortuga_mission.gd
+  34. They have the seal. It's over.
+      [toto/they_have_the_seal_it_s_bbc5a2.ogg]  tortuga_mission.gd
+  35. They're in the courthouse, upstairs. Keep your eyes open.
+      [toto/they_re_in_the_courthouse_upstairs_4da828.ogg]  tortuga_finale.gd
+  36. They're on the seal! Get up to the courtroom!
+      [toto/they_re_on_the_seal_get_bf68b4.ogg]  tortuga_battle.gd
+  37. They're taking the walls! Take them out! TAKE THEM OUT!
+      [toto/they_re_taking_the_walls_take_194ad6.ogg]  the opening, radio
+  38. Toto is back! Nobody asked, so I asked for them.
+      [toto/toto_back_asked.ogg]  dialogue.json
+  39. I am back boss! Or my cousin is. We are the same size. Do not check.
+      [toto/toto_back_cousin.ogg]  base, a scrammed Toto returns. Grinning.
+  40. I am back boss! You missed me. I can tell.
+      [toto/toto_back_miss.ogg]  dialogue.json
+  41. Losing is just winning that is shy, boss.
+      [toto/toto_fail_chair.ogg]  after a loss, base. Sage.
+  42. Boss, that was a learning experience. For them. They learned we can lose.
+      [toto/toto_fail_learning.ogg]  dialogue.json
+  43. Next time maybe go around the side? I am only saying. I was not there. I was here. Being supportive.
+      [toto/toto_fail_side.ogg]  dialogue.json
+  44. It is OK boss. My uncle lost every fight he was ever in and he is still alive. Mostly.
+      [toto/toto_fail_uncle.ogg]  dialogue.json
+  45. Boss, I will tell you a story. It starts with a goat. It is a short story. The goat leaves.
+      [toto/toto_fire_goat.ogg]  base, the campfire. Slow, then a shrug.
+  46. Boss, you sit at the fire like a grandfather. A handsome grandfather. But the fire does not do the jobs.
+      [toto/toto_fire_grandfather.ogg]  dialogue.json
+  47. I cooked on this fire yesterday. Do not ask what. It had legs. Many legs.
+      [toto/toto_fire_legs.ogg]  dialogue.json
+  48. You are staring at the fire again. The fire is not a map, boss. The map is on the table.
+      [toto/toto_fire_map.ogg]  dialogue.json
+  49. You know the fire makes time go fast, boss? Sit long enough and it is tomorrow. That is how I skip Mondays.
+      [toto/toto_fire_mondays.ogg]  dialogue.json
+  50. Your face in the firelight, boss. Like a general on the money. Put it on the flag. No? OK.
+      [toto/toto_fire_money.ogg]  dialogue.json
+  51. My uncle said, a man who sits at the fire all night wakes up with no village. Then he fell asleep at the fire.
+      [toto/toto_fire_uncle.ogg]  dialogue.json
+  52. Careful boss. I know where everything is, and that is not where it goes.
+      [toto/toto_found_careful.ogg]  dialogue.json
+  53. Beans, boss. I counted. Many beans. Fewer now.
+      [toto/toto_found_crate.ogg]  dialogue.json
+  54. Ah, you found that. I found it first. Yesterday.
+      [toto/toto_found_first.ogg]  dialogue.json
+  55. Our flag! One day a real one. The pole is already real. Half done.
+      [toto/toto_found_flag.ogg]  dialogue.json
+  56. That is MY mug, boss. My uncle gave it to me. Well. It was in his house.
+      [toto/toto_found_mug.ogg]  dialogue.json
+  57. Our old places. I pin them up. You do not have to say thank you. But you can.
+      [toto/toto_found_photos.ogg]  dialogue.json
+  58. Boss! They woke up! Run, but with style!
+      [toto/toto_heist_alarm.ogg]  heist: radio, the alarm. Squeaky and loud.
+  59. The car is warm, boss. I sat in it. For you. For the seat.
+      [toto/toto_heist_car.ogg]  heist: at the getaway car. Proud.
+  60. Is that the money? Do not run. Money hears running.
+      [toto/toto_heist_cash.ogg]  heist: radio, the pile in sight. Breathless.
+  61. Do not count it here, boss. Count it in the car. I count better in the car.
+      [toto/toto_heist_count.ogg]  heist: radio, the pickup. Hurried, cheerful.
+  62. My cousin guards this place. Do not shoot him. He is the one asleep.
+      [toto/toto_heist_cousin.ogg]  heist: radio, inside. A quick aside.
+  63. Boss, that was not the plan. Was there a plan? I did not see a plan.
+      [toto/toto_heist_fail.ogg]  heist: it has gone wrong. Small voice.
+  64. They are looking at you, boss. Do not look back. Think about God. Or lunch.
+      [toto/toto_heist_gate.ogg]  heist: radio, the walk in. Whispering.
+  65. Hurry, boss, they are coming. I am not scared. This is just how my legs stand.
+      [toto/toto_heist_hurry.ogg]  heist: radio, the run back. Panting.
+  66. You did it! You are rich! I am a little rich too, because I am your friend.
+      [toto/toto_heist_out.ogg]  heist: the car pulls away. Whooping.
+  67. Very quiet so far. Too quiet. I always wanted to say that.
+      [toto/toto_heist_quiet.ogg]  heist: radio, a calm stretch. Delighted with himself.
+  68. Boss, the robes are very holy. Walk slow, look at the floor. Nobody checks a man who looks at the floor.
+      [toto/toto_heist_robes.ogg]  heist: radio, before the walk in. Fast whisper.
+  69. Boss, you have the money and you are still here. The car is where we started. Go back the way you came. The car will not come to you. I asked it.
+      [toto/toto_hint_car_1.ogg]  heist hint: not finding the car. Gentle, a joke at the end.
+  70. Where is the car, boss? Where we started! I parked it myself, nowhere near a tree. Walk back to it and press use. It is a very obvious car.
+      [toto/toto_hint_car_2.ogg]  heist hint: not finding the car. Proud of the parking.
+  71. Boss, you have been standing there a long time. Are you praying? Good. Now pray with your feet, towards the boss's room. The money is in the boss's room.
+      [toto/toto_hint_cash_1.ogg]  heist hint: stood still before the cash. Kind, sing-song.
+  72. Boss, I counted. You have not moved and the money has not moved. One of you must move. It is you. The boss's room, and hold F on the pile.
+      [toto/toto_hint_cash_2.ogg]  heist hint: stood still before the cash. Pleased with his own maths.
+  73. My cousin says a man who waits at the door never gets into the house. Go in, boss. The money is in the boss's room. Hold F until it is yours.
+      [toto/toto_hint_cash_3.ogg]  heist hint: stood still before the cash. Wise, then the F is rushed.
+  74. Boss, that man is looking at you. Looking for a long time is how they find out. Walk away from him. Slowly, like you are late for church.
+      [toto/toto_hint_sight_1.ogg]  heist hint: lingering in a guard's sight. Whispered, urgent.
+  75. He is still looking, boss. Do not wave. Do not smile. Go round a corner and be a boring robe.
+      [toto/toto_hint_sight_2.ogg]  heist hint: lingering in a guard's sight. Whispered, tight.
+  76. The guard has looked at you many times now. I counted on my fingers and I ran out of fingers. Move, boss. Find a wall to stand behind.
+      [toto/toto_hint_sight_3.ogg]  heist hint: lingering in a guard's sight. Squeaky, then calm.
+  77. The board by the door, boss. Jobs. Jobs make money. I checked this. Pin one and send somebody.
+      [toto/toto_idle_board_money.ogg]  dialogue.json
+  78. Boss! New jobs on the board. With pictures. I took the pictures. Some of them are my thumb.
+      [toto/toto_idle_board_thumb.ogg]  dialogue.json
+  79. That chicken is looking at you, boss. I told her to. She is a spy.
+      [toto/toto_idle_chicken.ogg]  base, idle. Whispering.
+  80. Boss, you are standing very still. Thinking, or asleep? My cousin sleeps standing up. Like a horse. He is not a horse.
+      [toto/toto_idle_horse.ogg]  dialogue.json
+  81. Boss, the phone. When it buzzes in your pocket, that is people who want you. I text you too. You never answer.
+      [toto/toto_idle_phone.ogg]  dialogue.json
+  82. It is dark, boss. The bed is the flat thing inside. You lie on it. I can show you.
+      [toto/toto_idle_sleep.ogg]  dialogue.json
+  83. Even the chickens are asleep, boss. The chickens know something. Go to bed like a chicken.
+      [toto/toto_idle_sleep_chickens.ogg]  dialogue.json
+  84. I will stand here too. We are both standing. This is leadership.
+      [toto/toto_idle_standing.ogg]  dialogue.json
+  85. Boss, the sacks are getting thin. I counted them twice. Then I ate one bean to check. Still thin.
+      [toto/toto_idle_supplies_bean.ogg]  dialogue.json
+  86. Your man is waiting on the trail, boss. Out past the range. He is eating my bread, so please hurry.
+      [toto/toto_idle_trail_bread.ogg]  dialogue.json
+  87. The trail is that way, boss, past the range. I walk it every day to buy phone credit. Your men walk it to work.
+      [toto/toto_idle_trail_credit.ogg]  dialogue.json
+  88. Morning boss! My jobs are still on the board. Just you, no army. Pick one, I wait here.
+      [toto/toto_jobs_board.ogg]  dialogue.json
+  89. Boss, the jobs I found you pay real money. The board, or your phone. Go make us rich, I guard the coffee.
+      [toto/toto_jobs_pay.ogg]  dialogue.json
+  90. They are back, boss! The same number as when they left. Almost.
+      [toto/toto_map_back.ogg]  campaign map: a squad returns. Hopeful.
+  91. The money is gone, boss. It was here. I saw it. It left in the night.
+      [toto/toto_map_broke.ogg]  campaign map: broke. Sorrowful.
+  92. New day, boss! Same Haiti. I checked.
+      [toto/toto_map_day.ogg]  campaign map: a new day. Bright.
+  93. The men are hungry, boss. Hungry men are like me. They talk about beans.
+      [toto/toto_map_food.ogg]  campaign map: supplies low. Sympathetic.
+  94. We lost that place. It was never nice. I never liked the road.
+      [toto/toto_map_lost.ogg]  campaign map: a region lost. Brave face.
+  95. We have money, boss! Do not spend it. Or spend it on me.
+      [toto/toto_map_money.ogg]  campaign map: a rich day. Greedy.
+  96. This is the map, boss. We are the little flag. The big flags are not friends.
+      [toto/toto_map_open.ogg]  campaign map: first time it opens. Pointing at everything.
+  97. Boss, your phone. The Americans, the Russians. Everyone is your friend now. This is a bad sign.
+      [toto/toto_map_phone.ogg]  campaign map: calls pile up. Suspicious, for him.
+  98. Nothing is happening, boss. This is the best part of war.
+      [toto/toto_map_quiet.ogg]  campaign map: a quiet day. Content.
+  99. That place is ours now, boss. I put a flag. A small flag. It is my sock.
+      [toto/toto_map_region.ogg]  campaign map: a region taken. Proud.
+ 100. A rival gang, boss. Their flag is bigger. Ours is nicer.
+      [toto/toto_map_rival.ogg]  campaign map: a rival shown. Jealous.
+ 101. Send the men, boss. I will wave. Waving is ninety percent of war.
+      [toto/toto_map_send.ogg]  campaign map: a job goes out. Cheerful.
+ 102. Fewer came back than went. I counted twice. It is still fewer.
+      [toto/toto_map_short.ogg]  campaign map: losses. Quiet for once.
+ 103. Good morning boss! I looked at the board for you already. It is still there. By the door.
+      [toto/toto_morning_board.ogg]  dialogue.json
+ 104. Morning boss! I made coffee. I drank it, but I made it.
+      [toto/toto_morning_coffee.ogg]  dialogue.json
+ 105. It rained in the night, boss. The roof was very honest about it.
+      [toto/toto_morning_rain.ogg]  base, morning after rain. Cheerful.
+ 106. Boss! You are awake before the rooster. I am also awake before the rooster. The rooster is lazy.
+      [toto/toto_morning_rooster.ogg]  dialogue.json
+ 107. He will not take the call.
+      [toto/toto_patron_cold.ogg]  the phone, a patron's mood. Resigned.
+ 108. He listens. He does not promise.
+      [toto/toto_patron_cool.ogg]  the phone, a patron's mood. Careful.
+ 109. Our patron.
+      [toto/toto_patron_our.ogg]  the phone, a patron named. Two words, grand.
+ 110. He calls you first now.
+      [toto/toto_patron_warm.ogg]  the phone, a patron's mood. Proud, as if it were his doing.
+ 111. boss, they are talking about us. they say we hit them too much. they are getting guns. maybe hit somebody else for a while
+      [toto/toto_phone_anger.ogg]  the phone, a hint: a faction's anger. Uneasy. One take stands in for every faction.
+ 112. Answer him soon, boss, or he takes it as a no.
+      [toto/toto_phone_answer.ogg]  the phone, a man waits on an answer. Friendly warning. One take stands in for every count of days.
+ 113. It's on the board. Send a raid on it before it moves. Worth real money to the right buyer.
+      [toto/toto_phone_board.ogg]  the phone, the big one. Conspiratorial. One take stands in for every price.
+ 114. the money box is almost empty boss. i looked inside. i did not take anything
+      [toto/toto_phone_broke.ogg]  the phone, a hint: broke. Defensive.
+ 115. boss the money lasts a few more days. every day costs us wages, food, supplies. take a job off the board, raid somebody, or sell crates to the fence
+      [toto/toto_phone_cash_low.ogg]  the phone, a hint: cash is low. Counting on his fingers. One take stands in for every figure.
+ 116. boss, somebody is sitting alone and not talking. in my experience this is bad. he wants something. i would go see
+      [toto/toto_phone_crisis.ogg]  the phone, a hint: a man in crisis. Hushed. One take stands in for every name and demand.
+ 117. Done. That's the month, boss.
+      [toto/toto_phone_done.ogg]  the phone, the big one fenced. Satisfied. One take stands in for every sum.
+ 118. everything is fine today boss! i made coffee. nobody drank it
+      [toto/toto_phone_fine.ogg]  the phone, a hint: nothing to report. Sunny.
+ 119. boss there are people at the gate asking for work. the Pops tab. they will not wait forever
+      [toto/toto_phone_gate.ogg]  the phone, a hint: recruits waiting. Chirpy. One take stands in for every count.
+ 120. boss, somebody was complaining about you. not to me. near me. very loud
+      [toto/toto_phone_grievance.ogg]  the phone, a hint: a grievance. Whispered, enjoying it. One take stands in for every name.
+ 121. Every day we sit here the men lose heart, boss.
+      [toto/toto_phone_heart.ogg]  the phone, the siege drags on. Low. One take stands in for every count of days.
+ 122. It's in the warehouse, boss. It's hot. Move it.
+      [toto/toto_phone_hot.ogg]  the phone, the stolen goods. Nervous. One take stands in for every item.
+ 123. boss everybody is resting. resting is nice but money does not come from resting. i checked. the camp log on your phone, put them to work
+      [toto/toto_phone_idle.ogg]  the phone, a hint: the men idle. Wise, daft.
+ 124. hello boss!! this is Toto. i live near your tent now. i will help you with admin
+      [toto/toto_phone_intro_1.ogg]  the phone, the first text. Overjoyed, typed in a rush.
+ 125. you did not answer but it is ok. i am already here
+      [toto/toto_phone_intro_2.ogg]  the phone, the second text. Cheerful, a bit hurt.
+ 126. They joined hands, boss. Everyone who was left is with them.
+      [toto/toto_phone_joined.ogg]  the phone, the war ends in an alliance. Awed. One take stands in for every name.
+ 127. We did not bring them home.
+      [toto/toto_phone_lost.ogg]  the phone, the rescue failed. Small, then a long silence.
+ 128. boss the food pile is looking very small. when people are hungry they get sad and then they get ANGRY. maybe buy food? or raid? i am only saying
+      [toto/toto_phone_low_supplies.ogg]  the phone, a hint: food is low. Worried, fast.
+ 129. They are rioting for bread, boss. Send food, or send men from the board, before the day is out.
+      [toto/toto_phone_riot.ogg]  the phone, a region riots. Alarmed, then helpful. One take stands in for every place and day.
+ 130. Boss. Nobody to send yet, so here is work you do yourself. It pays.
+      [toto/toto_phone_solo.ogg]  the phone, the solo jobs. Cheerful, businesslike.
+ 131. boss, the men are sour. they will not go on a raid like this. a bonus maybe, or let them rest
+      [toto/toto_phone_unit_low.ogg]  the phone, a hint: low morale. Concerned. One take stands in for every name and figure.
+ 132. nobody got paid today boss. i also did not get paid but i am not in the payroll so it is fine. the others are in the payroll
+      [toto/toto_phone_unpaid.ogg]  the phone, a hint: wages missed. Reasonable, daft.
+ 133. The writer is holed up with the rival, writing the next one.
+      [toto/toto_phone_writer.ogg]  the phone, the press. Gossiping. One take stands in for every rival.
+ 134. Their boss is in there, boss. Kill him. If they hear us he runs for the back road, so be quick or be quiet.
+      [toto/toto_raid_boss_in.ogg]  the raid, before the walk in (kill the leader). Hushed, then proud.
+ 135. What we want is in there, boss. Pick it up and their friends will come running: put them all down.
+      [toto/toto_raid_pick_up.ogg]  the raid, before the walk in (capture a thing). Hushed.
+ 136. He's in there, boss. Zip-tie him and their friends will come running: put them all down.
+      [toto/toto_raid_zip_tie.ogg]  the raid, before the walk in (capture a man). Hushed.
+ 137. OK boss. I go. I am going. Look how gone I am.
+      [toto/toto_scram_gone.ogg]  dialogue.json
+ 138. Scramming. I will come back when you miss me. So, soon.
+      [toto/toto_scram_miss.ogg]  dialogue.json
+ 139. They're in the courtroom with us! Clear it!
+      [toto/toto_tortuga_courtroom.ogg]  Tortuga, the seal under attack. Shouted.
+ 140. They're here! Cut them loose, give them guns!
+      [toto/toto_tortuga_found.ogg]  Tortuga, the prisoners found. Joyful shout.
+ 141. We go in by the gate, boss.
+      [toto/toto_tortuga_go_in.ogg]  Tortuga, the attack. Shouted over the noise. One take stands in for every door.
+ 142. It's done. They're gone. The island is ours.
+      [toto/toto_tortuga_won.ogg]  Tortuga, the finale won. Quiet, then a whoop.
+ 143. Boss! The crates! I will guard them with my life. Until lunch.
+      [toto/toto_win_guard.ogg]  dialogue.json
+ 144. We won, boss! I want a hat. A small hat. For the victory.
+      [toto/toto_win_hat.ogg]  after a win, base. Excited.
+ 145. They are talking about you in town, boss! Some of it is good!
+      [toto/toto_win_town.ogg]  dialogue.json
+ 146. The clock's striking, boss. Nobody hears a step for a few seconds.
+      [toto/toto_zone_clock.ogg]  the raid, the clock strikes. Whispered, delighted.
+ 147. Up, boss. Get back on the wall.
+      [toto/up_boss_get_back_on_the_3d99f2.ogg]  tortuga_mission.gd
+ 148. We're in the courtroom with them! Clear the seal!
+      [toto/we_re_in_the_courtroom_with_18c097.ogg]  tortuga_battle.gd
+ 149. We're on the seal! Hold it, they know!
+      [toto/we_re_on_the_seal_hold_80b1ca.ogg]  tortuga_mission.gd
+ 150. Yes. Dyab is like that. Very bad people. Very bad court.
+      [toto/yes_dyab_is_like_that_very_e8cd99.ogg]  the first morning
+ 151. You look like a man who can fix things. This country needs fixing.
+      [toto/you_look_like_a_man_who_f6296f.ogg]  the first morning
+ 152. You need a powder charge from the cellar, boss.
+      [toto/you_need_a_powder_charge_from_b8d0be.ogg]  tortuga_battle.gd
+
+============================================================
+FOUNDER  (27 lines)
+You, the player's man. American or European, dry, tired, few words. Under his breath more than out loud.
+============================================================
+ 153. Come on. Get up.
+      [founder/founder_bleed.ogg]  bleeding out. To himself, a growl.
+ 154. Three jobs. Pick the one that doesn't kill me.
+      [founder/founder_board.ogg]  the base, at the job board. Muttered.
+ 155. Clear. I think.
+      [founder/founder_clear.ogg]  any fight, it goes quiet. Unconvinced.
+ 156. Coffee. Good. Something is going right.
+      [founder/founder_coffee.ogg]  the base, morning. Dry, to himself.
+ 157. Don't trust the friendly ones.
+      [founder/founder_contact.ogg]  after a call with a foreign contact. Under his breath.
+ 158. ...No. Not yet.
+      [founder/founder_down.ogg]  going down. Strained, through his teeth.
+ 159. I don't enjoy this. I want that known. By nobody.
+      [founder/founder_execute.ogg]  an execution. Low, to no one.
+ 160. They'd have hated this. They'd have come anyway.
+      [founder/founder_friends.ogg]  the base, alone at night, thinking of the four. Quiet.
+ 161. Ah. Okay. That's me hit.
+      [founder/founder_hit.ogg]  any fight, he is shot. Surprised, almost polite.
+ 162. Quiet. Slow. In and out.
+      [founder/founder_in.ogg]  a raid, going in. Barely a whisper.
+ 163. That's one.
+      [founder/founder_kill.ogg]  any fight, a kill. Cold, then regretting it.
+ 164. That'll pay somebody.
+      [founder/founder_loot.ogg]  picking up the take. Dry.
+ 165. I should have stayed in the cubicle.
+      [founder/founder_lose.ogg]  a job lost. Deadpan, rueful.
+ 166. All this, and I still can't read the roads.
+      [founder/founder_map.ogg]  the campaign map, studying it. Dry.
+ 167. We're rich. On paper. Paper burns.
+      [founder/founder_money.ogg]  the campaign map, a good payday. Not celebrating.
+ 168. Another day. Don't count them.
+      [founder/founder_night.ogg]  the base, bedtime. Heavy.
+ 169. Phone's buzzing. Nobody calls with good news.
+      [founder/founder_phone.ogg]  the phone buzzes. Tired.
+ 170. Print whatever you like.
+      [founder/founder_press.ogg]  after a press call. Weary, not angry.
+ 171. Reloading.
+      [founder/founder_reload.ogg]  any fight. Flat, to himself.
+ 172. Home. If you squint.
+      [founder/founder_tent.ogg]  the base, back at the tent. A tired half-smile.
+ 173. He's not going to leave, is he.
+      [founder/founder_toto.ogg]  the base, Toto arriving again. Not a question.
+ 174. Let them vote. Then be sorry.
+      [founder/founder_vote.ogg]  a jury trial is called. Grim.
+ 175. ...Still here.
+      [founder/founder_wake.ogg]  day one, waking. Flat, a breath out.
+ 176. Not worth it. Walk away.
+      [founder/founder_walk.ogg]  a fight he can skip. Muttered, wise.
+ 177. Well. That worked.
+      [founder/founder_win.ogg]  a job done. Mild surprise.
+ 178. ...They killed them. All four.
+      [founder/they_killed_them_all_four_e5c19c.ogg]  the first morning
+ 179. Why did you help me?
+      [founder/why_did_you_help_me_72a616.ogg]  the first morning
+
+============================================================
+SQUAD  (73 lines)
+Your squad on the radio in a raid (the heist and every job): ex-military, steady, human. One actor does all of them; shout when the fight is on, murmur when you are disguised.
+============================================================
+ 180. More of them, up the back road!
+      [squad/squad_back_road.ogg]  the raid, reinforcements. Shouted. One take stands in for every count.
+ 181. Last stretch! The car's right there!
+      [squad/squad_band_three.ogg]  return fight, the last band. Out of breath.
+ 182. Second line! Keep pushing, don't stop!
+      [squad/squad_band_two.ogg]  return fight, the middle band. Shouting.
+ 183. They're beaten. The ones left are digging in.
+      [squad/squad_beaten.ogg]  the raid, the rout is over. Tired, grim.
+ 184. More of ours coming up behind.
+      [squad/squad_behind.ogg]  the raid, the second wave arrives. Relieved. One take stands in for every count.
+ 185. They're breaking! They're running!
+      [squad/squad_breaking.ogg]  the raid, a band routs. Elated. One take stands in for every count.
+ 186. Get in! Get in, go, go!
+      [squad/squad_car.ogg]  heist: at the getaway car. Loud, laughing with relief.
+ 187. Here they come! Back the way we came, get to the car!
+      [squad/squad_cash_come.ogg]  heist: shouted over gunfire. The fight starts here.
+ 188. That's it. That's the money. Pick it up, slow.
+      [squad/squad_cash_found.ogg]  heist: at the pile. Hushed, excited.
+ 189. Boss, I think I hear something coming.
+      [squad/squad_cash_hear.ogg]  heist: a beat after the cash. Low, listening, not yet scared.
+ 190. Clear. Move up.
+      [squad/squad_clear.ogg]  any fight. Calm, professional.
+ 191. They're pulling back into the barn. Curtains going across.
+      [squad/squad_curtains.ogg]  the raid, the barn. Low, watching.
+ 192. hey boss, they're dug in and the clock is running. What do I do?
+      [squad/squad_decision_alarm.ogg]  the raid, asking for a call. Hurried.
+ 193. hey boss, half of them are down and the rest are wavering. Push them or pull out?
+      [squad/squad_decision_half.ogg]  the raid, asking for a call. Keen.
+ 194. Hey boss, there's more of them than we thought. We figured fewer, it's more I think. What do I do?
+      [squad/squad_decision_more.ogg]  the raid, the count was wrong. Worried. One take stands in for the numbers.
+ 195. Hey boss, first crate's on the truck and they still haven't seen us. The scout says there's a second stash. What do I do?
+      [squad/squad_decision_quiet.ogg]  the raid, asking for a call. Low, tempted. One take stands in for every stash.
+ 196. Man down! Man down!
+      [squad/squad_down.ogg]  any fight. Loud, ragged.
+ 197. He's down, boss!
+      [squad/squad_down_named.ogg]  the raid, a man of the squad falls. Urgent. One take stands in for every name.
+ 198. Got one. Taking it to the truck.
+      [squad/squad_got_one.ogg]  a man of the squad, with a crate. Pleased, out of breath.
+ 199. I'm hit! I'm hit!
+      [squad/squad_hit.ogg]  any fight. Pain, not a scream.
+ 200. He's out, boss! He's with us. That's the job.
+      [squad/squad_hostage_out.ogg]  the rescue, the official in the truck. Relieved, breathless.
+ 201. Their boss is down! That's it, that's the job.
+      [squad/squad_leader_down.ogg]  kill-the-leader: relief, almost laughing.
+ 202. He's gone, boss. Up the back road, in a car. We lost him.
+      [squad/squad_leader_gone.ogg]  the raid, the leader escapes. Defeated.
+ 203. Took it! They're running!
+      [squad/squad_lie_arrived_1.ogg]  a report that is a lie (a liar's commander). Too bright. One take stands in for every objective.
+ 204. It's ours, boss.
+      [squad/squad_lie_arrived_2.ogg]  a report that is a lie. Too easy. One take stands in for every objective.
+ 205. We're in, easy.
+      [squad/squad_lie_arrived_3.ogg]  a report that is a lie. Too easy. One take stands in for every objective.
+ 206. All good here, nobody hit.
+      [squad/squad_lie_down_1.ogg]  a report that is a lie. Bright, quick.
+ 207. We're fine, boss. All of us.
+      [squad/squad_lie_down_2.ogg]  a report that is a lie. A little too quick.
+ 208. No losses.
+      [squad/squad_lie_down_3.ogg]  a report that is a lie. Very short.
+ 209. Pushing on, no trouble.
+      [squad/squad_lie_pinned_1.ogg]  a report that is a lie (they are pinned). Casual. One take stands in for every place.
+ 210. Light fire. We're moving.
+      [squad/squad_lie_pinned_2.ogg]  a report that is a lie (they are pinned). Casual.
+ 211. Nothing we can't handle.
+      [squad/squad_lie_pinned_3.ogg]  a report that is a lie (they are pinned). Casual. One take stands in for every place.
+ 212. More of them coming out the back. There were more than we were told.
+      [squad/squad_more_back.ogg]  the raid, the alarm. Flat, angry at the intel.
+ 213. No answer, boss. I'm making the call.
+      [squad/squad_no_answer.ogg]  the raid, a decision unanswered. Clipped. One take stands in for push and pull back.
+ 214. Got it. Here they come, boss: hold on and put them down.
+      [squad/squad_push_now.ogg]  the raid, a call answered. Steady, a deep breath.
+ 215. They know. More will come up the back road.
+      [squad/squad_raid_alarm.ogg]  the raid, the alarm is up. Flat.
+ 216. Nobody's coming to help them. The crates are ours. Load up.
+      [squad/squad_raid_clear.ogg]  the raid, the last man down. Relaxed, a laugh in it.
+ 217. boss, word is a few of them. That's the best I have.
+      [squad/squad_raid_intel.ogg]  the raid, the intel. Doubtful. One take stands in for every count and read.
+ 218. boss, the lookout is on the hill. I would not walk up the middle.
+      [squad/squad_raid_lookout.ogg]  the raid, the insertion. Low, careful.
+ 219. Word from town: someone else heard about those crates. Whoever it is, they're on the road too.
+      [squad/squad_raid_twist.ogg]  the raid, a rival is coming. Wary.
+ 220. Reloading, cover me!
+      [squad/squad_reload.ogg]  any fight. Short, tense.
+ 221. At the spot. Holding here.
+      [squad/squad_report_arrived_1.ogg]  a report, in position. Calm. One take stands in for every place.
+ 222. We're here, boss.
+      [squad/squad_report_arrived_2.ogg]  a report, in position. Calm. One take stands in for every place.
+ 223. In position.
+      [squad/squad_report_arrived_3.ogg]  a report, in position. Calm, clipped. One take stands in for every place.
+ 224. Contact! A group of them!
+      [squad/squad_report_contact_1.ogg]  a report, contact. Loud. One take stands in for every count and place.
+ 225. Contact, ahead of us. A few of them.
+      [squad/squad_report_contact_2.ogg]  a report, contact. Low. One take stands in for every count and place.
+ 226. I count a handful.
+      [squad/squad_report_contact_3.ogg]  a report, contact. Counting under his breath. One take stands in for every count and place.
+ 227. Man hit!
+      [squad/squad_report_down_1.ogg]  a report, a man hit. Sharp. One take stands in for every name.
+ 228. Lost a man.
+      [squad/squad_report_down_2.ogg]  a report, a man killed. Flat. One take stands in for every name.
+ 229. He's down, boss.
+      [squad/squad_report_down_3.ogg]  a report, a man down. Tight. One take stands in for every name.
+ 230. Pinned down, can't move!
+      [squad/squad_report_pinned_1.ogg]  a report, pinned. Shouted over fire. One take stands in for every place.
+ 231. Heavy fire, we're stuck.
+      [squad/squad_report_pinned_2.ogg]  a report, pinned. Shouted. One take stands in for every place.
+ 232. Can't lift our heads!
+      [squad/squad_report_pinned_3.ogg]  a report, pinned. Gasping. One take stands in for every place.
+ 233. He's in the truck, boss! Let's go!
+      [squad/squad_rescue_boarded.ogg]  the rescue, the Minister aboard. Whooping.
+ 234. boss, they have the Minister in the barn. Get him out alive, into the truck, then go. If they hear us, they will hurry.
+      [squad/squad_rescue_brief.ogg]  the rescue, the briefing on the way in. Tight, whispered.
+ 235. They shot him. They shot the Minister. It's over, boss.
+      [squad/squad_rescue_executed.ogg]  the rescue, the Minister executed. Shocked.
+ 236. He's hit! The Minister's down... he's gone.
+      [squad/squad_rescue_killed.ogg]  the rescue, the Minister killed in the fight. Cracking.
+ 237. Going for the stash. They will call it in; be quick.
+      [squad/squad_said_cache.ogg]  the raid, the order given. Low. One take stands in for every place.
+ 238. Falling back to the truck. It goes in a minute.
+      [squad/squad_said_fall_back.ogg]  the raid, the order given. Hard. One take stands in for every count.
+ 239. Pushing the barn! On me!
+      [squad/squad_said_push.ogg]  the raid, the order given. Roared.
+ 240. Off with the robe. We're done pretending.
+      [squad/squad_strip_robe.ogg]  heist: shedding the garb, flat and quick.
+ 241. Taking fire! Dropped the crate.
+      [squad/squad_taking_fire.ogg]  a man of the squad, carrying under fire. Shouted.
+ 242. Two more coming from the north, off the ridge road!
+      [squad/squad_two_more.ogg]  the raid, a second party arrives. Loud, warning.
+ 243. Easy. Walk. Nobody look at them.
+      [squad/squad_unnoticed.ogg]  heist: murmured, disguised, walking in. Barely above a whisper.
+ 244. He's dead, boss. We needed him breathing. It's over.
+      [squad/squad_vip_dead.ogg]  the rescue, the official dies. Hollow.
+ 245. He's hit! He's down... he's gone.
+      [squad/squad_vip_hit.ogg]  the rescue, the official hit. Cracking.
+ 246. They shot him. They shot him, boss. It's over.
+      [squad/squad_vip_shot.ogg]  the rescue, the official executed. Shocked, quiet.
+ 247. Boss, they know we're here. They'll kill him if we don't get to him!
+      [squad/squad_warn.ogg]  rescue job: urgent, half time.
+ 248. That bell... every one of them heard it.
+      [squad/squad_zone_bell.ogg]  the raid, a church bell rings. Dry, dismayed.
+ 249. It's burning! Can't see a thing through that smoke.
+      [squad/squad_zone_fire.ogg]  the raid, a fire. Coughing, shouted.
+ 250. Water's out. That ground's mud now, slow going for everyone.
+      [squad/squad_zone_flood.ogg]  the raid, a pipe bursts. Matter of fact.
+ 251. More of them ahead!
+      [squad/squad_zone_more.ogg]  the raid, a band of the favela reinforced. Alarmed. One take stands in for every band name.
+ 252. They're pulling back. Push!
+      [squad/squad_zone_pullback.ogg]  the raid, a band breaks. Urging. One take stands in for every place.
+
+============================================================
+BUDDY1  (14 lines)
+Your first friend: the talker, steady, the one who wakes you in the truck. Ex-military calm.
+============================================================
+ 253. Nobody run. Hands where they can see them.
+      [buddy1/buddy1_beach_calm.ogg]  the beach, the Dyab walking down. Low and level.
+ 254. Head count. Everybody breathing? Good.
+      [buddy1/buddy1_beach_count.ogg]  the beach, coming to. Hoarse, steady.
+ 255. She's going! Everybody off!
+      [buddy1/buddy1_boat_break.ogg]  the boat breaks. Loud, still in control.
+ 256. Weather's turning. Nothing this boat hasn't seen.
+      [buddy1/buddy1_boat_calm.ogg]  the boat, before the storm. Easy, a little too easy.
+ 257. Hold on to something! Anything! Hold on!
+      [buddy1/buddy1_boat_storm.ogg]  the boat, the hurricane. Shouted over the wind.
+ 258. Whatever they say, we stay together.
+      [buddy1/buddy1_trial_hold.ogg]  the courtyard, waiting. Quiet, firm.
+ 259. You keep going. You hear me? You keep going.
+      [buddy1/buddy1_trial_you.ogg]  the courtyard, to the founder. Low, urgent.
+ 260. Could be worse. Could be a long walk.
+      [buddy1/buddy1_truck_joke.ogg]  the truck. A dry attempt to lift the mood.
+ 261. Count the turns. Count the guards.
+      [buddy1/buddy1_truck_plan.ogg]  the truck. Murmured, soldier's habit.
+ 262. Easy now. Easy. Walk it out.
+      [buddy1/buddy1_wall_calm.ogg]  the courtyard, walking to the wall. Calm, for the others.
+ 263. Go to hell.
+      [buddy1/go_to_hell_40c4fe.ogg]  scene: The trial
+ 264. Hey, you. You're finally awake. You were trying to cross the sea, right? Sailed right into that hurricane, same as us. And that goat thief over there.
+      [buddy1/hey_you_you_re_finally_awake_ca4683.ogg]  the opening, the truck
+ 265. I don't know where we're going, but Ginen awaits.
+      [buddy1/i_don_t_know_where_we_97bbfa.ogg]  the opening, the truck
+ 266. Why do you think? End of the line.
+      [buddy1/why_do_you_think_end_of_0bd599.ogg]  the opening, the truck
+
+============================================================
+BUDDY2  (12 lines)
+Your second friend: dry humor, sarcastic under stress.
+============================================================
+ 267. Well. Haiti. Wetter than the brochure.
+      [buddy2/buddy2_beach_cough.ogg]  the beach, coughing up water. Wry.
+ 268. Tell me that's not twenty guys with rifles.
+      [buddy2/buddy2_beach_guns.ogg]  the beach, the Dyab coming. Flat, then not.
+ 269. Great day for a cruise. What could go wrong.
+      [buddy2/buddy2_boat_dry.ogg]  the boat, before the storm. Bone dry.
+ 270. I'm not seasick. I'm expressing myself.
+      [buddy2/buddy2_boat_green.ogg]  the boat, rolling. Grey in the face.
+ 271. Is this the part where we die? Asking for a friend.
+      [buddy2/buddy2_boat_storm.ogg]  the boat, the hurricane. Sarcasm over fear.
+ 272. I'd like to appeal. Who do I see about that?
+      [buddy2/buddy2_trial_appeal.ogg]  the courtyard, the sentence read. Shaky, still joking.
+ 273. That paper's upside down. Someone should tell him.
+      [buddy2/buddy2_trial_paper.ogg]  the courtyard, Zo reading the verdict. Disbelief.
+ 274. Oh good. A gate. They always have a gate.
+      [buddy2/buddy2_truck_gate.ogg]  the truck, arriving. Weary joke.
+ 275. Lovely seats. Four stars.
+      [buddy2/buddy2_truck_seats.ogg]  the truck, in chains. Dry.
+ 276. To be fair, he's right about the boats.
+      [buddy2/buddy2_truck_thief.ogg]  the truck, after the thief's rant. Admitting it.
+ 277. Tell my mother I was--
+      [buddy2/tell_my_mother_i_was_394753.ogg]  scene: The trial
+ 278. Where are they taking us?
+      [buddy2/where_are_they_taking_us_7cb66e.ogg]  the opening, the truck
+
+============================================================
+BUDDY3  (13 lines)
+Your third friend: the observer, notices things, a bit shaken.
+============================================================
+ 279. No birds. Why are there no birds?
+      [buddy3/buddy3_beach_birds.ogg]  the beach, coming to. Dazed, observant.
+ 280. Twenty coming down the beach. More behind.
+      [buddy3/buddy3_beach_men.ogg]  the beach, the Dyab. Counting under his breath.
+ 281. Look at the sky. That's not a normal colour.
+      [buddy3/buddy3_boat_sky.ogg]  the boat, before the storm. Quiet, noticing.
+ 282. Every set of waves is bigger than the last.
+      [buddy3/buddy3_boat_waves.ogg]  the boat, the storm building. Tight.
+ 283. They're lining us up. They're just lining us up.
+      [buddy3/buddy3_trial_line.ogg]  the courtyard. Breaking.
+ 284. I keep counting the rifles. Eleven. Eleven.
+      [buddy3/buddy3_trial_rifles.ogg]  the courtyard. A nervous loop.
+ 285. Look at the wall behind them. Look at the wall.
+      [buddy3/buddy3_trial_wall.ogg]  the courtyard. Horrified, noticing.
+ 286. The guards don't watch the road. They watch us.
+      [buddy3/buddy3_truck_guards.ogg]  the truck. A low whisper.
+ 287. My hands won't stop shaking. Is that normal?
+      [buddy3/buddy3_truck_hands.ogg]  the truck. Embarrassed, quiet.
+ 288. Bullet holes in the gate. Fresh ones.
+      [buddy3/buddy3_truck_holes.ogg]  the truck, at the gate. Grim.
+ 289. There's the gate. Look at the walls on this place.
+      [buddy3/there_s_the_gate_look_at_0234fd.ogg]  the opening, the truck
+ 290. This isn't how it ends. This isn't--
+      [buddy3/this_isn_t_how_it_ends_508108.ogg]  scene: The trial
+ 291. We're all brothers in chains now, thief.
+      [buddy3/we_re_all_brothers_in_chains_b445a9.ogg]  the opening, the truck
+
+============================================================
+BUDDY4  (12 lines)
+Your fourth friend: the money guy, complaining, scared underneath.
+============================================================
+ 292. My phone. My watch. My whole kit. Gone.
+      [buddy4/buddy4_beach_lost.ogg]  the beach, patting his pockets. Stunned.
+ 293. Okay. Okay. Nobody say anything stupid.
+      [buddy4/buddy4_beach_quiet.ogg]  the beach, the Dyab coming. Whispered.
+ 294. Do you know what this charter costs? Per day?
+      [buddy4/buddy4_boat_bill.ogg]  the boat, before the storm. Complaining, comfortable.
+ 295. If that case goes over the side, I'm billing someone.
+      [buddy4/buddy4_boat_case.ogg]  the boat, rolling. Clutching the gear.
+ 296. I did not sign up for this! I did NOT sign up for this!
+      [buddy4/buddy4_boat_storm.ogg]  the boat, the hurricane. Panicked shouting.
+ 297. We can pay! Tell them we can pay!
+      [buddy4/buddy4_trial_pay.ogg]  the courtyard. Desperate, loud.
+ 298. I'm not crying. It's the rain.
+      [buddy4/buddy4_trial_rain.ogg]  the courtyard. Small, cracked.
+ 299. I'm fine. I'm totally fine. Are you fine?
+      [buddy4/buddy4_truck_fine.ogg]  the truck. Too bright, shaking.
+ 300. It's ransom. It's always ransom. How much do we have?
+      [buddy4/buddy4_truck_ransom.ogg]  the truck. Calculating, scared.
+ 301. Everything I own is at the bottom of that sea.
+      [buddy4/buddy4_truck_sea.ogg]  the truck. Sour, a long sigh.
+ 302. Hey. Hey. It's fine. It's fine.
+      [buddy4/hey_hey_it_s_fine_it_5b2cdb.ogg]  scene: The trial
+ 303. Two hundred grand of gear at the bottom of the sea. Two hundred grand.
+      [buddy4/two_hundred_grand_of_gear_at_e1138e.ogg]  the opening, the truck
+
+============================================================
+WIFE  (10 lines)
+His wife in the flashback (the evening before the ad): flat, bored, a little cruel, almost kind at the very end.
+============================================================
+ 304. Is that the advert again? You've stared at it an hour.
+      [wife/wife_ad.ogg]  flashback: at the screen. Dry, a little cruel.
+ 305. An adventure. You. That's adorable.
+      [wife/wife_adventure.ogg]  flashback: he announces it. Kind on the surface.
+ 306. Your bags are by the door. I packed them. You're welcome.
+      [wife/wife_bags.ogg]  flashback: the leaving. Cool, efficient.
+ 307. It's the fourteenth. Mine was the ninth.
+      [wife/wife_date.ogg]  flashback: the calendar. Flat, worn out.
+ 308. Dinner's cold. It's been cold since six.
+      [wife/wife_dinner.ogg]  flashback: home, the evening. Flat, not looking up.
+ 309. Go. Go and find yourself. Let me know if you do.
+      [wife/wife_go.ogg]  flashback: the leaving. The cruel one.
+ 310. Haiti. You. You can't even change a tyre.
+      [wife/wife_haiti.ogg]  flashback: he says where he is going. A short laugh.
+ 311. I hope it's everything you wanted. I mean that. Mostly.
+      [wife/wife_kind.ogg]  flashback: the door closing. Almost kind.
+ 312. How was the office? Never mind. I can tell.
+      [wife/wife_office.ogg]  flashback: home. Bored.
+ 313. Turn that down. Nothing's happening anyway.
+      [wife/wife_tv.ogg]  flashback: the living room. Bored.
+
+============================================================
+JUDGE  (13 lines)
+The judge at a camp trial: formal, slow, solemn.
+============================================================
+ 314. By the votes of this jury, guilty. Sentence will be carried out now.
+      [judge/judge_guilty.ogg]  dialogue.json
+ 315. The jury is agreed. Guilty. Let it be done.
+      [judge/judge_guilty_alt.ogg]  an alternate guilty verdict. Solemn, final.
+ 316. The assembly has voted. The chair passes by election.
+      [judge/judge_heir_elected.ogg]  succession: elected. Measured.
+ 317. No commander remains. The chair passes to the most loyal.
+      [judge/judge_heir_loyal.ogg]  succession: the loyal. Slow, grave.
+ 318. The chair passes to the heir named at assembly. So it is written.
+      [judge/judge_heir_named.ogg]  succession: a named heir. Formal.
+ 319. No heir was named. The chair passes to the senior commander.
+      [judge/judge_heir_senior.ogg]  succession: the senior. Flat.
+ 320. No heir was named. The chair passes to the strongest commander.
+      [judge/judge_heir_strongest.ogg]  succession: the strongest. Flat.
+ 321. By the votes of this jury, not guilty. Strike off his chains.
+      [judge/judge_not_guilty.ogg]  dialogue.json
+ 322. Not guilty. The accused is free to go.
+      [judge/judge_not_guilty_alt.ogg]  an alternate acquittal. Even, relieved.
+ 323. Order. This court is in session.
+      [judge/judge_order.ogg]  a camp trial opens. Formal, slow.
+ 324. The accused has confessed before this court.
+      [judge/judge_proof_confession.ogg]  the proof is a confession. Heavy, slow.
+ 325. No proof was brought. The jury may weigh that.
+      [judge/judge_proof_none.ogg]  no proof at all. Dry as paper.
+ 326. The charge rests on a tip, and nothing more.
+      [judge/judge_proof_tip.ogg]  the proof is a tip. Doubtful.
+
+============================================================
+ZO  (11 lines)
+Commander Zo of Dyab. Big, slow, enjoying himself. Rough pidgin English, rolling the words, reading a verdict he cannot read. Never shouts when he can sneer.
+============================================================
+ 327. And you. Di last one. Come.
+      [zo/and_you_di_last_one_come_28eac3.ogg]  scene: The trial
+ 328. Di evidence is: you is foreigner. You come from di sea wit no paper. You look at me funny.
+      [zo/di_evidence_is_you_is_foreigner_386591.ogg]  scene: The trial
+ 329. Di jury, what you say?
+      [zo/di_jury_what_you_say_4971a3.ogg]  scene: The trial
+ 330. Dis tribunal of Dyab, it have look at all di evidence.
+      [zo/dis_tribunal_of_dyab_it_have_d29cca.ogg]  scene: The trial
+ 331. Guilty! All of dem. Di sentence is: you dead. Next case!
+      [zo/guilty_all_of_dem_di_sentence_93b8cf.ogg]  scene: The trial
+ 332. Next one! Come, come.
+      [zo/next_one_come_come_3c3283.ogg]  scene: The trial
+ 333. Now you. Come.
+      [zo/now_you_come_d9769f.ogg]  scene: The trial
+ 334. Order! Order in di court!
+      [zo/order_order_in_di_court_d888a3.ogg]  scene: The trial
+ 335. You. Come. Stand by di wall.
+      [zo/you_come_stand_by_di_wall_811fd4.ogg]  scene: The trial
+ 336. You. Di wall. Go.
+      [zo/you_di_wall_go_80bb26.ogg]  scene: The trial
+ 337. Tout moun sou mi an! (Everybody on the walls!)
+      [zo/zo_attack_walls.ogg]  the opening, the Mules attack. Zo roars; the rest of Zo is pidgin English, this is the one Kreyol order. **[check: 'mi an' for 'the walls', or 'miray yo']**
+
+============================================================
+DYAB  (7 lines)
+Dyab gunmen and the truck driver. Rough, young, loud. Haitian Kreyol lines: say the Kreyol; the English in brackets is only the subtitle.
+============================================================
+ 338. Mules! Se Mules yo! (It's the Mules!)
+      [dyab/dyab_attack_mules.ogg]  the opening, the Mules attack. Panicked shout. **[check: how Haitians say 'the Mules' (the gang's name as a loan word)]**
+ 339. Gade! Blan yo soti nan lanmè! (Look! The white men came out of the sea!)
+      [dyab/dyab_beach_look.ogg]  the opening, the beach. Shouted, amazed.
+ 340. Mare yo. Kòmandan Zo ap kontan. (Tie them up. Commander Zo will be happy.)
+      [dyab/dyab_beach_tie.ogg]  the opening, the beach. Gruff, pleased with himself.
+ 341. Desann! (Get down!)
+      [dyab/dyab_truck_down.ogg]  the opening, the truck (the driver). Barked.
+ 342. Kanpe! (Halt!)
+      [dyab/dyab_truck_halt.ogg]  the opening, the truck. Sharp.
+ 343. Gen lòt moun ki vle kouri? (Anyone else feel like running?)
+      [dyab/dyab_truck_run.ogg]  the opening, the truck. Mocking, a rifle on his shoulder.
+ 344. Fèmen bouch nou! (Shut your mouths!)
+      [dyab/dyab_truck_shut.ogg]  the opening, the truck (the driver). Barked. **[check: 'bouch nou' for 'your mouths' (plural), or 'bouch ou']**
+
+============================================================
+AMERICAN  (14 lines)
+The American on the radio: CIA pretending not to be, friendly, smug, folksy.
+============================================================
+ 345. Got a bird overhead if you want it. Just paint the target. I'll handle the rest.
+      [american/american_airstrike.ogg]  the airstrike offer. Cheerful, like offering coffee.
+ 346. Well. That's a shame. That's a real shame. I liked you.
+      [american/american_betrayed.ogg]  if the player betrays him. Quiet, cold, the friendliness gone.
+ 347. Great turnout. Half of them were mine, but still.
+      [american/american_deal_class.ogg]  the phone, after the democracy class. Cheerful, a wink in it.
+ 348. Washington appreciates discretion. I mean, I would, if I worked there.
+      [american/american_deal_deportees.ogg]  the phone, the deportees held. Easy, a little too easy.
+ 349. Interesting reading. I'm retired, of course. I just like lists.
+      [american/american_deal_list.ogg]  the phone, the list delivered. Dry, smug.
+ 350. Little favor, nothing big. Somebody's holding something that belongs to my friends. You'd be doing the whole region a service.
+      [american/american_favor.ogg]  early job offer. Light, casual menace.
+ 351. A flight from Miami lands this week: a planeload of them. You'd be doing us a favor. Where do they go?
+      [american/american_flight.ogg]  the phone, the deportees. Folksy, lightly threatening. One take stands in for every count and price.
+ 352. Gotta run. Wife's calling. Good luck out there, friend.
+      [american/american_hangup.ogg]  ending a call. Breezy.
+ 353. Hey there, friend. Name's... let's say Bob. Retired. Strictly retired. I just happen to have a phone.
+      [american/american_intro.ogg]  first call. Warm, smug, folksy, a little too friendly.
+ 354. Look, the folks I represent... they'd like to be more than friends. Think about it.
+      [american/american_patron.ogg]  the big patron demand. Slower, serious, still smiling.
+ 355. Money's no problem. Money is never the problem. It's the paperwork that gets people killed.
+      [american/american_pay.ogg]  talking payment. A chuckle.
+ 356. Okay. Here is the deal. You're our guys now. Money, a phone number that answers, and nobody in Washington asks about the others.
+      [american/american_promise.ogg]  the phone, the patronage. Warm, folksy. One take stands in for every rival.
+ 357. Congratulations, Mr. President. Unofficially. Then officially, Tuesday.
+      [american/american_recognized.ogg]  the phone, recognition. Beaming.
+ 358. Now, I didn't say this. If anyone asks, we never talked. Good chat though. Good chat.
+      [american/american_warn.ogg]  after a risky job. Fast, nervous underneath the smile.
+
+============================================================
+RUSSIAN  (14 lines)
+The Russian contact on the phone: deadpan, flat, logistics. The funniest lines arrive without any expression at all.
+============================================================
+ 359. Good. Do not open it. It is fertilizer.
+      [russian/russian_deal_crate.ogg]  the phone, the crate stored. Flat, no expression.
+ 360. The form never existed. Neither did the ship.
+      [russian/russian_deal_form.ogg]  the phone, the customs form lost. Deadpan.
+ 361. On time. In this country. I am almost emotional.
+      [russian/russian_deal_truck.ogg]  the phone, the truck moved. Deadpan; the funniest line is the flattest.
+ 362. You are late. Lateness is expensive. I do not shout. I invoice.
+      [russian/russian_delay.ogg]  after a missed deadline. Colder, even.
+ 363. That is all. Do not call this number again until you have something to say.
+      [russian/russian_hangup.ogg]  ending a call. Abrupt.
+ 364. This is the number you were given. I will not give my name. You will not ask.
+      [russian/russian_intro.ogg]  first call. Flat, deadpan, zero warmth.
+ 365. I have a shipment. It needs to arrive. It does not need to be asked about.
+      [russian/russian_offer.ogg]  logistics job. Dry, bureaucratic.
+ 366. My people would like to be your friends. This is not an invitation. This is information.
+      [russian/russian_patron.ogg]  the big patron demand. Quiet, absolute.
+ 367. Payment is half now, half on delivery. This is fair. You will say it is fair.
+      [russian/russian_pay.ogg]  payment. Deadpan, slow.
+ 368. This was acceptable. Do not let it go to your head.
+      [russian/russian_praise.ogg]  after a good job. The nearest to praise he gets.
+ 369. Good. Moscow backs you now. Money comes. Questions do not. The others are your problem, and now a little bit ours.
+      [russian/russian_promise.ogg]  the phone, the patronage. Flat. One take stands in for every rival.
+ 370. It is signed. Do not frame it. Frames attract attention.
+      [russian/russian_recognized.ogg]  the phone, recognition. Flat.
+ 371. Same as last time. Do not ask what. You never ask; this is why I like you.
+      [russian/russian_run.ogg]  the phone, the next run. Flat, almost fond.
+ 372. It is cold here. It is always cold. This is why we are efficient.
+      [russian/russian_weather.ogg]  small talk, entirely sincere. Deadpan joke.
+
+============================================================
+CHINESE  (13 lines)
+The Chinese contact on the phone: sweet, direct, an obvious honeypot who tells you she is one.
+============================================================
+ 373. You were not nice to me. I will remember this. I remember everything.
+      [chinese/chinese_angry.ogg]  if crossed. Sweetness thinning.
+ 374. Could you tell me about your armory? Only because I am curious. Only because I like you.
+      [chinese/chinese_ask.ogg]  asking for secrets. Light, transparent.
+ 375. You liked the dumplings? Everyone likes the dumplings. Come back soon, alone.
+      [chinese/chinese_deal_dumplings.ogg]  the phone, after the dinner. Sweet, direct, an obvious honeypot.
+ 376. Just geologists. Very curious geologists. With antennas.
+      [chinese/chinese_deal_geologists.ogg]  the phone, the survey allowed. Sweet, unashamed.
+ 377. So calm. So harmonious. My friends noticed.
+      [chinese/chinese_deal_road.ogg]  the phone, the road kept quiet. Pleased.
+ 378. You are such a brave man. Everyone talks about you. I talk about you too.
+      [chinese/chinese_flatter.ogg]  flattery. Warm, practised, giggling.
+ 379. Goodbye for now! Call me when you are lonely.
+      [chinese/chinese_hangup.ogg]  ending a call. Bright.
+ 380. I am being honest with you now. I am working for my government. But also I like you.
+      [chinese/chinese_honest.ogg]  dropping the act. Sincere and funny.
+ 381. Hello! I hope I'm not disturbing you. I would love to learn about your wonderful country.
+      [chinese/chinese_intro.ogg]  first call. Sweet, a little too eager, obvious honeypot.
+ 382. I have something for you. A little gift. There are no strings. Maybe a few small strings.
+      [chinese/chinese_offer.ogg]  an offer. Playful.
+ 383. My friends would like to invest in your future. They are very patient. They are very large.
+      [chinese/chinese_patron.ogg]  the big patron demand. Sweet, with steel.
+ 384. Beijing invests in stability. That is you now. The money will arrive quietly. The others will notice anyway.
+      [chinese/chinese_promise.ogg]  the phone, the patronage. Sweet. One take stands in for every rival.
+ 385. Beijing recognizes you. Please keep the antennas where they are.
+      [chinese/chinese_recognized.ogg]  the phone, recognition. Sweet, a little warning.
+
+============================================================
+FRENCH  (7 lines)
+The French leader (looks like Napoleon, pretends not to be French): theatrical, languid, every line an event.
+============================================================
+ 386. Impossible! I, who was never... Merde.
+      [french/french_defeat.ogg]  defeated. Shocked, then resigned.
+ 387. We will meet again. Probably in a different war. Au revoir. I mean, goodbye.
+      [french/french_farewell.ogg]  retreat. Dignified, ruined by the slip.
+ 388. Ah, so it is you. The one they speak of. I am... how do you say... not French. Not at all.
+      [french/french_intro.ogg]  first appearance. Theatrical, pretending, failing.
+ 389. Advance! The glory of... of this place demands it! Allez!
+      [french/french_order.ogg]  ordering his men. Booming.
+ 390. France recognizes your... how do you say... entity. The mines will be very happy together.
+      [french/french_recognized.ogg]  the phone, recognition. Theatrical, a pause before 'entity'.
+ 391. You are worthy. I did not expect it. It is irritating.
+      [french/french_respect.ogg]  grudging respect. Dry.
+ 392. You fight like a man who has read about war. I have lived it. Several times. In Russia.
+      [french/french_taunt.ogg]  taunt. Languid, delighted.
+
+============================================================
+BRITISH  (1 lines)
+The British observer on the phone: plummy, pleased with himself, a man who has put the kettle on for the end of the world.
+============================================================
+ 393. Splendid. Courts, elections, a free press of sorts. Whitehall is thrilled. Do keep it up while we are looking.
+      [british/british_recognized.ogg]  the phone, recognition. Plummy, pleased with himself, the kettle on.
+
+============================================================
+PRESS_EMBED  (9 lines)
+The friendly embed: breathless, delighted, writes you as a hero.
+============================================================
+ 394. Okay, going! Be safe out there. Don't die. I mean it!
+      [press_embed/embed_hangup.ogg]  ending a call. Warm.
+ 395. Hi! Hi! I'm with the news, I follow your story, I think you're a hero! Can I get a quote?
+      [press_embed/embed_intro.ogg]  first call. Breathless, delighted.
+ 396. You lost people, but it wasn't in vain. I can frame this. Leave it to me.
+      [press_embed/embed_loss.ogg]  after a loss. Trying to spin it kindly.
+ 397. Some of the coverage has been... unfair. I'm sure there is context.
+      [press_embed/embed_negative.ogg]  the phone, bad coverage. Brave face, thin.
+ 398. Honestly? Professional guys. Kind of boring to film. Still filming.
+      [press_embed/embed_neutral.ogg]  the phone, neutral coverage. Light, cheerful.
+ 399. Day one with the heroes. They fed a whole village today. I cried twice.
+      [press_embed/embed_nice.ogg]  the phone, the good coverage. Glowing. One take stands in for every day.
+ 400. Can I quote you on 'We didn't come here to lose'? It sounds amazing.
+      [press_embed/embed_quote.ogg]  asking for a quote. Overeager.
+ 401. omg is this the militia?? can I come??
+      [press_embed/embed_unknown.ogg]  the phone, the first text. Breathless, delighted.
+ 402. You did it! They're saying your men held the line against impossible odds. I'm writing it up now!
+      [press_embed/embed_win.ogg]  after a win. Gushing.
+
+============================================================
+PRESS_INVESTIGATOR  (7 lines)
+The hostile investigator: cold, prosecutorial, quiet, counts the dead.
+============================================================
+ 403. Forty-one civilians. That is the number my sources give me. Do you dispute it?
+      [press_investigator/investigator_count.ogg]  casualty count drop. Slow, prosecutorial. Key beat.
+ 404. Another village. Another number. Do you keep count, Mr. Founder? Because I do.
+      [press_investigator/investigator_dead.ogg]  after a bad raid. Quiet, bitter.
+ 405. I'll be printing this. With or without your comment.
+      [press_investigator/investigator_hangup.ogg]  ending a call. Final.
+ 406. Civilians your men have hurt, by my count: several. I keep counting.
+      [press_investigator/investigator_hurt.ogg]  the phone, the count. Cold, quiet. One take stands in for every number.
+ 407. I'm a reporter. I'm investigating the deaths in your area. I'd like a comment.
+      [press_investigator/investigator_intro.ogg]  first call. Cold, professional.
+ 408. You have not answered the question. I will wait. I am very good at waiting.
+      [press_investigator/investigator_press.ogg]  pressing. Flat, relentless.
+ 409. Nothing to count yet. I am patient.
+      [press_investigator/investigator_quiet.ogg]  the phone, nothing yet. Cold, quiet.
+
+============================================================
+PRESS_CLIP  (8 lines)
+The viral clip aggregator: flat internet voice, bored, scrolling.
+============================================================
+ 410. Do you have anything newer? Like, spicier? People are asking.
+      [press_clip/clip_ask.ogg]  asking for more footage. Bored.
+ 411. Cool. Cool cool cool. Bye.
+      [press_clip/clip_hangup.ogg]  ending a call. Already on to the next thing.
+ 412. Yeah, hey, we posted your raid. It's doing numbers. Anyway.
+      [press_clip/clip_intro.ogg]  first call. Flat internet voice, zero investment.
+ 413. new clip just dropped. foreigners versus the militia. two point one million views.
+      [press_clip/clip_new.ogg]  the phone, a clip. Flat internet voice, scrolling. One take stands in for every faction.
+ 414. POV: you are a gang and the foreigners have a truck now
+      [press_clip/clip_pov.ogg]  the phone, a meme. Bored.
+ 415. no context clip of them running away. nine hundred k views
+      [press_clip/clip_running.ogg]  the phone, a clip. Flat. One take stands in for every faction.
+ 416. rating every militia in haiti tier list (copycats are F)
+      [press_clip/clip_tier.ogg]  the phone, a tier list. Bored.
+ 417. That clip of your guys? Two million views. Someone put music on it. It's a bop.
+      [press_clip/clip_viral.ogg]  a clip goes viral. Deadpan, scrolling.
+
+============================================================
+GUARD  (10 lines)
+The gang's guards and reinforcements (Cite Soleil and the raids): rough, loud, scared. Haitian Kreyol lines: say the Kreyol; the English in brackets is only the subtitle. A **[check...]** note marks a line to correct before you record it.
+============================================================
+ 418. Kontak! Kontak, li la a! (Contact! Contact, he's over here!)
+      [guard/guard_contact.ogg]  calling it to the others. Loud. **[check: 'Kontak' as a loan word, and 'li la a' for 'he's over here']**
+ 419. Yo touye Pierre! Yo touye l! (They got Pierre! They got him!)
+      [guard/guard_dead_friend.ogg]  a friend killed. Shock.
+ 420. Fè wonn! Pase dèyè li! (Go around! Get behind him!)
+      [guard/guard_flank.ogg]  a squad leader's order. Barked. **[check: 'fè wonn' for 'go around']**
+ 421. Kanpe la! (Stop right there!)
+      [guard/guard_halt.ogg]  guard challenging. Sharp.
+ 422. Hey! Ki moun sa a? (Hey! Who's that?)
+      [guard/guard_hey.ogg]  guard noticed something. Suspicious, not yet alarmed.
+ 423. Ay! Yo touche m! (Argh! I'm hit!)
+      [guard/guard_hit.ogg]  any fight. Pain, short. **[check: 'yo touche m' vs 'yo tire m']**
+ 424. Plis gason! Tout moun vini isit la! (More men! Get everybody up here!)
+      [guard/guard_reinforce.ogg]  reinforcements called. Shouted over the radio. **[check: 'plis gason' for 'more men']**
+ 425. M ap rechaje! (Reloading!)
+      [guard/guard_reload.ogg]  any fight. Quick, ragged.
+ 426. Tounen dèyè! Tounen dèyè! (Fall back! Fall back!)
+      [guard/guard_retreat.ogg]  a band breaks. Desperate. **[check: the usual shout for 'fall back']**
+ 427. Tire! Tire sou li! (Open fire! Shoot him!)
+      [guard/guard_shoot.ogg]  alarm up. Panicked shout.
+
+============================================================
+THIEF  (3 lines)
+
+============================================================
+ 428. Damn you blan and your boats. Tortuga was fine till you washed up. If they hadn't been out looking for you, I could've stolen that goat and been halfway to Port-de-Paix.
+      [thief/damn_you_blan_and_your_boats_6a0449.ogg]  the opening, the truck
+ 429. No! I'm no blan! You're not going to kill me!
+      [thief/no_i_m_no_blan_you_3fd842.ogg]  the opening, the truck
+ 430. Why are we stopping?
+      [thief/why_are_we_stopping_4001f6.ogg]  the opening, the truck
+
+============================================================
+RADIO  (1 lines)
+The voice on the radio for the air strike: a pilot or controller, calm, clipped, professional.
+============================================================
+ 431. Copy, painted. Get your heads down.
+      [radio/copy_painted_get_your_heads_down_29e72c.ogg]  the opening, the jets
+
+============================================================
+MAN_DEEP  (39 lines)
+Shared voice for unnamed men (your recruits, guards): deep and slow.
+============================================================
+ 432. Back, back.
+      [man_deep/back_back_27eaaa.ogg]  bark: retreat (VoiceKit)
+ 433. a questioning call: who's there?
+      [man_deep/call_call.ogg]  raids, a guard reacting
+ 434. a shout: HEY! / over there!
+      [man_deep/call_shout.ogg]  raids, a guard reacting
+ 435. a two note whistle: something's off
+      [man_deep/call_whistle.ogg]  raids, a guard reacting
+ 436. Changing mags.
+      [man_deep/changing_mags_05f417.ogg]  bark: reloading (VoiceKit)
+ 437. Clear.
+      [man_deep/clear_e3131a.ogg]  bark: clear (VoiceKit)
+ 438. Copy.
+      [man_deep/copy_400069.ogg]  bark: acknowledge (VoiceKit)
+ 439. Fall back.
+      [man_deep/fall_back_ee9738.ogg]  bark: retreat (VoiceKit)
+ 440. Hello? Anyone?
+      [man_deep/hello_anyone_1ea392.ogg]  bark: question (VoiceKit)
+ 441. I'm hit.
+      [man_deep/i_m_hit_aa8804.ogg]  bark: hit (VoiceKit)
+ 442. Moving.
+      [man_deep/moving_762ab7.ogg]  bark: acknowledge (VoiceKit)
+ 443. moving to East Gate.
+      [man_deep/moving_to_east_gate_0c1984.ogg]  tortuga, a man taking his post
+ 444. moving to Grove Watch.
+      [man_deep/moving_to_grove_watch_7a4c2a.ogg]  tortuga, a man taking his post
+ 445. moving to House Watch.
+      [man_deep/moving_to_house_watch_527be7.ogg]  tortuga, a man taking his post
+ 446. moving to North-East Corner.
+      [man_deep/moving_to_north_east_corner_fee321.ogg]  tortuga, a man taking his post
+ 447. moving to North Gate.
+      [man_deep/moving_to_north_gate_912149.ogg]  tortuga, a man taking his post
+ 448. moving to Road Gate.
+      [man_deep/moving_to_road_gate_5f6be2.ogg]  tortuga, a man taking his post
+ 449. moving to Rock Watch.
+      [man_deep/moving_to_rock_watch_f05f01.ogg]  tortuga, a man taking his post
+ 450. moving to Scrub Corner.
+      [man_deep/moving_to_scrub_corner_516203.ogg]  tortuga, a man taking his post
+ 451. moving to Shed Watch.
+      [man_deep/moving_to_shed_watch_3ef379.ogg]  tortuga, a man taking his post
+ 452. moving to South-East Corner.
+      [man_deep/moving_to_south_east_corner_e0d7ee.ogg]  tortuga, a man taking his post
+ 453. moving to South-West Corner.
+      [man_deep/moving_to_south_west_corner_ac650d.ogg]  tortuga, a man taking his post
+ 454. moving to Trail Watch.
+      [man_deep/moving_to_trail_watch_e4dfcd.ogg]  tortuga, a man taking his post
+ 455. moving to Trench Watch.
+      [man_deep/moving_to_trench_watch_f6c03c.ogg]  tortuga, a man taking his post
+ 456. moving to Wash Watch.
+      [man_deep/moving_to_wash_watch_644318.ogg]  tortuga, a man taking his post
+ 457. moving to West Gate.
+      [man_deep/moving_to_west_gate_b27eb8.ogg]  tortuga, a man taking his post
+ 458. Nice work.
+      [man_deep/nice_work_e9f513.ogg]  bark: cheer (VoiceKit)
+ 459. Nothing yet.
+      [man_deep/nothing_yet_7c7759.ogg]  bark: idle (VoiceKit)
+ 460. On it.
+      [man_deep/on_it_b8c7da.ogg]  bark: acknowledge (VoiceKit)
+ 461. Pull back, go.
+      [man_deep/pull_back_go_964b40.ogg]  bark: retreat (VoiceKit)
+ 462. Quiet night.
+      [man_deep/quiet_night_cfc638.ogg]  bark: idle (VoiceKit)
+ 463. Reloading.
+      [man_deep/reloading_c39f54.ogg]  bark: reloading (VoiceKit)
+ 464. Room clear.
+      [man_deep/room_clear_46ce17.ogg]  bark: clear (VoiceKit)
+ 465. Say something.
+      [man_deep/say_something_81d755.ogg]  bark: question (VoiceKit)
+ 466. Still here.
+      [man_deep/still_here_11f89b.ogg]  bark: idle (VoiceKit)
+ 467. That's it.
+      [man_deep/that_s_it_963726.ogg]  bark: cheer (VoiceKit)
+ 468. Took one.
+      [man_deep/took_one_833b14.ogg]  bark: hit (VoiceKit)
+ 469. We got them.
+      [man_deep/we_got_them_4e47df.ogg]  bark: cheer (VoiceKit)
+ 470. Who's there?
+      [man_deep/who_s_there_3986de.ogg]  bark: question (VoiceKit)
+
+============================================================
+MAN_LOUD  (39 lines)
+Shared voice: loud, brash, a shouter.
+============================================================
+ 471. Back, back.
+      [man_loud/back_back_27eaaa.ogg]  bark: retreat (VoiceKit)
+ 472. a questioning call: who's there?
+      [man_loud/call_call.ogg]  raids, a guard reacting
+ 473. a shout: HEY! / over there!
+      [man_loud/call_shout.ogg]  raids, a guard reacting
+ 474. a two note whistle: something's off
+      [man_loud/call_whistle.ogg]  raids, a guard reacting
+ 475. Changing mags.
+      [man_loud/changing_mags_05f417.ogg]  bark: reloading (VoiceKit)
+ 476. Clear.
+      [man_loud/clear_e3131a.ogg]  bark: clear (VoiceKit)
+ 477. Copy.
+      [man_loud/copy_400069.ogg]  bark: acknowledge (VoiceKit)
+ 478. Fall back.
+      [man_loud/fall_back_ee9738.ogg]  bark: retreat (VoiceKit)
+ 479. Hello? Anyone?
+      [man_loud/hello_anyone_1ea392.ogg]  bark: question (VoiceKit)
+ 480. I'm hit.
+      [man_loud/i_m_hit_aa8804.ogg]  bark: hit (VoiceKit)
+ 481. Moving.
+      [man_loud/moving_762ab7.ogg]  bark: acknowledge (VoiceKit)
+ 482. moving to East Gate.
+      [man_loud/moving_to_east_gate_0c1984.ogg]  tortuga, a man taking his post
+ 483. moving to Grove Watch.
+      [man_loud/moving_to_grove_watch_7a4c2a.ogg]  tortuga, a man taking his post
+ 484. moving to House Watch.
+      [man_loud/moving_to_house_watch_527be7.ogg]  tortuga, a man taking his post
+ 485. moving to North-East Corner.
+      [man_loud/moving_to_north_east_corner_fee321.ogg]  tortuga, a man taking his post
+ 486. moving to North Gate.
+      [man_loud/moving_to_north_gate_912149.ogg]  tortuga, a man taking his post
+ 487. moving to Road Gate.
+      [man_loud/moving_to_road_gate_5f6be2.ogg]  tortuga, a man taking his post
+ 488. moving to Rock Watch.
+      [man_loud/moving_to_rock_watch_f05f01.ogg]  tortuga, a man taking his post
+ 489. moving to Scrub Corner.
+      [man_loud/moving_to_scrub_corner_516203.ogg]  tortuga, a man taking his post
+ 490. moving to Shed Watch.
+      [man_loud/moving_to_shed_watch_3ef379.ogg]  tortuga, a man taking his post
+ 491. moving to South-East Corner.
+      [man_loud/moving_to_south_east_corner_e0d7ee.ogg]  tortuga, a man taking his post
+ 492. moving to South-West Corner.
+      [man_loud/moving_to_south_west_corner_ac650d.ogg]  tortuga, a man taking his post
+ 493. moving to Trail Watch.
+      [man_loud/moving_to_trail_watch_e4dfcd.ogg]  tortuga, a man taking his post
+ 494. moving to Trench Watch.
+      [man_loud/moving_to_trench_watch_f6c03c.ogg]  tortuga, a man taking his post
+ 495. moving to Wash Watch.
+      [man_loud/moving_to_wash_watch_644318.ogg]  tortuga, a man taking his post
+ 496. moving to West Gate.
+      [man_loud/moving_to_west_gate_b27eb8.ogg]  tortuga, a man taking his post
+ 497. Nice work.
+      [man_loud/nice_work_e9f513.ogg]  bark: cheer (VoiceKit)
+ 498. Nothing yet.
+      [man_loud/nothing_yet_7c7759.ogg]  bark: idle (VoiceKit)
+ 499. On it.
+      [man_loud/on_it_b8c7da.ogg]  bark: acknowledge (VoiceKit)
+ 500. Pull back, go.
+      [man_loud/pull_back_go_964b40.ogg]  bark: retreat (VoiceKit)
+ 501. Quiet night.
+      [man_loud/quiet_night_cfc638.ogg]  bark: idle (VoiceKit)
+ 502. Reloading.
+      [man_loud/reloading_c39f54.ogg]  bark: reloading (VoiceKit)
+ 503. Room clear.
+      [man_loud/room_clear_46ce17.ogg]  bark: clear (VoiceKit)
+ 504. Say something.
+      [man_loud/say_something_81d755.ogg]  bark: question (VoiceKit)
+ 505. Still here.
+      [man_loud/still_here_11f89b.ogg]  bark: idle (VoiceKit)
+ 506. That's it.
+      [man_loud/that_s_it_963726.ogg]  bark: cheer (VoiceKit)
+ 507. Took one.
+      [man_loud/took_one_833b14.ogg]  bark: hit (VoiceKit)
+ 508. We got them.
+      [man_loud/we_got_them_4e47df.ogg]  bark: cheer (VoiceKit)
+ 509. Who's there?
+      [man_loud/who_s_there_3986de.ogg]  bark: question (VoiceKit)
+
+============================================================
+MAN_QUIET  (39 lines)
+Shared voice: quiet, clipped, nervous.
+============================================================
+ 510. Back, back.
+      [man_quiet/back_back_27eaaa.ogg]  bark: retreat (VoiceKit)
+ 511. a questioning call: who's there?
+      [man_quiet/call_call.ogg]  raids, a guard reacting
+ 512. a shout: HEY! / over there!
+      [man_quiet/call_shout.ogg]  raids, a guard reacting
+ 513. a two note whistle: something's off
+      [man_quiet/call_whistle.ogg]  raids, a guard reacting
+ 514. Changing mags.
+      [man_quiet/changing_mags_05f417.ogg]  bark: reloading (VoiceKit)
+ 515. Clear.
+      [man_quiet/clear_e3131a.ogg]  bark: clear (VoiceKit)
+ 516. Copy.
+      [man_quiet/copy_400069.ogg]  bark: acknowledge (VoiceKit)
+ 517. Fall back.
+      [man_quiet/fall_back_ee9738.ogg]  bark: retreat (VoiceKit)
+ 518. Hello? Anyone?
+      [man_quiet/hello_anyone_1ea392.ogg]  bark: question (VoiceKit)
+ 519. I'm hit.
+      [man_quiet/i_m_hit_aa8804.ogg]  bark: hit (VoiceKit)
+ 520. Moving.
+      [man_quiet/moving_762ab7.ogg]  bark: acknowledge (VoiceKit)
+ 521. moving to East Gate.
+      [man_quiet/moving_to_east_gate_0c1984.ogg]  tortuga, a man taking his post
+ 522. moving to Grove Watch.
+      [man_quiet/moving_to_grove_watch_7a4c2a.ogg]  tortuga, a man taking his post
+ 523. moving to House Watch.
+      [man_quiet/moving_to_house_watch_527be7.ogg]  tortuga, a man taking his post
+ 524. moving to North-East Corner.
+      [man_quiet/moving_to_north_east_corner_fee321.ogg]  tortuga, a man taking his post
+ 525. moving to North Gate.
+      [man_quiet/moving_to_north_gate_912149.ogg]  tortuga, a man taking his post
+ 526. moving to Road Gate.
+      [man_quiet/moving_to_road_gate_5f6be2.ogg]  tortuga, a man taking his post
+ 527. moving to Rock Watch.
+      [man_quiet/moving_to_rock_watch_f05f01.ogg]  tortuga, a man taking his post
+ 528. moving to Scrub Corner.
+      [man_quiet/moving_to_scrub_corner_516203.ogg]  tortuga, a man taking his post
+ 529. moving to Shed Watch.
+      [man_quiet/moving_to_shed_watch_3ef379.ogg]  tortuga, a man taking his post
+ 530. moving to South-East Corner.
+      [man_quiet/moving_to_south_east_corner_e0d7ee.ogg]  tortuga, a man taking his post
+ 531. moving to South-West Corner.
+      [man_quiet/moving_to_south_west_corner_ac650d.ogg]  tortuga, a man taking his post
+ 532. moving to Trail Watch.
+      [man_quiet/moving_to_trail_watch_e4dfcd.ogg]  tortuga, a man taking his post
+ 533. moving to Trench Watch.
+      [man_quiet/moving_to_trench_watch_f6c03c.ogg]  tortuga, a man taking his post
+ 534. moving to Wash Watch.
+      [man_quiet/moving_to_wash_watch_644318.ogg]  tortuga, a man taking his post
+ 535. moving to West Gate.
+      [man_quiet/moving_to_west_gate_b27eb8.ogg]  tortuga, a man taking his post
+ 536. Nice work.
+      [man_quiet/nice_work_e9f513.ogg]  bark: cheer (VoiceKit)
+ 537. Nothing yet.
+      [man_quiet/nothing_yet_7c7759.ogg]  bark: idle (VoiceKit)
+ 538. On it.
+      [man_quiet/on_it_b8c7da.ogg]  bark: acknowledge (VoiceKit)
+ 539. Pull back, go.
+      [man_quiet/pull_back_go_964b40.ogg]  bark: retreat (VoiceKit)
+ 540. Quiet night.
+      [man_quiet/quiet_night_cfc638.ogg]  bark: idle (VoiceKit)
+ 541. Reloading.
+      [man_quiet/reloading_c39f54.ogg]  bark: reloading (VoiceKit)
+ 542. Room clear.
+      [man_quiet/room_clear_46ce17.ogg]  bark: clear (VoiceKit)
+ 543. Say something.
+      [man_quiet/say_something_81d755.ogg]  bark: question (VoiceKit)
+ 544. Still here.
+      [man_quiet/still_here_11f89b.ogg]  bark: idle (VoiceKit)
+ 545. That's it.
+      [man_quiet/that_s_it_963726.ogg]  bark: cheer (VoiceKit)
+ 546. Took one.
+      [man_quiet/took_one_833b14.ogg]  bark: hit (VoiceKit)
+ 547. We got them.
+      [man_quiet/we_got_them_4e47df.ogg]  bark: cheer (VoiceKit)
+ 548. Who's there?
+      [man_quiet/who_s_there_3986de.ogg]  bark: question (VoiceKit)
+
+============================================================
+MAN_ROUGH  (39 lines)
+Shared voice: rough, gravelly, a smoker.
+============================================================
+ 549. Back, back.
+      [man_rough/back_back_27eaaa.ogg]  bark: retreat (VoiceKit)
+ 550. a questioning call: who's there?
+      [man_rough/call_call.ogg]  raids, a guard reacting
+ 551. a shout: HEY! / over there!
+      [man_rough/call_shout.ogg]  raids, a guard reacting
+ 552. a two note whistle: something's off
+      [man_rough/call_whistle.ogg]  raids, a guard reacting
+ 553. Changing mags.
+      [man_rough/changing_mags_05f417.ogg]  bark: reloading (VoiceKit)
+ 554. Clear.
+      [man_rough/clear_e3131a.ogg]  bark: clear (VoiceKit)
+ 555. Copy.
+      [man_rough/copy_400069.ogg]  bark: acknowledge (VoiceKit)
+ 556. Fall back.
+      [man_rough/fall_back_ee9738.ogg]  bark: retreat (VoiceKit)
+ 557. Hello? Anyone?
+      [man_rough/hello_anyone_1ea392.ogg]  bark: question (VoiceKit)
+ 558. I'm hit.
+      [man_rough/i_m_hit_aa8804.ogg]  bark: hit (VoiceKit)
+ 559. Moving.
+      [man_rough/moving_762ab7.ogg]  bark: acknowledge (VoiceKit)
+ 560. moving to East Gate.
+      [man_rough/moving_to_east_gate_0c1984.ogg]  tortuga, a man taking his post
+ 561. moving to Grove Watch.
+      [man_rough/moving_to_grove_watch_7a4c2a.ogg]  tortuga, a man taking his post
+ 562. moving to House Watch.
+      [man_rough/moving_to_house_watch_527be7.ogg]  tortuga, a man taking his post
+ 563. moving to North-East Corner.
+      [man_rough/moving_to_north_east_corner_fee321.ogg]  tortuga, a man taking his post
+ 564. moving to North Gate.
+      [man_rough/moving_to_north_gate_912149.ogg]  tortuga, a man taking his post
+ 565. moving to Road Gate.
+      [man_rough/moving_to_road_gate_5f6be2.ogg]  tortuga, a man taking his post
+ 566. moving to Rock Watch.
+      [man_rough/moving_to_rock_watch_f05f01.ogg]  tortuga, a man taking his post
+ 567. moving to Scrub Corner.
+      [man_rough/moving_to_scrub_corner_516203.ogg]  tortuga, a man taking his post
+ 568. moving to Shed Watch.
+      [man_rough/moving_to_shed_watch_3ef379.ogg]  tortuga, a man taking his post
+ 569. moving to South-East Corner.
+      [man_rough/moving_to_south_east_corner_e0d7ee.ogg]  tortuga, a man taking his post
+ 570. moving to South-West Corner.
+      [man_rough/moving_to_south_west_corner_ac650d.ogg]  tortuga, a man taking his post
+ 571. moving to Trail Watch.
+      [man_rough/moving_to_trail_watch_e4dfcd.ogg]  tortuga, a man taking his post
+ 572. moving to Trench Watch.
+      [man_rough/moving_to_trench_watch_f6c03c.ogg]  tortuga, a man taking his post
+ 573. moving to Wash Watch.
+      [man_rough/moving_to_wash_watch_644318.ogg]  tortuga, a man taking his post
+ 574. moving to West Gate.
+      [man_rough/moving_to_west_gate_b27eb8.ogg]  tortuga, a man taking his post
+ 575. Nice work.
+      [man_rough/nice_work_e9f513.ogg]  bark: cheer (VoiceKit)
+ 576. Nothing yet.
+      [man_rough/nothing_yet_7c7759.ogg]  bark: idle (VoiceKit)
+ 577. On it.
+      [man_rough/on_it_b8c7da.ogg]  bark: acknowledge (VoiceKit)
+ 578. Pull back, go.
+      [man_rough/pull_back_go_964b40.ogg]  bark: retreat (VoiceKit)
+ 579. Quiet night.
+      [man_rough/quiet_night_cfc638.ogg]  bark: idle (VoiceKit)
+ 580. Reloading.
+      [man_rough/reloading_c39f54.ogg]  bark: reloading (VoiceKit)
+ 581. Room clear.
+      [man_rough/room_clear_46ce17.ogg]  bark: clear (VoiceKit)
+ 582. Say something.
+      [man_rough/say_something_81d755.ogg]  bark: question (VoiceKit)
+ 583. Still here.
+      [man_rough/still_here_11f89b.ogg]  bark: idle (VoiceKit)
+ 584. That's it.
+      [man_rough/that_s_it_963726.ogg]  bark: cheer (VoiceKit)
+ 585. Took one.
+      [man_rough/took_one_833b14.ogg]  bark: hit (VoiceKit)
+ 586. We got them.
+      [man_rough/we_got_them_4e47df.ogg]  bark: cheer (VoiceKit)
+ 587. Who's there?
+      [man_rough/who_s_there_3986de.ogg]  bark: question (VoiceKit)
+
+============================================================
+MAN_TIRED  (39 lines)
+Shared voice: tired, flat, seen it all.
+============================================================
+ 588. Back, back.
+      [man_tired/back_back_27eaaa.ogg]  bark: retreat (VoiceKit)
+ 589. a questioning call: who's there?
+      [man_tired/call_call.ogg]  raids, a guard reacting
+ 590. a shout: HEY! / over there!
+      [man_tired/call_shout.ogg]  raids, a guard reacting
+ 591. a two note whistle: something's off
+      [man_tired/call_whistle.ogg]  raids, a guard reacting
+ 592. Changing mags.
+      [man_tired/changing_mags_05f417.ogg]  bark: reloading (VoiceKit)
+ 593. Clear.
+      [man_tired/clear_e3131a.ogg]  bark: clear (VoiceKit)
+ 594. Copy.
+      [man_tired/copy_400069.ogg]  bark: acknowledge (VoiceKit)
+ 595. Fall back.
+      [man_tired/fall_back_ee9738.ogg]  bark: retreat (VoiceKit)
+ 596. Hello? Anyone?
+      [man_tired/hello_anyone_1ea392.ogg]  bark: question (VoiceKit)
+ 597. I'm hit.
+      [man_tired/i_m_hit_aa8804.ogg]  bark: hit (VoiceKit)
+ 598. Moving.
+      [man_tired/moving_762ab7.ogg]  bark: acknowledge (VoiceKit)
+ 599. moving to East Gate.
+      [man_tired/moving_to_east_gate_0c1984.ogg]  tortuga, a man taking his post
+ 600. moving to Grove Watch.
+      [man_tired/moving_to_grove_watch_7a4c2a.ogg]  tortuga, a man taking his post
+ 601. moving to House Watch.
+      [man_tired/moving_to_house_watch_527be7.ogg]  tortuga, a man taking his post
+ 602. moving to North-East Corner.
+      [man_tired/moving_to_north_east_corner_fee321.ogg]  tortuga, a man taking his post
+ 603. moving to North Gate.
+      [man_tired/moving_to_north_gate_912149.ogg]  tortuga, a man taking his post
+ 604. moving to Road Gate.
+      [man_tired/moving_to_road_gate_5f6be2.ogg]  tortuga, a man taking his post
+ 605. moving to Rock Watch.
+      [man_tired/moving_to_rock_watch_f05f01.ogg]  tortuga, a man taking his post
+ 606. moving to Scrub Corner.
+      [man_tired/moving_to_scrub_corner_516203.ogg]  tortuga, a man taking his post
+ 607. moving to Shed Watch.
+      [man_tired/moving_to_shed_watch_3ef379.ogg]  tortuga, a man taking his post
+ 608. moving to South-East Corner.
+      [man_tired/moving_to_south_east_corner_e0d7ee.ogg]  tortuga, a man taking his post
+ 609. moving to South-West Corner.
+      [man_tired/moving_to_south_west_corner_ac650d.ogg]  tortuga, a man taking his post
+ 610. moving to Trail Watch.
+      [man_tired/moving_to_trail_watch_e4dfcd.ogg]  tortuga, a man taking his post
+ 611. moving to Trench Watch.
+      [man_tired/moving_to_trench_watch_f6c03c.ogg]  tortuga, a man taking his post
+ 612. moving to Wash Watch.
+      [man_tired/moving_to_wash_watch_644318.ogg]  tortuga, a man taking his post
+ 613. moving to West Gate.
+      [man_tired/moving_to_west_gate_b27eb8.ogg]  tortuga, a man taking his post
+ 614. Nice work.
+      [man_tired/nice_work_e9f513.ogg]  bark: cheer (VoiceKit)
+ 615. Nothing yet.
+      [man_tired/nothing_yet_7c7759.ogg]  bark: idle (VoiceKit)
+ 616. On it.
+      [man_tired/on_it_b8c7da.ogg]  bark: acknowledge (VoiceKit)
+ 617. Pull back, go.
+      [man_tired/pull_back_go_964b40.ogg]  bark: retreat (VoiceKit)
+ 618. Quiet night.
+      [man_tired/quiet_night_cfc638.ogg]  bark: idle (VoiceKit)
+ 619. Reloading.
+      [man_tired/reloading_c39f54.ogg]  bark: reloading (VoiceKit)
+ 620. Room clear.
+      [man_tired/room_clear_46ce17.ogg]  bark: clear (VoiceKit)
+ 621. Say something.
+      [man_tired/say_something_81d755.ogg]  bark: question (VoiceKit)
+ 622. Still here.
+      [man_tired/still_here_11f89b.ogg]  bark: idle (VoiceKit)
+ 623. That's it.
+      [man_tired/that_s_it_963726.ogg]  bark: cheer (VoiceKit)
+ 624. Took one.
+      [man_tired/took_one_833b14.ogg]  bark: hit (VoiceKit)
+ 625. We got them.
+      [man_tired/we_got_them_4e47df.ogg]  bark: cheer (VoiceKit)
+ 626. Who's there?
+      [man_tired/who_s_there_3986de.ogg]  bark: question (VoiceKit)
+
+============================================================
+MAN_YOUNG  (39 lines)
+Shared voice: young, quick, a bit eager.
+============================================================
+ 627. Back, back.
+      [man_young/back_back_27eaaa.ogg]  bark: retreat (VoiceKit)
+ 628. a questioning call: who's there?
+      [man_young/call_call.ogg]  raids, a guard reacting
+ 629. a shout: HEY! / over there!
+      [man_young/call_shout.ogg]  raids, a guard reacting
+ 630. a two note whistle: something's off
+      [man_young/call_whistle.ogg]  raids, a guard reacting
+ 631. Changing mags.
+      [man_young/changing_mags_05f417.ogg]  bark: reloading (VoiceKit)
+ 632. Clear.
+      [man_young/clear_e3131a.ogg]  bark: clear (VoiceKit)
+ 633. Copy.
+      [man_young/copy_400069.ogg]  bark: acknowledge (VoiceKit)
+ 634. Fall back.
+      [man_young/fall_back_ee9738.ogg]  bark: retreat (VoiceKit)
+ 635. Hello? Anyone?
+      [man_young/hello_anyone_1ea392.ogg]  bark: question (VoiceKit)
+ 636. I'm hit.
+      [man_young/i_m_hit_aa8804.ogg]  bark: hit (VoiceKit)
+ 637. Moving.
+      [man_young/moving_762ab7.ogg]  bark: acknowledge (VoiceKit)
+ 638. moving to East Gate.
+      [man_young/moving_to_east_gate_0c1984.ogg]  tortuga, a man taking his post
+ 639. moving to Grove Watch.
+      [man_young/moving_to_grove_watch_7a4c2a.ogg]  tortuga, a man taking his post
+ 640. moving to House Watch.
+      [man_young/moving_to_house_watch_527be7.ogg]  tortuga, a man taking his post
+ 641. moving to North-East Corner.
+      [man_young/moving_to_north_east_corner_fee321.ogg]  tortuga, a man taking his post
+ 642. moving to North Gate.
+      [man_young/moving_to_north_gate_912149.ogg]  tortuga, a man taking his post
+ 643. moving to Road Gate.
+      [man_young/moving_to_road_gate_5f6be2.ogg]  tortuga, a man taking his post
+ 644. moving to Rock Watch.
+      [man_young/moving_to_rock_watch_f05f01.ogg]  tortuga, a man taking his post
+ 645. moving to Scrub Corner.
+      [man_young/moving_to_scrub_corner_516203.ogg]  tortuga, a man taking his post
+ 646. moving to Shed Watch.
+      [man_young/moving_to_shed_watch_3ef379.ogg]  tortuga, a man taking his post
+ 647. moving to South-East Corner.
+      [man_young/moving_to_south_east_corner_e0d7ee.ogg]  tortuga, a man taking his post
+ 648. moving to South-West Corner.
+      [man_young/moving_to_south_west_corner_ac650d.ogg]  tortuga, a man taking his post
+ 649. moving to Trail Watch.
+      [man_young/moving_to_trail_watch_e4dfcd.ogg]  tortuga, a man taking his post
+ 650. moving to Trench Watch.
+      [man_young/moving_to_trench_watch_f6c03c.ogg]  tortuga, a man taking his post
+ 651. moving to Wash Watch.
+      [man_young/moving_to_wash_watch_644318.ogg]  tortuga, a man taking his post
+ 652. moving to West Gate.
+      [man_young/moving_to_west_gate_b27eb8.ogg]  tortuga, a man taking his post
+ 653. Nice work.
+      [man_young/nice_work_e9f513.ogg]  bark: cheer (VoiceKit)
+ 654. Nothing yet.
+      [man_young/nothing_yet_7c7759.ogg]  bark: idle (VoiceKit)
+ 655. On it.
+      [man_young/on_it_b8c7da.ogg]  bark: acknowledge (VoiceKit)
+ 656. Pull back, go.
+      [man_young/pull_back_go_964b40.ogg]  bark: retreat (VoiceKit)
+ 657. Quiet night.
+      [man_young/quiet_night_cfc638.ogg]  bark: idle (VoiceKit)
+ 658. Reloading.
+      [man_young/reloading_c39f54.ogg]  bark: reloading (VoiceKit)
+ 659. Room clear.
+      [man_young/room_clear_46ce17.ogg]  bark: clear (VoiceKit)
+ 660. Say something.
+      [man_young/say_something_81d755.ogg]  bark: question (VoiceKit)
+ 661. Still here.
+      [man_young/still_here_11f89b.ogg]  bark: idle (VoiceKit)
+ 662. That's it.
+      [man_young/that_s_it_963726.ogg]  bark: cheer (VoiceKit)
+ 663. Took one.
+      [man_young/took_one_833b14.ogg]  bark: hit (VoiceKit)
+ 664. We got them.
+      [man_young/we_got_them_4e47df.ogg]  bark: cheer (VoiceKit)
+ 665. Who's there?
+      [man_young/who_s_there_3986de.ogg]  bark: question (VoiceKit)
